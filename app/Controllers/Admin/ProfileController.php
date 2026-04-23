@@ -3,54 +3,83 @@
 namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
-use App\Models\ProfileModel;
+use App\Models\AdminModel;
 
 class ProfileController extends BaseController
 {
-    protected $model;
+    protected $adminModel;
 
     public function __construct()
     {
-        $this->model = new ProfileModel();
+        $this->adminModel = new AdminModel();
     }
 
-    // LIST ALL PROFILES
     public function index()
     {
-        $data['profiles'] = $this->model->findAll();
-        return view('admin/profiles/index', $data);
+        $adminId = session()->get('admin_id');
+        if (!$adminId) {
+            return redirect()->to('/admin/login');
+        }
+        $admin = $this->adminModel->find($adminId);
+        if (!$admin) {
+            return redirect()->to('/admin/login');
+        }
+        return view('admin/profile/index', ['admin' => $admin]);
     }
 
-    // SHOW CREATE FORM
-    public function create()
+    public function update()
     {
-        return view('admin/profiles/create');
-    }
-
-    // STORE DATA
-    public function store()
-    {
-        $file = $this->request->getFile('image');
-
-        if ($file && $file->isValid() && !$file->hasMoved()) {
-
-            $fileName = $file->getRandomName();
-            $file->move('uploads/profiles/', $fileName);
-
-            $this->model->save([
-                'name' => $this->request->getPost('name'),
-                'designation' => $this->request->getPost('designation'),
-                'image' => 'uploads/profiles/' . $fileName
-            ]);
+        $adminId = session()->get('admin_id');
+        if (!$adminId) {
+            return redirect()->to('/admin/login');
         }
 
-        return redirect()->to('/admin/profiles');
-    }
+        $rules = [
+            'name'  => 'required|max_length[100]',
+            'email' => 'required|valid_email|max_length[150]|is_unique[admins.email,id,' . $adminId . ']',
+        ];
 
-    // DELETE PROFILE
-    public function delete($id)
-    {
-        $this->model->delete($id);
-        return redirect()->to('/admin/profiles');
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
+        $data = [
+            'name'  => $this->request->getPost('name'),
+            'email' => $this->request->getPost('email'),
+            'gender' => $this->request->getPost('gender'),
+        ];
+
+        // Handle password change
+        $password = $this->request->getPost('password');
+        if (!empty($password)) {
+            $data['password'] = password_hash($password, PASSWORD_DEFAULT);
+        }
+
+        // Handle profile image upload
+        $file = $this->request->getFile('profile_image');
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $allowed = ['image/jpeg', 'image/png', 'image/gif'];
+            if (!in_array($file->getMimeType(), $allowed)) {
+                return redirect()->back()->withInput()->with('error', 'Only JPG, PNG, GIF images are allowed.');
+            }
+            if ($file->getSize() > 2 * 1024 * 1024) {
+                return redirect()->back()->withInput()->with('error', 'Image size must be less than 2MB.');
+            }
+            // Delete old image if exists
+            $oldAdmin = $this->adminModel->find($adminId);
+            if (!empty($oldAdmin['profile_image']) && file_exists(FCPATH . 'uploads/profile/' . $oldAdmin['profile_image'])) {
+                unlink(FCPATH . 'uploads/profile/' . $oldAdmin['profile_image']);
+            }
+            $newName = $file->getRandomName();
+            $file->move(FCPATH . 'uploads/profile', $newName);
+            $data['profile_image'] = $newName;
+        }
+
+        $this->adminModel->update($adminId, $data);
+
+        // Update session name
+        session()->set('admin_name', $data['name']);
+
+        return redirect()->to('/admin/profile')->with('message', 'Profile updated successfully.');
     }
 }

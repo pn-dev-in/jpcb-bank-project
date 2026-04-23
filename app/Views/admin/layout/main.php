@@ -1,85 +1,96 @@
+<?php
+$titleText = trim($this->renderSection('title'));
+$pageTitle = $titleText !== '' ? $titleText : ($pageTitle ?? 'Admin Panel');
+?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light" data-menu-color="light" data-topbar-color="light" data-sidenav-view="default">
 <head>
-    <meta charset="UTF-8">
-    <title>Admin Panel</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?= esc($pageTitle) ?> | JPCB Bank Admin</title>
 
-    <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" type="image/svg+xml" href="<?= base_url('favicon.svg') ?>">
+    <link rel="shortcut icon" href="<?= base_url('favicon.svg') ?>">
+    <link href="<?= base_url('admin-assets/css/vendor.min.css') ?>" rel="stylesheet" type="text/css">
+    <link href="<?= base_url('admin-assets/css/app.min.css') ?>" rel="stylesheet" type="text/css" id="app-style">
+    <link href="<?= base_url('admin-assets/css/icons.min.css') ?>" rel="stylesheet" type="text/css">
 
     <style>
-        body { overflow-x: hidden; }
-
-        .sidebar {
-            height: 100vh;
-            overflow-y: auto; 
-            overflow-x: hidden;
-            background: #2e7d32;
-            color: white;
-            position: fixed;
-            width: 240px;
-            top: 0;
-    left: 0;
+        .topbar-user-name {
+            max-width: 180px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
-        .sidebar a {
-            color: white;
-            display: block;
-            padding: 12px;
-            text-decoration: none;
+        .side-nav-link.active {
+            background-color: rgba(var(--bs-primary-rgb), 0.12);
+            color: var(--bs-primary) !important;
         }
 
-        .sidebar a:hover {
-            background: #245e38;
+        .side-nav-link.active .menu-icon i,
+        .side-nav-link.active .menu-text {
+            color: var(--bs-primary) !important;
         }
 
-        .sidebar::-webkit-scrollbar {
-    width: 6px;
-}
-
-.sidebar::-webkit-scrollbar-thumb {
-    background: #ccc;
-    border-radius: 10px;
-}
-
-        .content {
-            margin-left: 240px;
-            background: #f8f9fa;
-            min-height: 100vh;
+        .flash-list .alert {
+            margin-bottom: 0.75rem;
         }
-
-        .navbar {
-            background: #2e7d32;
-            color: #fff;
-        }
-
-        .submenu { display: none; }
-        .submenu.show { display: block; }
     </style>
+
+    <?= $this->renderSection('styles') ?>
 </head>
 <body>
+<div class="wrapper">
+    <?= view('shared/layout/topbar', ['pageTitle' => $pageTitle, 'role' => 'admin']) ?>
+    <?= $this->include('shared/layout/sidebar_admin') ?>
 
-    <!-- SIDEBAR -->
-    <?= view('admin/layout/sidebar') ?>
+    <div class="page-content">
+        <div class="page-container py-2">
+        
+            <div class="flash-list">
+                <?php if (session()->getFlashdata('success')): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <?= esc((string) session()->getFlashdata('success')) ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
 
-    <!-- MAIN CONTENT -->
-    <div class="content">
+                <?php if (session()->getFlashdata('error')): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <?= esc((string) session()->getFlashdata('error')) ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                <?php endif; ?>
 
-        <!-- NAVBAR -->
-        <?= view('admin/layout/navbar') ?>
+                <?php if (session('errors') && is_array(session('errors'))): ?>
+                    <div class="alert alert-danger">
+                        <ul class="mb-0 ps-3">
+                            <?php foreach (session('errors') as $error): ?>
+                                <li><?= esc($error) ?></li>
+                            <?php endforeach; ?>
+                        </ul>
+                    </div>
+                <?php endif; ?>
+            </div>
 
-        <div class="p-4">
             <?= $this->renderSection('content') ?>
         </div>
 
+        <footer class="footer">
+            <div class="page-container">
+                <div class="row">
+                    <div class="col-12 text-center text-muted small">
+                        <?= date('Y') ?> JPCB Bank Admin Panel
+                    </div>
+                </div>
+            </div>
+        </footer>
     </div>
+</div>
 
-<script>
-function toggleMenu(id) {
-    let menu = document.getElementById(id);
-    menu.classList.toggle("show");
-}
-</script>
-
+<script src="<?= base_url('admin-assets/js/vendor.min.js') ?>"></script>
+<script src="<?= base_url('admin-assets/js/app.js') ?>"></script>
+<?= $this->renderSection('scripts') ?>
 </body>
 </html>

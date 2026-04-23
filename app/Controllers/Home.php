@@ -78,15 +78,6 @@ class Home extends BaseController
         // Show only the latest 5 branches (or you can change to 3 or 6)
         $branches = $branchModel->orderBy('created_at', 'DESC')->limit(5)->findAll();
 
-        $docModel = new DocumentModel();
-        $documents = $docModel->findAll();
-
-        $documents = [
-            'policies' => $docModel->where('category', 'Policy')->findAll(),
-            'reports'  => $docModel->where('category', 'Report')->findAll(),
-        ];
-
-
         // Products section settings
         $sectionSettingsModel = new \App\Models\ProductsSectionSettingsModel();
         $productsSection = $sectionSettingsModel->find(1);

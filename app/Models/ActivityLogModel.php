@@ -13,6 +13,10 @@ class ActivityLogModel extends Model
         'admin_id',
         'action',
         'module',
-        'record_id'
+        'record_id',
+        'created_at'
     ];
+    protected $useTimestamps = true;
+    protected $createdField = 'created_at';
+    protected $updatedField = false; // no updated_at in activity_logs
 }

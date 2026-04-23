@@ -1,67 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="light">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8" />
     <title>Admin Login | JPCB Bank</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Adminto CSS -->
+    <link href="<?= base_url('admin-assets/css/vendor.min.css') ?>" rel="stylesheet" />
+    <link href="<?= base_url('admin-assets/css/app.min.css') ?>" rel="stylesheet" />
+    <link href="<?= base_url('admin-assets/css/icons.min.css') ?>" rel="stylesheet" />
 
-    <link href="<?= base_url('assets/css/tailwind.css') ?>" rel="stylesheet">
+    <style>
+        body {
+            background: #f5f7fb;
+            height: 100vh;
+            margin: 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* BACKGROUND IMAGE (centered properly) */
+        .bg-image {
+            position: absolute;
+            inset: 0;
+            background: url("<?= base_url('assets/images/login-bg.jpg') ?>") no-repeat center center;
+            background-size: cover; /* IMPORTANT: prevents crop */
+            opacity: 0.25;
+        }
+
+        /* LOGIN CENTER */
+        .login-wrapper {
+            position: relative;
+            z-index: 2;
+            height: 100vh;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            border-radius: 12px;
+        }
+
+        .bank-logo {
+            max-height: 60px;
+            object-fit: contain;
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+<body>
 
-<div class="bg-white shadow-lg rounded-xl p-8 w-full max-w-md">
+<!-- BACKGROUND -->
+<div class="bg-image"></div>
+
+<!-- LOGIN -->
+<div class="login-wrapper d-flex align-items-center justify-content-center">
+
+    <div class="card login-card shadow-lg p-4">
+
+        <!-- LOGO -->
+        <div class="text-center mb-4">
 
     <!-- LOGO -->
-    <div class="text-center mb-6">
-        <img src="<?= base_url('assets/images/bank-logo.png') ?>" class="mx-auto h-16 mb-3">
-        <h2 class="text-xl font-bold text-gray-700">JPCB Admin Panel</h2>
-        <p class="text-sm text-gray-500">Login to continue</p>
-    </div>
+    <img src="<?= base_url('assets/images/bank-logo.png') ?>"
+         alt="JPCB Bank"
+         style="width: auto; max-width: 100%; max-height: 60px; object-fit: contain;">
 
-    <!-- ERROR -->
-    <?php if(session()->getFlashdata('error')): ?>
-        <div class="bg-red-100 text-red-600 p-2 rounded mb-4 text-center">
-            <?= session()->getFlashdata('error') ?>
-        </div>
-    <?php endif; ?>
+    <!-- GAP -->
+    <div style="height: 15px;"></div>
 
-    <!-- FORM -->
-    <form method="post" action="/admin/login">
+    <!-- TITLE -->
+    <h4 class="fw-bold mb-1">JPCB Admin Panel</h4>
 
-        <?= csrf_field() ?>
-
-        <div class="mb-4">
-            <label class="block text-sm font-medium mb-1">Email</label>
-            <input type="email" name="email"
-                   class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                   placeholder="Enter your email" required>
-        </div>
-
-        <div class="mb-4">
-            <label class="block text-sm font-medium mb-1">Password</label>
-            <input type="password" name="password"
-                   class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-green-500"
-                   placeholder="Enter your password" required>
-        </div>
-
-        <div class="flex justify-between items-center mb-4 text-sm">
-            <label class="flex items-center gap-2">
-                <input type="checkbox">
-                Remember me
-            </label>
-            <a href="#" class="text-green-600 hover:underline">Forgot?</a>
-        </div>
-
-        <button type="submit"
-                class="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700 transition">
-            Login
-        </button>
-
-    </form>
+    <!-- SUBTITLE -->
+    <p class="text-muted mb-0">Login to continue</p>
 
 </div>
+
+        <!-- ERROR -->
+        <?php if(session()->getFlashdata('error')): ?>
+            <div class="alert alert-danger text-center">
+                <?= session()->getFlashdata('error') ?>
+            </div>
+        <?php endif; ?>
+
+        <!-- FORM -->
+        <form method="post" action="<?= base_url('admin/login') ?>">
+            <?= csrf_field() ?>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" required>
+            </div>
+
+            <div class="d-flex justify-content-between mb-3">
+                <div class="form-check">
+                    <input type="checkbox" class="form-check-input">
+                    <label class="form-check-label">Remember me</label>
+                </div>
+                <a href="#" class="small text-muted">Forgot?</a>
+            </div>
+
+            <button class="btn btn-success w-100">Login</button>
+        </form>
+
+        <div class="text-center mt-3 text-muted small">
+            © <?= date('Y') ?> JPCB Bank
+        </div>
+
+    </div>
+
+</div>
+
+<script src="<?= base_url('admin-assets/js/vendor.min.js') ?>"></script>
+<script src="<?= base_url('admin-assets/js/app.js') ?>"></script>
 
 </body>
 </html>

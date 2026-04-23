@@ -14,6 +14,8 @@ class AdminModel extends Model
         'email',
         'password',
         'role_id',
-        'is_active'
+        'is_active',
+        'last_login',      // add this
+        'failed_attempts'  // add this
     ];
 }

@@ -1,13 +1,3 @@
-<?php
-$complaintCategories = ['Account Related', 'ATM / Debit Card', 'Mobile Banking', 'UPI', 'RTGS / NEFT', 'Loan', 'Deposit', 'Staff Behavior', 'Fraud / Unauthorized Transaction', 'Other'];
-$escalationLevels = [
-    ['level' => 'Level 1', 'title' => 'Branch Manager', 'name' => 'Respective Branch Manager', 'phone' => 'Visit branch', 'email' => 'branch@jpcb.in', 'timeline' => '7 working days', 'desc' => 'First point of contact for all complaints.'],
-    ['level' => 'Level 2', 'title' => 'Grievance Redressal Officer', 'name' => 'Shri Sanjay M. Kulkarni', 'phone' => '0257-2220055', 'email' => 'grievance@jpcb.in', 'timeline' => '15 working days', 'desc' => 'If not resolved at branch level within 7 days.'],
-    ['level' => 'Level 3', 'title' => 'Chief Executive Officer', 'name' => 'Shri Ramesh K. Patil', 'phone' => '0257-2220055', 'email' => 'ceo@jpcb.in', 'timeline' => '30 working days', 'desc' => 'If not resolved at Level 2 within 15 days.'],
-    ['level' => 'Level 4', 'title' => 'Banking Ombudsman (RBI)', 'name' => 'RBI Integrated Ombudsman', 'phone' => '14448', 'email' => 'crpc@rbi.org.in', 'timeline' => 'After 30 days', 'desc' => 'If the complaint remains unresolved after 30 days.'],
-];
-?>
-
 <?php if ($pageKey === 'complaints'): ?>
 <section class="section-padding bg-background">
   <div class="container-bank max-w-3xl">
@@ -84,9 +74,11 @@ $escalationLevels = [
             <label class="text-sm font-medium text-foreground block mb-1" for="complaint-category">Category *</label>
             <select id="complaint-category" data-complaint-required-step="2" class="w-full p-3 rounded-lg border bg-background text-foreground focus:ring-2 focus:outline-none" style="border-color: hsl(var(--border));">
               <option value="">Select category</option>
-              <?php foreach ($complaintCategories as $category): ?>
-              <option><?= esc($category) ?></option>
-              <?php endforeach; ?>
+              <?php if (!empty($complaintCategories)): ?>
+                <?php foreach ($complaintCategories as $category): ?>
+                <option><?= esc($category) ?></option>
+                <?php endforeach; ?>
+              <?php endif; ?>
             </select>
           </div>
           <div>
@@ -131,26 +123,30 @@ $escalationLevels = [
   <div class="container-bank max-w-4xl">
     <p class="readable mb-8" style="color: hsl(var(--muted-foreground));">If your complaint is not resolved satisfactorily, you may escalate it through the following levels.</p>
     <div class="space-y-4">
-      <?php foreach ($escalationLevels as $index => $level): ?>
-      <div class="bank-card p-6 relative">
-        <?php if ($index < count($escalationLevels) - 1): ?>
-        <div class="absolute left-10 bottom-0 translate-y-full w-0.5 h-4 bg-border z-10" aria-hidden="true"></div>
-        <?php endif; ?>
-        <div class="flex items-start gap-4">
-          <span class="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold flex-shrink-0 text-sm"><?= esc(substr($level['level'], -1)) ?></span>
-          <div class="flex-1">
-            <h3 class="font-semibold text-foreground"><?= esc($level['level']) ?>: <?= esc($level['title']) ?></h3>
-            <p class="text-sm text-primary font-medium"><?= esc($level['name']) ?></p>
-            <p class="text-sm mt-1" style="color: hsl(var(--muted-foreground));"><?= esc($level['desc']) ?></p>
-            <div class="flex flex-wrap gap-4 mt-3 text-sm" style="color: hsl(var(--muted-foreground));">
-              <span class="flex items-center gap-1"><i data-lucide="phone" class="w-4 h-4"></i><?= esc($level['phone']) ?></span>
-              <span class="flex items-center gap-1"><i data-lucide="mail" class="w-4 h-4"></i><?= esc($level['email']) ?></span>
-              <span class="flex items-center gap-1"><i data-lucide="clock" class="w-4 h-4"></i><?= esc($level['timeline']) ?></span>
+      <?php if (!empty($escalationLevels)): ?>
+        <?php foreach ($escalationLevels as $index => $level): ?>
+        <div class="bank-card p-6 relative">
+          <?php if ($index < count($escalationLevels) - 1): ?>
+          <div class="absolute left-10 bottom-0 translate-y-full w-0.5 h-4 bg-border z-10" aria-hidden="true"></div>
+          <?php endif; ?>
+          <div class="flex items-start gap-4">
+            <span class="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold flex-shrink-0 text-sm"><?= esc(preg_replace('/[^0-9]/', '', $level['level'])) ?></span>
+            <div class="flex-1">
+              <h3 class="font-semibold text-foreground"><?= esc($level['level']) ?>: <?= esc($level['title']) ?></h3>
+              <p class="text-sm text-primary font-medium"><?= esc($level['name']) ?></p>
+              <p class="text-sm mt-1" style="color: hsl(var(--muted-foreground));"><?= esc($level['description']) ?></p>
+              <div class="flex flex-wrap gap-4 mt-3 text-sm" style="color: hsl(var(--muted-foreground));">
+                <span class="flex items-center gap-1"><i data-lucide="phone" class="w-4 h-4"></i><?= esc($level['phone']) ?></span>
+                <span class="flex items-center gap-1"><i data-lucide="mail" class="w-4 h-4"></i><?= esc($level['email']) ?></span>
+                <span class="flex items-center gap-1"><i data-lucide="clock" class="w-4 h-4"></i><?= esc($level['timeline']) ?></span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <?php endforeach; ?>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p>No escalation levels available.</p>
+      <?php endif; ?>
     </div>
   </div>
 </section>

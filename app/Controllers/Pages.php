@@ -169,11 +169,361 @@ class Pages extends BaseController
                     $categories = $categoryModel->where('status', 1)->orderBy('sort_order', 'asc')->findAll();
                     $contentData['galleryCategories'] = array_merge([['name' => 'All', 'slug' => 'all']], $categories);
                     $contentData['galleryItems'] = $itemModel->select('gallery_items.*, gallery_categories.name as category_name, gallery_categories.slug as category_slug')
-    ->join('gallery_categories', 'gallery_categories.id = gallery_items.category_id')
-    ->where('gallery_items.status', 1)
-    ->orderBy('gallery_items.sort_order', 'asc')
-    ->findAll();
+                        ->join('gallery_categories', 'gallery_categories.id = gallery_items.category_id')
+                        ->where('gallery_items.status', 1)
+                        ->orderBy('gallery_items.sort_order', 'asc')
+                        ->findAll();
 
+                    break;
+            }
+        }
+
+        // Load deposits section data dynamically
+        if ($section === 'deposits') {
+            switch ($pageKey) {
+                case 'overview':
+                    $contentData['depositCards'] = (new \App\Models\DepositCardModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    $contentData['depositQuickLinks'] = (new \App\Models\DepositQuickLinkModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    break;
+                case 'products':
+                    $productModel = new \App\Models\DepositProductModel();
+                    $products = $productModel->where('status', 1)->orderBy('sort_order', 'asc')->findAll();
+                    $featureModel = new \App\Models\DepositProductFeatureModel();
+                    foreach ($products as &$product) {
+                        $product['features'] = $featureModel->where('product_id', $product['id'])
+                            ->orderBy('sort_order', 'asc')
+                            ->findColumn('feature') ?? [];
+                    }
+                    $contentData['depositProducts'] = $products;
+                    break;
+                case 'interest-rates':
+                    $contentData['depositRates'] = (new \App\Models\DepositInterestRateModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    $settingsModel = new \App\Models\DepositSettingModel();
+                    $rateNotes = $settingsModel->where('key', 'interest_rate_notes')->first();
+                    $contentData['rateNotes'] = $rateNotes['value'] ?? '';
+                    break;
+                case 'savings-current':
+                    $savingsModel = new \App\Models\SavingsAccountModel();
+                    $savingsAccounts = $savingsModel->where('status', 1)->orderBy('sort_order', 'asc')->findAll();
+                    $savingsFeatureModel = new \App\Models\SavingsAccountFeatureModel();
+                    foreach ($savingsAccounts as &$acc) {
+                        $acc['features'] = $savingsFeatureModel->where('savings_account_id', $acc['id'])
+                            ->orderBy('sort_order', 'asc')
+                            ->findColumn('feature') ?? [];
+                    }
+                    $contentData['savingsAccounts'] = $savingsAccounts;
+
+                    $currentModel = new \App\Models\CurrentAccountModel();
+                    $currentAccounts = $currentModel->where('status', 1)->orderBy('sort_order', 'asc')->findAll();
+                    $currentFeatureModel = new \App\Models\CurrentAccountFeatureModel();
+                    foreach ($currentAccounts as &$acc) {
+                        $acc['features'] = $currentFeatureModel->where('current_account_id', $acc['id'])
+                            ->orderBy('sort_order', 'asc')
+                            ->findColumn('feature') ?? [];
+                    }
+                    $contentData['currentAccounts'] = $currentAccounts;
+
+                    $settingsModel = new \App\Models\DepositSettingModel();
+                    $documents = $settingsModel->where('key', 'savings_documents')->first();
+                    $contentData['savingsDocuments'] = $documents ? explode("\n", $documents['value']) : [];
+                    break;
+                case 'dicgc':
+                    $contentData['dicgcFaqs'] = (new \App\Models\DicgcFaqModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    foreach ($contentData['dicgcFaqs'] as &$faq) {
+                        // Force answer to string ALWAYS
+                        if (is_array($faq['answer'])) {
+                            $faq['answer'] = implode(', ', array_map(function ($v) {
+                                return is_array($v) ? json_encode($v) : (string)$v;
+                            }, $faq['answer']));
+                        } else {
+                            $faq['answer'] = (string) ($faq['answer'] ?? '');
+                        }
+                    }
+                    unset($faq);
+                    $settingsModel = new \App\Models\DepositSettingModel();
+                    $dicgcIntro = $settingsModel->where('key', 'dicgc_intro')->first();
+                    $contentData['dicgcIntro'] = $dicgcIntro['value'] ?? '';
+                    break;
+                case 'deaf':
+                    $contentData['deafSteps'] = (new \App\Models\DeafStepModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    $settingsModel = new \App\Models\DepositSettingModel();
+                    $deafIntro = $settingsModel->where('key', 'deaf_intro')->first();
+                    $contentData['deafIntro'] = $deafIntro['value'] ?? '';
+                    break;
+            }
+        }
+
+        if ($section === 'loans') {
+            switch ($pageKey) {
+                case 'overview':
+                    $contentData['loanCards'] = (new \App\Models\LoanCardModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    break;
+                case 'products':
+                    $productModel = new \App\Models\LoanProductModel();
+                    $products = $productModel->where('status', 1)->orderBy('sort_order', 'asc')->findAll();
+                    $featureModel = new \App\Models\LoanProductFeatureModel();
+                    $docModel = new \App\Models\LoanProductDocumentModel();
+                    foreach ($products as &$p) {
+                        $p['features'] = $featureModel->where('loan_product_id', $p['id'])
+                            ->orderBy('sort_order', 'asc')
+                            ->findColumn('feature') ?? [];
+                        $p['docs'] = $docModel->where('loan_product_id', $p['id'])
+                            ->orderBy('sort_order', 'asc')
+                            ->findColumn('document') ?? [];
+                    }
+                    $contentData['loanProducts'] = $products;
+                    break;
+                case 'interest-rates':
+                    $contentData['loanRates'] = (new \App\Models\LoanInterestRateModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    break;
+                    // case 'emi-calculator' – no dynamic data needed
+            }
+        }
+
+        if ($section === 'services') {
+            switch ($pageKey) {
+                case 'overview':
+                    $contentData['serviceCards'] = (new \App\Models\ServiceCardModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    break;
+                case 'charges':
+                    $contentData['serviceCharges'] = (new \App\Models\ServiceChargeModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    break;
+                case 'insurance':
+                    $productModel = new \App\Models\InsuranceProductModel();
+                    $products = $productModel->where('status', 1)->orderBy('sort_order', 'asc')->findAll();
+                    $featureModel = new \App\Models\InsuranceProductFeatureModel();
+                    foreach ($products as &$p) {
+                        $p['features'] = $featureModel->where('product_id', $p['id'])
+                            ->orderBy('sort_order', 'asc')
+                            ->findColumn('feature') ?? [];
+                    }
+                    $contentData['insuranceProducts'] = $products;
+                    break;
+                case 'lockers':
+                    $contentData['lockerSizes'] = (new \App\Models\LockerSizeModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    $contentData['lockerFaqs'] = (new \App\Models\LockerFaqModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    $settingsModel = new \App\Models\ServiceSettingModel();
+                    $eligibility = $settingsModel->where('key', 'locker_eligibility_list')->first();
+                    $contentData['lockerEligibility'] = $eligibility ? explode("\n", $eligibility['value']) : [];
+                    break;
+                case 'positive-pay':
+                    $settingsModel = new \App\Models\ServiceSettingModel();
+                    $fieldsRow = $settingsModel->where('key', 'positive_pay_fields')->first();
+                    $contentData['positivePayFields'] = $fieldsRow ? explode("\n", $fieldsRow['value']) : [];
+                    $methodsRow = $settingsModel->where('key', 'positive_pay_submission_methods')->first();
+                    $contentData['positivePayMethods'] = $methodsRow ? json_decode($methodsRow['value'], true) : [];
+                    $importantRow = $settingsModel->where('key', 'positive_pay_important_note')->first();
+                    $contentData['positivePayImportantNote'] = $importantRow['value'] ?? '';
+                    break;
+            }
+        }
+
+        if ($section === 'digital') {
+            switch ($pageKey) {
+                case 'overview':
+                    $contentData['digitalServices'] = (new \App\Models\DigitalServiceModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    break;
+                case 'mobile-banking':
+                    $contentData['mobileFeatures'] = (new \App\Models\MobileFeatureModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findColumn('feature') ?? [];
+                    $contentData['mobileSteps'] = (new \App\Models\MobileRegistrationStepModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    $contentData['mobileFaqs'] = (new \App\Models\MobileFaqModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    foreach ($contentData['mobileFaqs'] as &$faq) {
+                        if (is_array($faq['answer'])) {
+                            $faq['answer'] = implode(', ', array_map(function ($v) {
+                                return is_array($v) ? json_encode($v) : (string)$v;
+                            }, $faq['answer']));
+                        } else {
+                            $faq['answer'] = (string) ($faq['answer'] ?? '');
+                        }
+                    }
+                    unset($faq);
+                    break;
+                case 'atm':
+                    $contentData['atmLocations'] = (new \App\Models\AtmLocationModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    // Search handled in view using $query['q']
+                    break;
+                case 'block-card':
+                    $contentData['blockCardMethods'] = (new \App\Models\BlockCardMethodModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    $contentData['blockCardAfterSteps'] = (new \App\Models\BlockCardAfterStepModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findColumn('step') ?? [];
+                    break;
+                case 'ifsc-micr':
+                    // Use branches table (already exists) – no new model needed
+                    // We'll reuse BranchModel to get all branches with IFSC/MICR
+                    $branchModel = new \App\Models\BranchModel();
+                    $contentData['branchCodes'] = $branchModel->where('ifsc IS NOT NULL', null, false)
+                        ->orderBy('branch_name', 'asc')
+                        ->findAll();
+                    break;
+                case 'rtgs-neft':
+                    $settingsModel = new \App\Models\DigitalSettingModel();
+                    $rtgsDesc = $settingsModel->where('key', 'rtgs_description')->first();
+                    $neftDesc = $settingsModel->where('key', 'neft_description')->first();
+                    $rtgsFeatures = $settingsModel->where('key', 'rtgs_features')->first();
+                    $neftFeatures = $settingsModel->where('key', 'neft_features')->first();
+                    $steps = $settingsModel->where('key', 'rtgs_neft_steps')->first();
+                    $contentData['rtgsDescription'] = $rtgsDesc['value'] ?? '';
+                    $contentData['neftDescription'] = $neftDesc['value'] ?? '';
+                    $contentData['rtgsFeatures'] = $rtgsFeatures ? explode("\n", $rtgsFeatures['value']) : [];
+                    $contentData['neftFeatures'] = $neftFeatures ? explode("\n", $neftFeatures['value']) : [];
+                    $contentData['transferSteps'] = $steps ? json_decode($steps['value'], true) : [];
+                    break;
+                case 'upi':
+                    $contentData['upiBenefits'] = (new \App\Models\UpiBenefitModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findColumn('benefit') ?? [];
+                    $contentData['upiSafetyTips'] = (new \App\Models\UpiSafetyTipModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findColumn('tip') ?? [];
+                    $contentData['upiLinkingSteps'] = (new \App\Models\UpiLinkingStepModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    break;
+                case 'digisaathi':
+                    $contentData['digisaathiCategories'] = (new \App\Models\DigisaathiCategoryModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    $contentData['digisaathiContacts'] = (new \App\Models\DigisaathiContactModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    break;
+            }
+        }
+
+        if ($section === 'downloads') {
+            $downloadModel = new \App\Models\DownloadModel();
+            $allDownloads = $downloadModel->where('status', 1)->orderBy('sort_order', 'asc')->findAll();
+
+            $contentData['allDownloads'] = $allDownloads;
+            $contentData['downloadCategories'] = ['All', 'Forms', 'Policies', 'Reports', 'Notices', 'Secured Assets'];
+            // Note: The view will handle filtering based on query params and defaultCategory
+        }
+
+        if ($section === 'complaints') {
+            switch ($pageKey) {
+                case 'escalation':
+                    $contentData['escalationLevels'] = (new \App\Models\ComplaintEscalationLevelModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    break;
+                    // For 'complaints' page key, we only need categories (the rest of the form is static/JS)
+            }
+            // For both sub‑pages, load categories (used in the complaint form)
+            $contentData['complaintCategories'] = (new \App\Models\ComplaintCategoryModel())
+                ->where('status', 1)
+                ->orderBy('sort_order', 'asc')
+                ->findColumn('name') ?? [];
+        }
+
+        if ($section === 'rbi') {
+            switch ($pageKey) {
+                case 'overview':
+                    $contentData['rbiTopics'] = (new \App\Models\RbiTopicModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    break;
+                case 'fair-practice':
+                    $contentData['fairPracticePrinciples'] = (new \App\Models\RbiFairPracticePrincipleModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findColumn('principle') ?? [];
+                    break;
+                case 'ombudsman':
+                    $contentData['ombudsmanReasons'] = (new \App\Models\RbiOmbudsmanReasonModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findColumn('reason') ?? [];
+                    $settingsModel = new \App\Models\RbiSettingModel();
+                    $intro = $settingsModel->where('key', 'ombudsman_intro')->first();
+                    $contentData['ombudsmanIntro'] = $intro['value'] ?? '';
+                    break;
+                case 'booklet':
+                    $contentData['bookletTopics'] = (new \App\Models\RbiBookletTopicModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findColumn('topic') ?? [];
+                    $settingsModel = new \App\Models\RbiSettingModel();
+                    $intro = $settingsModel->where('key', 'booklet_intro')->first();
+                    $contentData['bookletIntro'] = $intro['value'] ?? '';
+                    break;
+                case 'integrated-ombudsman':
+                    $contentData['integratedSteps'] = (new \App\Models\RbiIntegratedStepModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                    $settingsModel = new \App\Models\RbiSettingModel();
+                    $intro = $settingsModel->where('key', 'integrated_ombudsman_intro')->first();
+                    $contentData['integratedOmbudsmanIntro'] = $intro['value'] ?? '';
+                    break;
+                case 'dos-and-donts':
+                    $contentData['dos'] = (new \App\Models\RbiDoModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findColumn('item') ?? [];
+                    $contentData['donts'] = (new \App\Models\RbiDontModel())
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findColumn('item') ?? [];
                     break;
             }
         }
@@ -202,16 +552,80 @@ class Pages extends BaseController
             return $this->notFound();
         }
 
+        $contentData = [
+            'pageKey' => $page,
+            'query'   => $this->request->getGet(),
+        ];
+
+        // Fetch data for each dynamic page
+        switch ($page) {
+            case 'faq':
+                $categoryModel = new \App\Models\FaqCategoryModel();
+                $faqModel = new \App\Models\FaqModel();
+
+                $contentData['faqCategories'] = $categoryModel
+                    ->where('status', 1)
+                    ->orderBy('sort_order', 'asc')
+                    ->findAll();
+
+                $contentData['faqs'] = $faqModel
+                    ->select('faqs.*, faq_categories.name as category_name, faq_categories.slug as category_slug')
+                    ->join('faq_categories', 'faq_categories.id = faqs.category_id')
+                    ->where('faqs.status', 1)
+                    ->orderBy('faqs.sort_order', 'asc')
+                    ->findAll();
+                break;
+
+            case 'privacy':
+                $privacyModel = new \App\Models\PrivacyPolicySectionModel();
+                $contentData['privacySections'] = $privacyModel
+                    ->where('status', 1)
+                    ->orderBy('sort_order', 'asc')
+                    ->findAll();
+                break;
+
+            case 'accessibility':
+                $accessibilityModel = new \App\Models\AccessibilityFeatureModel();
+                $contentData['accessibilityFeatures'] = $accessibilityModel
+                    ->where('status', 1)
+                    ->orderBy('sort_order', 'asc')
+                    ->findColumn('feature') ?? [];
+                break;
+
+            case 'sitemap':
+                $sectionModel = new \App\Models\SitemapSectionModel();
+                $linkModel = new \App\Models\SitemapLinkModel();
+
+                $sections = $sectionModel
+                    ->where('status', 1)
+                    ->orderBy('sort_order', 'asc')
+                    ->findAll();
+
+                foreach ($sections as &$section) {
+                    $section['links'] = $linkModel
+                        ->where('section_id', $section['id'])
+                        ->where('status', 1)
+                        ->orderBy('sort_order', 'asc')
+                        ->findAll();
+                }
+
+                $contentData['sitemapSections'] = $sections;
+                break;
+        }
+
+        // ✅ SAFE FALLBACKS (IMPORTANT)
+        $contentData['faqCategories'] = $contentData['faqCategories'] ?? [];
+        $contentData['faqs'] = $contentData['faqs'] ?? [];
+        $contentData['privacySections'] = $contentData['privacySections'] ?? [];
+        $contentData['accessibilityFeatures'] = $contentData['accessibilityFeatures'] ?? [];
+        $contentData['sitemapSections'] = $contentData['sitemapSections'] ?? [];
+
         return $this->renderPage([
             'title'       => $pageConfig['title'],
-            'breadcrumbs' => [
-                ['label' => $pageConfig['title']],
-            ],
+            'breadcrumbs' => [['label' => $pageConfig['title']]],
             'contentView' => 'pages/content/utility',
-            'contentData' => [
-                'pageKey' => $page,
-                'query'   => $this->request->getGet(),
-            ],
+            'contentData' => $contentData,
+            'scriptsView' => null,
         ]);
     }
 

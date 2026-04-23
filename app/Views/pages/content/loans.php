@@ -1,50 +1,21 @@
-<?php
-$loanCards = [
-    ['icon' => 'car', 'title' => 'Vehicle Loan', 'desc' => 'Personal and commercial vehicle financing with flexible EMIs.', 'href' => '/loans/products', 'rate' => 'From 9.50% p.a.'],
-    ['icon' => 'coins', 'title' => 'Gold Loan', 'desc' => 'Quick disbursement against gold ornaments.', 'href' => '/loans/products', 'rate' => 'From 8.50% p.a.'],
-    ['icon' => 'building', 'title' => 'Business Loan', 'desc' => 'Working capital and term support for MSMEs.', 'href' => '/loans/products', 'rate' => 'From 10.50% p.a.'],
-    ['icon' => 'tractor', 'title' => 'Agri Finance', 'desc' => 'Crop loans, KCC, and farm equipment finance.', 'href' => '/loans/products', 'rate' => 'From 7.00% p.a.'],
-    ['icon' => 'briefcase', 'title' => 'Term Loan', 'desc' => 'Secured medium and long-term finance for multiple needs.', 'href' => '/loans/products', 'rate' => 'From 10.00% p.a.'],
-];
-
-$loanProducts = [
-    ['name' => 'Vehicle Loan', 'rate' => '9.50% - 12.00%', 'tenure' => 'Up to 7 years', 'margin' => '15-25%', 'security' => 'Hypothecation of vehicle', 'eligibility' => 'Salaried / self-employed, age 21-65', 'docs' => ['ID proof', 'Address proof', 'Income proof', 'Quotation or invoice', 'Driving license'], 'features' => ['New & used vehicles', 'Quick processing', 'Flexible EMI', 'Minimal documentation']],
-    ['name' => 'Gold Loan', 'rate' => '8.50% - 11.00%', 'tenure' => 'Up to 12 months', 'margin' => '25%', 'security' => 'Pledge of gold ornaments', 'eligibility' => 'Any individual with gold collateral', 'docs' => ['ID proof', 'Address proof', 'Gold for assessment'], 'features' => ['Same-day disbursement', 'No income proof needed', 'Secure vault storage', 'Bullet repayment option']],
-    ['name' => 'Business / MSME Loan', 'rate' => '10.50% - 13.50%', 'tenure' => 'Up to 5 years', 'margin' => '20-30%', 'security' => 'Collateral / CGTMSE', 'eligibility' => 'Registered business with 2+ years of operations', 'docs' => ['Business registration', 'ITR (3 years)', 'Bank statements', 'Property documents', 'GST certificate'], 'features' => ['Working capital', 'Term loan', 'CC/OD facility', 'CGTMSE support']],
-    ['name' => 'Kisan Credit Card (KCC)', 'rate' => '7.00% - 9.00%', 'tenure' => 'Annual renewal', 'margin' => 'As per RBI norms', 'security' => 'Agricultural land', 'eligibility' => 'Farmers with cultivable land', 'docs' => ['7/12 extract', 'ID and address proof', 'Crop details', 'Land records'], 'features' => ['Subsidized interest', 'Crop and allied activities', 'Accident cover', 'Easy renewal']],
-    ['name' => 'Term Loan (Secured)', 'rate' => '10.00% - 13.00%', 'tenure' => 'Up to 7 years', 'margin' => '25-30%', 'security' => 'Immovable property', 'eligibility' => 'Salaried / self-employed', 'docs' => ['ID proof', 'Income proof', 'Property documents', 'Valuation report'], 'features' => ['Competitive rates', 'Flexible repayment', 'Part-prepayment allowed', 'Top-up facility']],
-];
-
-$loanRates = [
-    ['product' => 'Vehicle Loan (New)', 'rate' => '9.50% - 11.50%', 'processing' => '0.50%', 'prepayment' => '2%'],
-    ['product' => 'Vehicle Loan (Used)', 'rate' => '10.50% - 12.00%', 'processing' => '0.75%', 'prepayment' => '2%'],
-    ['product' => 'Gold Loan', 'rate' => '8.50% - 11.00%', 'processing' => '0.25%', 'prepayment' => 'Nil'],
-    ['product' => 'Business Loan (Secured)', 'rate' => '10.50% - 13.00%', 'processing' => '1.00%', 'prepayment' => '2%'],
-    ['product' => 'Business Loan (CGTMSE)', 'rate' => '11.00% - 13.50%', 'processing' => '1.00%', 'prepayment' => '2%'],
-    ['product' => 'Kisan Credit Card', 'rate' => '7.00% - 9.00%', 'processing' => 'Nil', 'prepayment' => 'Nil'],
-    ['product' => 'Crop Loan', 'rate' => '7.00% - 9.00%', 'processing' => 'Nil', 'prepayment' => 'Nil'],
-    ['product' => 'Term Loan (Secured)', 'rate' => '10.00% - 13.00%', 'processing' => '1.00%', 'prepayment' => '2%'],
-    ['product' => 'Working Capital (CC/OD)', 'rate' => '11.00% - 14.00%', 'processing' => '0.50%', 'prepayment' => 'N/A'],
-    ['product' => 'Staff Loan', 'rate' => '6.50% - 8.00%', 'processing' => 'Nil', 'prepayment' => 'Nil'],
-];
-?>
-
 <?php if ($pageKey === 'overview'): ?>
 <section class="section-padding bg-background">
   <div class="container-bank">
     <p class="readable max-w-3xl mb-10" style="color: hsl(var(--muted-foreground));">We offer credit facilities for personal, business, and agricultural needs with competitive rates, practical documentation requirements, and flexible repayment structures.</p>
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-      <?php foreach ($loanCards as $card): ?>
-      <a href="<?= site_url(ltrim($card['href'], '/')) ?>" class="bank-card p-6 group transition-colors">
-        <div class="w-12 h-12 rounded-full flex items-center justify-center mb-4" style="background-color: hsl(var(--primary) / 0.1);">
-          <i data-lucide="<?= esc($card['icon']) ?>" class="w-6 h-6 text-primary"></i>
-        </div>
-        <h3 class="font-semibold text-foreground mb-1 group-hover:text-primary"><?= esc($card['title']) ?></h3>
-        <p class="text-sm text-primary font-medium mb-2"><?= esc($card['rate']) ?></p>
-        <p class="text-sm" style="color: hsl(var(--muted-foreground));"><?= esc($card['desc']) ?></p>
-        <span class="inline-flex items-center gap-1 text-sm text-primary font-medium mt-3">Learn more <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
-      </a>
-      <?php endforeach; ?>
+      <?php if (!empty($loanCards)): ?>
+        <?php foreach ($loanCards as $card): ?>
+        <a href="<?= site_url(ltrim($card['href'], '/')) ?>" class="bank-card p-6 group transition-colors">
+          <div class="w-12 h-12 rounded-full flex items-center justify-center mb-4" style="background-color: hsl(var(--primary) / 0.1);">
+            <i data-lucide="<?= esc($card['icon']) ?>" class="w-6 h-6 text-primary"></i>
+          </div>
+          <h3 class="font-semibold text-foreground mb-1 group-hover:text-primary"><?= esc($card['title']) ?></h3>
+          <p class="text-sm text-primary font-medium mb-2"><?= esc($card['rate']) ?></p>
+          <p class="text-sm" style="color: hsl(var(--muted-foreground));"><?= esc($card['description']) ?></p>
+          <span class="inline-flex items-center gap-1 text-sm text-primary font-medium mt-3">Learn more <i data-lucide="arrow-right" class="w-4 h-4"></i></span>
+        </a>
+        <?php endforeach; ?>
+      <?php endif; ?>
     </div>
 
     <div class="grid md:grid-cols-2 gap-6">
@@ -65,50 +36,60 @@ $loanRates = [
     </div>
   </div>
 </section>
+
 <?php elseif ($pageKey === 'products'): ?>
 <section class="section-padding bg-background">
   <div class="container-bank">
     <div class="space-y-8">
-      <?php foreach ($loanProducts as $product): ?>
-      <div class="bank-card p-6">
-        <h3 class="font-heading text-xl text-foreground mb-4"><?= esc($product['name']) ?></h3>
-        <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
-          <div><span class="text-xs block" style="color: hsl(var(--muted-foreground));">Interest Rate</span><span class="text-sm font-semibold text-primary"><?= esc($product['rate']) ?></span></div>
-          <div><span class="text-xs block" style="color: hsl(var(--muted-foreground));">Max Tenure</span><span class="text-sm font-medium text-foreground"><?= esc($product['tenure']) ?></span></div>
-          <div><span class="text-xs block" style="color: hsl(var(--muted-foreground));">Margin</span><span class="text-sm font-medium text-foreground"><?= esc($product['margin']) ?></span></div>
-          <div><span class="text-xs block" style="color: hsl(var(--muted-foreground));">Security</span><span class="text-sm font-medium text-foreground"><?= esc($product['security']) ?></span></div>
-        </div>
-        <div class="grid md:grid-cols-3 gap-6">
-          <div>
-            <h4 class="text-sm font-semibold text-foreground mb-2">Eligibility</h4>
-            <p class="text-sm" style="color: hsl(var(--muted-foreground));"><?= esc($product['eligibility']) ?></p>
+      <?php if (!empty($loanProducts)): ?>
+        <?php foreach ($loanProducts as $product): ?>
+        <div class="bank-card p-6">
+          <h3 class="font-heading text-xl text-foreground mb-4"><?= esc($product['name']) ?></h3>
+          <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-4 mb-4">
+            <div><span class="text-xs block" style="color: hsl(var(--muted-foreground));">Interest Rate</span><span class="text-sm font-semibold text-primary"><?= esc($product['rate']) ?></span></div>
+            <div><span class="text-xs block" style="color: hsl(var(--muted-foreground));">Max Tenure</span><span class="text-sm font-medium text-foreground"><?= esc($product['tenure']) ?></span></div>
+            <div><span class="text-xs block" style="color: hsl(var(--muted-foreground));">Margin</span><span class="text-sm font-medium text-foreground"><?= esc($product['margin']) ?></span></div>
+            <div><span class="text-xs block" style="color: hsl(var(--muted-foreground));">Security</span><span class="text-sm font-medium text-foreground"><?= esc($product['security']) ?></span></div>
           </div>
-          <div>
-            <h4 class="text-sm font-semibold text-foreground mb-2">Key Features</h4>
-            <ul class="space-y-1">
-              <?php foreach ($product['features'] as $feature): ?>
-              <li class="text-sm flex items-center gap-2" style="color: hsl(var(--muted-foreground));"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><?= esc($feature) ?></li>
-              <?php endforeach; ?>
-            </ul>
+          <div class="grid md:grid-cols-3 gap-6">
+            <div>
+              <h4 class="text-sm font-semibold text-foreground mb-2">Eligibility</h4>
+              <p class="text-sm" style="color: hsl(var(--muted-foreground));"><?= esc($product['eligibility']) ?></p>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-foreground mb-2">Key Features</h4>
+              <?php if (!empty($product['features'])): ?>
+              <ul class="space-y-1">
+                <?php foreach ($product['features'] as $feature): ?>
+                <li class="text-sm flex items-center gap-2" style="color: hsl(var(--muted-foreground));"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span><?= esc($feature) ?></li>
+                <?php endforeach; ?>
+              </ul>
+              <?php endif; ?>
+            </div>
+            <div>
+              <h4 class="text-sm font-semibold text-foreground mb-2">Documents Required</h4>
+              <?php if (!empty($product['docs'])): ?>
+              <ul class="space-y-1">
+                <?php foreach ($product['docs'] as $document): ?>
+                <li class="text-sm flex items-center gap-2" style="color: hsl(var(--muted-foreground));"><span class="w-1.5 h-1.5 rounded-full" style="background-color: hsl(var(--muted-foreground));"></span><?= esc($document) ?></li>
+                <?php endforeach; ?>
+              </ul>
+              <?php endif; ?>
+            </div>
           </div>
-          <div>
-            <h4 class="text-sm font-semibold text-foreground mb-2">Documents Required</h4>
-            <ul class="space-y-1">
-              <?php foreach ($product['docs'] as $document): ?>
-              <li class="text-sm flex items-center gap-2" style="color: hsl(var(--muted-foreground));"><span class="w-1.5 h-1.5 rounded-full" style="background-color: hsl(var(--muted-foreground));"></span><?= esc($document) ?></li>
-              <?php endforeach; ?>
-            </ul>
+          <div class="flex gap-3 mt-4 pt-4 border-t" style="border-color: hsl(var(--border));">
+            <a href="<?= site_url('loans/emi-calculator') ?>" class="btn-primary text-sm">Calculate EMI</a>
+            <a href="<?= site_url('downloads/forms') ?>" class="btn-outline text-sm flex items-center gap-1"><i data-lucide="download" class="w-4 h-4"></i> Application Form</a>
           </div>
         </div>
-        <div class="flex gap-3 mt-4 pt-4 border-t" style="border-color: hsl(var(--border));">
-          <a href="<?= site_url('loans/emi-calculator') ?>" class="btn-primary text-sm">Calculate EMI</a>
-          <a href="<?= site_url('downloads/forms') ?>" class="btn-outline text-sm flex items-center gap-1"><i data-lucide="download" class="w-4 h-4"></i> Application Form</a>
-        </div>
-      </div>
-      <?php endforeach; ?>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p class="text-center" style="color: hsl(var(--muted-foreground));">No loan products found.</p>
+      <?php endif; ?>
     </div>
   </div>
 </section>
+
 <?php elseif ($pageKey === 'interest-rates'): ?>
 <section class="section-padding bg-background">
   <div class="container-bank">
@@ -135,14 +116,18 @@ $loanRates = [
             </tr>
           </thead>
           <tbody>
-            <?php foreach ($loanRates as $index => $rate): ?>
-            <tr class="border-b" style="border-color: hsl(var(--border)); background-color: <?= $index % 2 === 0 ? 'hsl(var(--background))' : 'hsl(var(--muted) / 0.3)' ?>;">
-              <td class="p-4 text-sm font-medium text-foreground"><?= esc($rate['product']) ?></td>
-              <td class="p-4 text-sm text-center font-semibold text-primary"><?= esc($rate['rate']) ?></td>
-              <td class="p-4 text-sm text-center text-foreground"><?= esc($rate['processing']) ?></td>
-              <td class="p-4 text-sm text-center text-foreground"><?= esc($rate['prepayment']) ?></td>
-            </tr>
-            <?php endforeach; ?>
+            <?php if (!empty($loanRates)): ?>
+              <?php foreach ($loanRates as $index => $rate): ?>
+              <tr class="border-b" style="border-color: hsl(var(--border)); background-color: <?= $index % 2 === 0 ? 'hsl(var(--background))' : 'hsl(var(--muted) / 0.3)' ?>;">
+                <td class="p-4 text-sm font-medium text-foreground"><?= esc($rate['product_name']) ?></td>
+                <td class="p-4 text-sm text-center font-semibold text-primary"><?= esc($rate['rate']) ?></td>
+                <td class="p-4 text-sm text-center text-foreground"><?= esc($rate['processing_fee']) ?></td>
+                <td class="p-4 text-sm text-center text-foreground"><?= esc($rate['prepayment_charge']) ?></td>
+              </tr>
+              <?php endforeach; ?>
+            <?php else: ?>
+              <tr><td colspan="4" class="p-4 text-center">No interest rates available.</td></tr>
+            <?php endif; ?>
           </tbody>
         </table>
       </div>
@@ -159,7 +144,9 @@ $loanRates = [
     </div>
   </div>
 </section>
+
 <?php elseif ($pageKey === 'emi-calculator'): ?>
+<!-- EMI calculator remains unchanged (pure JavaScript) -->
 <section class="section-padding bg-background">
   <div class="container-bank">
     <div class="grid lg:grid-cols-5 gap-8">
@@ -239,4 +226,103 @@ $loanRates = [
     </div>
   </div>
 </section>
+
+<script>
+// EMI Calculator JavaScript (unchanged)
+(function() {
+    const principalSlider = document.getElementById('emi-principal');
+    const rateSlider = document.getElementById('emi-rate');
+    const tenureSlider = document.getElementById('emi-tenure');
+    const principalDisplay = document.getElementById('emi-principal-display');
+    const rateDisplay = document.getElementById('emi-rate-display');
+    const tenureDisplay = document.getElementById('emi-tenure-display');
+    const yearsDisplay = document.getElementById('emi-years-display');
+    const monthlySpan = document.getElementById('emi-monthly-value');
+    const totalInterestSpan = document.getElementById('emi-interest-value');
+    const totalPayableSpan = document.getElementById('emi-total-value');
+    const principalBar = document.getElementById('emi-principal-bar');
+    const interestBar = document.getElementById('emi-interest-bar');
+    const principalSummary = document.getElementById('emi-principal-summary');
+    const interestSummary = document.getElementById('emi-interest-summary');
+    const scheduleBody = document.getElementById('emi-schedule-body');
+    const resetBtn = document.getElementById('emi-reset');
+
+    function formatCurrency(value) {
+        return '₹' + value.toLocaleString('en-IN');
+    }
+
+    function calculateEMI() {
+        let P = parseFloat(principalSlider.value);
+        let r = parseFloat(rateSlider.value) / 100 / 12;
+        let n = parseFloat(tenureSlider.value);
+
+        let emi = 0;
+        let totalPayment = 0;
+        let totalInterest = 0;
+
+        if (r === 0) {
+            emi = P / n;
+            totalPayment = P;
+            totalInterest = 0;
+        } else {
+            emi = P * r * Math.pow(1 + r, n) / (Math.pow(1 + r, n) - 1);
+            totalPayment = emi * n;
+            totalInterest = totalPayment - P;
+        }
+
+        monthlySpan.innerText = formatCurrency(emi);
+        totalInterestSpan.innerText = formatCurrency(totalInterest);
+        totalPayableSpan.innerText = formatCurrency(totalPayment);
+        principalSummary.innerText = formatCurrency(P);
+        interestSummary.innerText = formatCurrency(totalInterest);
+
+        let principalPercent = (P / totalPayment) * 100;
+        let interestPercent = 100 - principalPercent;
+        principalBar.style.width = principalPercent + '%';
+        interestBar.style.width = interestPercent + '%';
+
+        // Generate amortization schedule
+        let balance = P;
+        let rows = '';
+        for (let month = 1; month <= n && month <= 120; month++) {
+            let interestPayment = balance * r;
+            let principalPayment = emi - interestPayment;
+            if (principalPayment > balance) principalPayment = balance;
+            balance -= principalPayment;
+            if (balance < 0) balance = 0;
+            rows += `<tr>
+                <td class="p-3 text-left">${month}</td>
+                <td class="p-3 text-right">${formatCurrency(emi)}</td>
+                <td class="p-3 text-right">${formatCurrency(principalPayment)}</td>
+                <td class="p-3 text-right">${formatCurrency(interestPayment)}</td>
+                <td class="p-3 text-right">${formatCurrency(balance)}</td>
+            </tr>`;
+        }
+        scheduleBody.innerHTML = rows;
+    }
+
+    function updateDisplay() {
+        let p = parseInt(principalSlider.value);
+        let r = parseFloat(rateSlider.value);
+        let t = parseInt(tenureSlider.value);
+        principalDisplay.innerText = formatCurrency(p);
+        rateDisplay.innerText = r + '%';
+        tenureDisplay.innerText = t + ' months';
+        yearsDisplay.innerText = (t / 12).toFixed(1);
+        calculateEMI();
+    }
+
+    principalSlider.addEventListener('input', updateDisplay);
+    rateSlider.addEventListener('input', updateDisplay);
+    tenureSlider.addEventListener('input', updateDisplay);
+    resetBtn.addEventListener('click', function() {
+        principalSlider.value = 500000;
+        rateSlider.value = 10;
+        tenureSlider.value = 36;
+        updateDisplay();
+    });
+
+    updateDisplay();
+})();
+</script>
 <?php endif; ?>
