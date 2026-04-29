@@ -12,32 +12,43 @@
             <table class="table table-sm table-hover mb-0">
                 <thead>
                     <tr>
-                        <th>ID</th><th>Title</th><th>Description</th><th>Type</th><th>Date</th><th>Actions</th>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (!empty($notices)): ?>
                         <?php foreach ($notices as $n): ?>
-                        <tr>
-                            <td><?= esc($n['id']) ?></td>
-                            <td><?= esc($n['title']) ?></td>
-                            <td><?= esc(substr($n['description'] ?? '', 0, 60)) ?>...</td>
-                            <td>
-                                <span class="badge bg-<?= 
-                                    $n['type'] == 'Announcement' ? 'info' : 
-                                    ($n['type'] == 'Alert' ? 'danger' : 
-                                    ($n['type'] == 'Holiday' ? 'warning' : 'secondary')) 
-                                ?>"><?= esc($n['type']) ?></span>
-                            </td>
-                            <td><?= date('d M Y', strtotime($n['date'])) ?></td>
-                            <td>
-                                <a href="<?= base_url('admin/notices/edit/'.$n['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
-                                <a href="<?= base_url('admin/notices/delete/'.$n['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</a>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td><?= esc($n['id']) ?></td>
+                                <td><?= esc($n['title']) ?></td>
+                                <td><?= esc(substr($n['description'] ?? '', 0, 60)) ?>...</td>
+                                <td>
+                                    <span class="badge bg-<?=
+                                                            $n['type'] == 'Announcement' ? 'info' : ($n['type'] == 'Alert' ? 'danger' : ($n['type'] == 'Holiday' ? 'warning' : 'secondary'))
+                                                            ?>"><?= esc($n['type']) ?></span>
+                                </td>
+                                <td><?= date('d M Y', strtotime($n['date'])) ?></td>
+                                <td>
+                                    <span class="badge bg-<?= $n['status'] ? 'success' : 'secondary' ?>">
+                                        <?= $n['status'] ? 'Active' : 'Inactive' ?>
+                                    </span>
+                                </td>
+                                <td>
+                                    <a href="<?= base_url('admin/notices/edit/' . $n['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
+                                    <a href="<?= base_url('admin/notices/delete/' . $n['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</a>
+                                </td>
+                            </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
-                        <tr><td colspan="6" class="text-center">No notices found.</td></tr>
+                        <tr>
+                            <td colspan="6" class="text-center">No notices found.</td>
+                        </tr>
                     <?php endif; ?>
                 </tbody>
             </table>

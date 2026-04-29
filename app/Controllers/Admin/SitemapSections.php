@@ -48,7 +48,8 @@ class SitemapSections extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'sitemap-sections', $id);
         return redirect()->to('/admin/sitemap-sections')->with('message', 'Sitemap section added.');
     }
 
@@ -77,7 +78,7 @@ class SitemapSections extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'sitemap-sections', $id);
         return redirect()->to('/admin/sitemap-sections')->with('message', 'Sitemap section updated.');
     }
 
@@ -86,6 +87,7 @@ class SitemapSections extends BaseController
         // Delete all links under this section first
         $this->linkModel->where('section_id', $id)->delete();
         $this->model->delete($id);
+        log_activity('Deleted', 'sitemap-sections', $id);
         return redirect()->to('/admin/sitemap-sections')->with('message', 'Sitemap section deleted.');
     }
 }

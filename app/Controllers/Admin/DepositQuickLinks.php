@@ -45,7 +45,8 @@ class DepositQuickLinks extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'deposit-quick-links', $id);
         return redirect()->to('/admin/deposit-quick-links')->with('message', 'Quick link added.');
     }
 
@@ -76,13 +77,14 @@ class DepositQuickLinks extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'deposit-quick-links', $id);
         return redirect()->to('/admin/deposit-quick-links')->with('message', 'Quick link updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'deposit-quick-links', $id);
         return redirect()->to('/admin/deposit-quick-links')->with('message', 'Quick link deleted.');
     }
 }

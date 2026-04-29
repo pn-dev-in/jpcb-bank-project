@@ -14,7 +14,8 @@ class ActivityLogModel extends Model
         'action',
         'module',
         'record_id',
-        'created_at'
+        'created_at',
+        'ip_address', 
     ];
     protected $useTimestamps = true;
     protected $createdField = 'created_at';

@@ -79,7 +79,8 @@ class Downloads extends BaseController
             'sort_order'   => $this->request->getPost('sort_order') ?? 0,
             'status'       => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'downloads', $id);
         return redirect()->to('/admin/downloads')->with('message', 'Document uploaded successfully.');
     }
 
@@ -147,7 +148,7 @@ class Downloads extends BaseController
         }
 
         $this->model->update($id, $data);
-
+        log_activity('Updated', 'downloads', $id);
         return redirect()->to('/admin/downloads')->with('message', 'Document updated.');
     }
 
@@ -161,6 +162,7 @@ class Downloads extends BaseController
             }
             $this->model->delete($id);
         }
+        log_activity('Deleted', 'downloads', $id);
         return redirect()->to('/admin/downloads')->with('message', 'Document deleted.');
     }
 }

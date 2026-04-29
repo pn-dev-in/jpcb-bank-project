@@ -1,6 +1,10 @@
 <?= $this->extend('admin/layout/main') ?>
 <?= $this->section('content') ?>
 
+<?php
+// Ensure loop variable is always an array
+$items = $items ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h3 class="mb-0">Block Card Methods</h3>
     <a href="<?= base_url('admin/block-card-methods/create') ?>" class="btn btn-primary btn-sm">+ Add New Method</a>
@@ -23,8 +27,8 @@
                 <tbody>
                     <?php foreach ($items as $item): ?>
                     <tr>
-                        <td><?= esc($item['icon']) ?></td>
-                        <td><?= esc($item['title']) ?></td>
+                        <td><?= esc((string)$item['icon']) ?></td>
+                        <td><?= esc((string)$item['title']) ?></td>
                         <td><?= esc(substr($item['description'], 0, 60)) ?>...</td>
                         <td><?= $item['sort_order'] ?></td>
                         <td>

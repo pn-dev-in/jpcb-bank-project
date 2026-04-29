@@ -1,9 +1,12 @@
 <?= $this->extend('admin/layout/main') ?>
 <?= $this->section('content') ?>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <h3 class="mb-0">ATM Locations</h3>
-    <a href="<?= base_url('admin/atm-locations/create') ?>" class="btn btn-primary btn-sm">+ Add New ATM</a>
+    <div>
+        <a href="<?= base_url('admin/atm-locations/import') ?>" class="btn btn-info btn-sm">📂 Bulk Import</a>
+        <a href="<?= base_url('admin/atm-locations/create') ?>" class="btn btn-primary btn-sm">+ Add New ATM</a>
+    </div>
 </div>
 
 <div class="card">
@@ -13,6 +16,7 @@
                 <thead>
                     <tr>
                         <th>Name</th>
+                        <th>Unique ID</th>
                         <th>City</th>
                         <th>Area</th>
                         <th>PIN</th>
@@ -24,28 +28,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($items as $item): ?>
-                    <tr>
-                        <td><?= esc($item['name']) ?></td>
-                        <td><?= esc($item['city']) ?></td>
-                        <td><?= esc($item['area']) ?></td>
-                        <td><?= esc($item['pin']) ?></td>
-                        <td><?= esc($item['hours']) ?></td>
-                        <td><?= esc($item['atm_status']) ?></td>
-                        <td><?= $item['sort_order'] ?></td>
-                        <td>
-                            <span class="badge bg-<?= $item['status'] ? 'success' : 'secondary' ?>">
-                                <?= $item['status'] ? 'Active' : 'Inactive' ?>
-                            </span>
-                        </td>
-                        <td>
-                            <a href="<?= base_url('admin/atm-locations/edit/'.$item['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
-                            <form action="<?= base_url('admin/atm-locations/delete/'.$item['id']) ?>" method="post" class="d-inline">
-                                <?= csrf_field() ?>
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
+                    <?php foreach (($items ?? []) as $item): ?>
+                        <?php if (!is_array($item)) continue; ?>
+                        <tr>
+                            <td><?= esc((string)($item['name'] ?? '')) ?></td>
+                            <td><?= esc((string)($item['unique_id'] ?? '-')) ?></td>
+                            <td><?= esc((string)($item['city'] ?? '')) ?></td>
+                            <td><?= esc((string)($item['area'] ?? '')) ?></td>
+                            <td><?= esc((string)($item['pin'] ?? '')) ?></td>
+                            <td><?= esc((string)($item['hours'] ?? '')) ?></td>
+                            <td><?= esc((string)($item['atm_status'] ?? '')) ?></td>
+                            <td><?= (int)($item['sort_order'] ?? 0) ?></td>
+                            <td>
+                                <span class="badge bg-<?= $item['status'] ? 'success' : 'secondary' ?>">
+                                    <?= $item['status'] ? 'Active' : 'Inactive' ?>
+                                </span>
+                            </td>
+                            <td>
+                                <a href="<?= base_url('admin/atm-locations/edit/' . $item['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="<?= base_url('admin/atm-locations/delete/' . $item['id']) ?>" method="post" class="d-inline">
+                                    <?= csrf_field() ?>
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete this ATM location?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>

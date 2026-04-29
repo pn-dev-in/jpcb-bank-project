@@ -52,7 +52,8 @@ class SitemapLinks extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'sitemap-links', $id);
         return redirect()->to('/admin/sitemap-links')->with('message', 'Sitemap link added.');
     }
 
@@ -85,13 +86,14 @@ class SitemapLinks extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'sitemap-links', $id);
         return redirect()->to('/admin/sitemap-links')->with('message', 'Sitemap link updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'sitemap-links', $id);
         return redirect()->to('/admin/sitemap-links')->with('message', 'Sitemap link deleted.');
     }
 }

@@ -16,7 +16,7 @@ class BranchController extends BaseController
 
     public function index()
     {
-        $data['branches'] = $this->branchModel->findAll();
+        $data['branches'] = $this->branchModel->findAll() ?? [];
         return view('admin/branches/index', $data);
     }
 
@@ -44,8 +44,10 @@ class BranchController extends BaseController
             'timings'     => $this->request->getPost('timings'),
             'services'    => $servicesJson,
             'has_atm'     => $this->request->getPost('has_atm') ? 1 : 0,
+            'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->branchModel->getInsertID();
+        log_activity('Created', 'branches', $id);
         return redirect()->to('/admin/branches')->with('message', 'Branch added successfully.');
     }
 
@@ -76,14 +78,16 @@ class BranchController extends BaseController
             'timings'     => $this->request->getPost('timings'),
             'services'    => $servicesJson,
             'has_atm'     => $this->request->getPost('has_atm') ? 1 : 0,
+            'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'branches', $id);
         return redirect()->to('/admin/branches')->with('message', 'Branch updated successfully.');
     }
 
     public function delete($id)
     {
         $this->branchModel->delete($id);
+        log_activity('Deleted', 'branches', $id);
         return redirect()->to('/admin/branches')->with('message', 'Branch deleted.');
     }
 }

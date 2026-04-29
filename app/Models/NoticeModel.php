@@ -13,6 +13,7 @@ class NoticeModel extends Model
         'title',
         'description',
         'type',
-        'date'
+        'date',
+        'status'
     ];
 }

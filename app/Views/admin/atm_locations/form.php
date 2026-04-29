@@ -6,7 +6,7 @@
         <h3 class="mb-0"><?= isset($item) ? 'Edit' : 'Add' ?> ATM Location</h3>
     </div>
     <div class="card-body">
-        <form method="post" action="<?= isset($item) ? base_url('admin/atm-locations/update/'.$item['id']) : base_url('admin/atm-locations/store') ?>">
+        <form method="post" action="<?= isset($item) ? base_url('admin/atm-locations/update/' . $item['id']) : base_url('admin/atm-locations/store') ?>">
             <?= csrf_field() ?>
 
             <div class="mb-3">
@@ -15,6 +15,12 @@
                 <small class="text-muted d-block">Unique name for the ATM location.</small>
             </div>
 
+            <div class="mb-3">
+                <label class="form-label">Unique ID (admin only)</label>
+                <input type="text" name="unique_id" class="form-control" value="<?= old('unique_id', $item['unique_id'] ?? '') ?>" placeholder="e.g., JPCB-ATM-001">
+                <small class="text-muted">Optional internal reference. Must be unique.</small>
+            </div>
+            
             <div class="mb-3">
                 <label class="form-label">City *</label>
                 <input type="text" name="city" class="form-control" value="<?= old('city', $item['city'] ?? '') ?>" required placeholder="e.g., Jalgaon">
@@ -42,8 +48,8 @@
                 <div class="col-md-6">
                     <label class="form-label">ATM Status</label>
                     <select name="atm_status" class="form-control">
-                        <option value="Active" <?= (isset($item) && $item['atm_status']=='Active') ? 'selected' : '' ?>>Active</option>
-                        <option value="Maintenance" <?= (isset($item) && $item['atm_status']=='Maintenance') ? 'selected' : '' ?>>Maintenance</option>
+                        <option value="Active" <?= (isset($item) && $item['atm_status'] == 'Active') ? 'selected' : '' ?>>Active</option>
+                        <option value="Maintenance" <?= (isset($item) && $item['atm_status'] == 'Maintenance') ? 'selected' : '' ?>>Maintenance</option>
                     </select>
                     <small class="text-muted d-block">Shows as "Active" or "Maintenance" on frontend.</small>
                 </div>
@@ -57,8 +63,8 @@
             <div class="mb-3">
                 <label class="form-label">Status (Enabled/Disabled)</label>
                 <select name="status" class="form-control">
-                    <option value="1" <?= (isset($item) && $item['status']==1) ? 'selected' : '' ?>>Active</option>
-                    <option value="0" <?= (isset($item) && $item['status']==0) ? 'selected' : '' ?>>Inactive</option>
+                    <option value="1" <?= (isset($item) && $item['status'] == 1) ? 'selected' : '' ?>>Active</option>
+                    <option value="0" <?= (isset($item) && $item['status'] == 0) ? 'selected' : '' ?>>Inactive</option>
                 </select>
                 <small class="text-muted d-block">Inactive ATMs will not appear on the website.</small>
             </div>

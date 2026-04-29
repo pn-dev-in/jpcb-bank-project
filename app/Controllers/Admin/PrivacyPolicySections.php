@@ -43,7 +43,8 @@ class PrivacyPolicySections extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'privacy-policy-sections', $id);
         return redirect()->to('/admin/privacy-policy-sections')->with('message', 'Privacy section added.');
     }
 
@@ -72,13 +73,14 @@ class PrivacyPolicySections extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'privacy-policy-sections', $id);
         return redirect()->to('/admin/privacy-policy-sections')->with('message', 'Privacy section updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'privacy-policy-sections', $id);
         return redirect()->to('/admin/privacy-policy-sections')->with('message', 'Privacy section deleted.');
     }
 }

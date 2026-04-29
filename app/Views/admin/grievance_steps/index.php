@@ -17,26 +17,32 @@
                         <th>Timeline</th>
                         <th>Action</th>
                         <th>External</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach($steps as $step): ?>
-                    <tr>
-                        <td><?= $step['step'] ?></td>
-                        <td><?= esc($step['title']) ?></td>
-                        <td><?= esc($step['timeline']) ?></td>
-                        <td><?= esc($step['action']) ?></td>
-                        <td>
-                            <span class="badge bg-<?= $step['external'] ? 'info' : 'secondary' ?>">
-                                <?= $step['external'] ? 'Yes' : 'No' ?>
-                            </span>
-                        </td>
-                        <td>
-                            <a href="<?= site_url('admin/grievance-steps/edit/'.$step['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
-                            <a href="<?= site_url('admin/grievance-steps/delete/'.$step['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</a>
-                        </td>
-                    </tr>
+                    <?php foreach ($steps as $step): ?>
+                        <tr>
+                            <td><?= $step['step'] ?></td>
+                            <td><?= esc($step['title']) ?></td>
+                            <td><?= esc($step['timeline']) ?></td>
+                            <td><?= esc($step['action']) ?></td>
+                            <td>
+                                <span class="badge bg-<?= $step['external'] ? 'info' : 'secondary' ?>">
+                                    <?= $step['external'] ? 'Yes' : 'No' ?>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="badge bg-<?= $step['status'] ? 'success' : 'secondary' ?>">
+                                    <?= $step['status'] ? 'Active' : 'Inactive' ?>
+                                </span>
+                            </td>
+                            <td>
+                                <a href="<?= site_url('admin/grievance-steps/edit/' . $step['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
+                                <a href="<?= site_url('admin/grievance-steps/delete/' . $step['id']) ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</a>
+                            </td>
+                        </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>

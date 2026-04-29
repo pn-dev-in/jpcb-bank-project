@@ -45,7 +45,8 @@ class UpiLinkingSteps extends BaseController
             'sort_order'  => $this->request->getPost('sort_order') ?? 0,
             'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+         log_activity('Created','upi-linking-steps', $id);
         return redirect()->to('/admin/upi-linking-steps')->with('message', 'Step added.');
     }
 
@@ -76,13 +77,14 @@ class UpiLinkingSteps extends BaseController
             'sort_order'  => $this->request->getPost('sort_order') ?? 0,
             'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated','upi-linking-steps', $id);
         return redirect()->to('/admin/upi-linking-steps')->with('message', 'Step updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted','upi-linking-steps', $id);
         return redirect()->to('/admin/upi-linking-steps')->with('message', 'Step deleted.');
     }
 }

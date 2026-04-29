@@ -66,21 +66,24 @@
           </div>
         <?php endforeach; ?>
       </div>
-      <?php if(!empty($banners)): ?>
-
-    <?php foreach($banners as $b): ?>
-
-        <div style="margin-bottom:20px;">
-            <img src="<?= base_url('uploads/banners/'.$b['image']) ?>" 
-                 style="width:100%; height:400px; object-fit:cover;">
-
-            <h2><?= $b['title'] ?></h2>
-        </div>
-
-    <?php endforeach; ?>
-
-<?php endif; ?>
-
     </div>
   </div>
 </section>
+<?php if (!empty($alertBanners)): ?>
+  <?php foreach ($alertBanners as $banner): ?>
+    <?php if (empty($banner['is_popup'])): ?>
+
+      <div class="w-full py-6 bg-gray-50">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+
+          <img src="<?= base_url($banner['image']) ?>"
+               class="mx-auto rounded-lg shadow-md"
+               style="max-width: 900px; width: 100%; height: auto;"
+               alt="<?= esc($banner['title'] ?? 'Alert') ?>">
+
+        </div>
+      </div>
+
+    <?php endif; ?>
+  <?php endforeach; ?>
+<?php endif; ?>

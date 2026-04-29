@@ -74,11 +74,6 @@ $routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'Admin\DashboardController::index');
     $routes->get('dashboard', 'Admin\DashboardController::index');
 
-    // $routes->get('banners', 'Admin\BannerController::index');
-    // $routes->get('banners/create', 'Admin\BannerController::create');
-    // $routes->post('banners/store', 'Admin\BannerController::store');
-    // $routes->get('banners/delete/(:num)', 'Admin\BannerController::delete/$1');
-
     $routes->get('notices', 'Admin\NoticeController::index');
     $routes->get('notices/create', 'Admin\NoticeController::create');
     $routes->post('notices/store', 'Admin\NoticeController::store');
@@ -102,10 +97,17 @@ $routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->post('roles/store', 'Admin\RoleController::store');
     $routes->get('roles/assign/(:num)', 'Admin\RoleController::assign/$1');
     $routes->post('roles/save/(:num)', 'Admin\RoleController::savePermissions/$1');
+    $routes->get('roles/edit/(:num)', 'Admin\RoleController::edit/$1');
+    $routes->post('roles/update/(:num)', 'Admin\RoleController::update/$1');
+    $routes->post('roles/delete/(:num)', 'Admin\RoleController::delete/$1');
 
     $routes->get('users', 'Admin\AdminUserController::index');
     $routes->get('users/create', 'Admin\AdminUserController::create');
     $routes->post('users/store', 'Admin\AdminUserController::store');
+    $routes->get('users/edit/(:num)', 'Admin\AdminUserController::edit/$1');
+    $routes->post('users/update/(:num)', 'Admin\AdminUserController::update/$1');
+    $routes->get('users/view/(:num)', 'Admin\AdminUserController::view/$1');
+    $routes->post('users/delete/(:num)', 'Admin\AdminUserController::delete/$1');
 
     $routes->get('careers', 'Admin\CareerController::index');
     $routes->get('careers/delete/(:num)', 'Admin\CareerController::delete/$1');
@@ -447,6 +449,10 @@ $routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->post('atm-locations/update/(:num)', 'Admin\AtmLocations::update/$1');
     $routes->post('atm-locations/delete/(:num)', 'Admin\AtmLocations::delete/$1');
 
+    $routes->get('atm-locations/import', 'Admin\AtmLocations::import');
+    $routes->post('atm-locations/process-import', 'Admin\AtmLocations::processImport');
+    $routes->get('atm-locations/sample-csv', 'Admin\AtmLocations::sampleCsv');
+
     // Block Card Methods
     $routes->get('block-card-methods', 'Admin\BlockCardMethods::index');
     $routes->get('block-card-methods/create', 'Admin\BlockCardMethods::create');
@@ -639,6 +645,15 @@ $routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->post('sitemap-links/update/(:num)', 'Admin\SitemapLinks::update/$1');
     $routes->post('sitemap-links/delete/(:num)', 'Admin\SitemapLinks::delete/$1');
 
+    $routes->get('alert-banner', 'Admin\AlertBanner::index');
+    $routes->get('alert-banner/create', 'Admin\AlertBanner::create');
+    $routes->post('alert-banner/store', 'Admin\AlertBanner::store');
+    $routes->get('alert-banner/edit/(:num)', 'Admin\AlertBanner::edit/$1');
+    $routes->post('alert-banner/update/(:num)', 'Admin\AlertBanner::update/$1');
+    $routes->post('alert-banner/delete/(:num)', 'Admin\AlertBanner::delete/$1');
+
     $routes->get('profile', 'Admin\ProfileController::index');
     $routes->post('profile/update', 'Admin\ProfileController::update');
+
+    $routes->get('search', 'Admin\SearchController::index');
 });

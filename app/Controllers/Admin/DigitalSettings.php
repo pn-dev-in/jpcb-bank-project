@@ -37,6 +37,8 @@ class DigitalSettings extends BaseController
                 $this->model->insert(['key' => $key, 'value' => $value]);
             }
         }
+        $id = $this->model->getInsertID();
+        log_activity('Updated', 'digital-settings', 1);
         return redirect()->to('/admin/digital-settings/edit')->with('message', 'Digital settings updated.');
     }
 }

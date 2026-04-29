@@ -43,6 +43,16 @@ class ComplaintController extends BaseController
     {
         $model = new ComplaintModel();
 
+         $rules = [
+            'name'    => 'required|max_length[150]',
+            'email'   => 'required|valid_email|max_length[150]',
+            'phone'   => 'required|max_length[20]',
+            'message' => 'required',
+        ];
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+
         // Generate unique ticket number
         $ticket = 'JPCB-' . time();
 
@@ -54,7 +64,8 @@ class ComplaintController extends BaseController
             'message' => $this->request->getPost('message'),
             'status' => 'Pending'
         ]);
-
+        $id = $model->getInsertID();
+        log_activity('Created', 'complaints', $id);
         return redirect()->back()->with('success', 'Complaint submitted successfully. Your Ticket ID: ' . $ticket);
     }
 
@@ -67,14 +78,23 @@ class ComplaintController extends BaseController
         $model = new ComplaintModel();
         $db = \Config\Database::connect();
 
+        // Check if complaint exists
+        $complaint = $model->find($id);
+        if (!$complaint) {
+            return redirect()->to('/admin/complaints')->with('error', 'Complaint not found.');
+        }
+
         $status = $this->request->getPost('status');
+        $assignedTo = $this->request->getPost('assigned_to');
+
 
         // Update main table
         $model->update($id, [
             'status' => $status,
             'assigned_to' => $this->request->getPost('assigned_to')
         ]);
-
+        
+        log_activity('Updated', 'complaints', $id);
         // Insert log
         $db->table('complaint_logs')->insert([
             'complaint_id' => $id,

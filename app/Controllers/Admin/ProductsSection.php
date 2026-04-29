@@ -37,6 +37,7 @@ class ProductsSection extends BaseController
             'heading'    => $this->request->getPost('heading'),
             'subheading' => $this->request->getPost('subheading'),
         ]);
+        log_activity('Updated', 'products-section', 1);
         return redirect()->to('/admin/products-section/edit')->with('message', 'Products section updated.');
     }
 }

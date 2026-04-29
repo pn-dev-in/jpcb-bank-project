@@ -35,6 +35,14 @@
                     <input type="date" name="date" class="form-control" value="<?= old('date', $notice['date'] ?? date('Y-m-d')) ?>" required>
                     <small class="text-muted d-block">Effective date of the notice.</small>
                 </div>
+                <div class="mb-3">
+    <label class="form-label">Status</label>
+    <select name="status" class="form-control">
+        <option value="1" <?= (isset($notice) && $notice['status'] == 1) ? 'selected' : '' ?>>Active</option>
+        <option value="0" <?= (isset($notice) && $notice['status'] == 0) ? 'selected' : '' ?>>Inactive</option>
+    </select>
+    <small class="text-muted d-block">Inactive notices will not appear on the website.</small>
+</div>
             </div>
 
             <button type="submit" class="btn btn-primary"><?= isset($notice) ? 'Update' : 'Save' ?></button>

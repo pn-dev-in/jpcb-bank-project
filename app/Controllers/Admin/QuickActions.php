@@ -36,6 +36,7 @@ class QuickActions extends BaseController
             'icon'        => 'required|max_length[100]',
             'link'        => 'required|max_length[255]',
             'is_alert'    => 'permit_empty|integer',
+            'status'      => 'permit_empty|integer', 
         ];
 
         if (!$this->validate($rules)) {
@@ -48,8 +49,10 @@ class QuickActions extends BaseController
             'icon'        => $this->request->getPost('icon'),
             'link'        => $this->request->getPost('link'),
             'is_alert'    => $this->request->getPost('is_alert') ?? 0,
+            'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->quickActionModel->getInsertID();
+        log_activity('Created', 'quick-actions', $id);
         return redirect()->to('/admin/quick-actions')->with('message', 'Quick action added successfully.');
     }
 
@@ -72,6 +75,7 @@ class QuickActions extends BaseController
             'icon'        => 'required|max_length[100]',
             'link'        => 'required|max_length[255]',
             'is_alert'    => 'permit_empty|integer',
+            'status'      => 'permit_empty|integer',
         ];
 
         if (!$this->validate($rules)) {
@@ -84,8 +88,10 @@ class QuickActions extends BaseController
             'icon'        => $this->request->getPost('icon'),
             'link'        => $this->request->getPost('link'),
             'is_alert'    => $this->request->getPost('is_alert') ?? 0,
-        ]);
+            'status'      => $this->request->getPost('status') ?? 1,
 
+        ]);
+        log_activity('Updated', 'quick-actions', $id);
         return redirect()->to('/admin/quick-actions')->with('message', 'Quick action updated successfully.');
     }
 
@@ -93,6 +99,7 @@ class QuickActions extends BaseController
     public function delete($id)
     {
         $this->quickActionModel->delete($id);
+        log_activity('Deleted', 'quick-actions', $id);
         return redirect()->to('/admin/quick-actions')->with('message', 'Quick action deleted.');
     }
 }

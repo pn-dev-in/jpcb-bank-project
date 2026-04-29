@@ -34,6 +34,7 @@ class TrustSection extends BaseController
             'heading' => $this->request->getPost('heading'),
             'subheading' => $this->request->getPost('subheading')
         ]);
+        log_activity('Updated','trust-section', 1);
         return redirect()->to('/admin/trust-section/edit')->with('message', 'Updated.');
     }
 }

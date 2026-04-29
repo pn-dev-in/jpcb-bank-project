@@ -16,7 +16,7 @@ class BlockCardAfterSteps extends BaseController
 
     public function index()
     {
-        $data['items'] = $this->model->orderBy('sort_order', 'asc')->findAll();
+        $data['items'] = $this->model->orderBy('sort_order', 'asc')->findAll() ?? [];
         return view('admin/block_card_after_steps/index', $data);
     }
 
@@ -41,7 +41,8 @@ class BlockCardAfterSteps extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+            $id = $this->model->getInsertID();
+            log_activity('Created', 'block_card_after_steps', $id);
         return redirect()->to('/admin/block-card-after-steps')->with('message', 'Step added.');
     }
 
@@ -68,13 +69,14 @@ class BlockCardAfterSteps extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'block_card_after_steps', $id);
         return redirect()->to('/admin/block-card-after-steps')->with('message', 'Step updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'block_card_after_steps', $id);
         return redirect()->to('/admin/block-card-after-steps')->with('message', 'Step deleted.');
     }
 }

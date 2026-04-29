@@ -27,18 +27,27 @@ class Auth extends BaseController
             $session->set([
                 'admin_id' => $admin['id'],
                 'admin_email' => $admin['email'],
+                'admin_name'  => $admin['name'],
                 'role_id' => $admin['role_id'],
                 'isLoggedIn' => true
             ]);
-
+            // After setting session
+            $model->update($admin['id'], ['last_login' => date('Y-m-d H:i:s')]);
+            log_activity('Logged In', 'auth', $admin['id']);
             return redirect()->to('/admin/dashboard');
         }
-
+        
+        log_activity('Failed Login', 'auth', null, ['email' => $email]);
         return redirect()->back()->with('error', 'Invalid credentials');
     }
 
     public function logout()
-    {
+    {   
+        $admin_id = session()->get('admin_id');
+        if ($admin_id) {
+            // Log logout before destroying session
+            log_activity('Logged Out', 'auth', $admin_id);
+        }
         session()->destroy();
         return redirect()->to('/admin/login');
     }

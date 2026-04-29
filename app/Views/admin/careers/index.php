@@ -1,6 +1,11 @@
 <?= $this->extend('admin/layout/main') ?>
 <?= $this->section('content') ?>
 
+<?php
+// Ensure $applications is always an array
+$applications = $applications ?? [];
+?>
+
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h3 class="mb-0">Career Applications</h3>
 </div>
@@ -23,9 +28,9 @@
                     <?php if (!empty($applications)): ?>
                         <?php foreach ($applications as $app): ?>
                         <tr>
-                            <td><?= esc($app['name']) ?></td>
-                            <td><?= esc($app['email']) ?></td>
-                            <td><?= esc($app['phone']) ?></td>
+                            <td><?= esc((string)($app['name'] ?? '')) ?></td>
+                            <td><?= esc((string)($app['email'] ?? '')) ?></td>
+                            <td><?= esc((string)($app['phone'] ?? '')) ?></td>
                             <td>
                                 <a href="<?= base_url($app['resume']) ?>" target="_blank" class="btn btn-sm btn-primary">Download</a>
                             </td>

@@ -37,6 +37,7 @@ class ServiceSettings extends BaseController
                 $this->model->insert(['key' => $key, 'value' => $value]);
             }
         }
+        log_activity('Updated', 'service-settings', 1);
         return redirect()->to('/admin/service-settings/edit')->with('message', 'Service settings updated.');
     }
 }

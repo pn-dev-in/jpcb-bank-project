@@ -51,8 +51,10 @@ class GrievanceSteps extends BaseController
             'action'      => $this->request->getPost('action'),
             'href'        => $this->request->getPost('href'),
             'external'    => $this->request->getPost('external') ?? 0,
+            'status' => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->stepModel->getInsertID();
+        log_activity('Created', 'grievance_steps', $id);
         return redirect()->to('/admin/grievance-steps')->with('message', 'Step added.');
     }
 
@@ -91,14 +93,16 @@ class GrievanceSteps extends BaseController
             'action'      => $this->request->getPost('action'),
             'href'        => $this->request->getPost('href'),
             'external'    => $this->request->getPost('external') ?? 0,
+            'status' => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'grievance_steps', $id);
         return redirect()->to('/admin/grievance-steps')->with('message', 'Step updated.');
     }
 
     public function delete($id)
     {
         $this->stepModel->delete($id);
+        log_activity('Deleted', 'grievance_steps', $id);
         return redirect()->to('/admin/grievance-steps')->with('message', 'Step deleted.');
     }
 }

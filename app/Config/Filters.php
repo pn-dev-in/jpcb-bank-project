@@ -37,6 +37,7 @@ class Filters extends BaseFilters
 
         'Auth' => \App\Filters\AuthFilter::class,
         'role' => \App\Filters\RoleFilter::class,
+        'permission' => \App\Filters\PermissionFilter::class,
     ];
 
     /**
@@ -108,8 +109,8 @@ class Filters extends BaseFilters
      *
      * @var array<string, array<string, list<string>>>
      */
-    public array $filters =
-    [
+    public array $filters = [
+        // Authentication filter (checks if admin is logged in)
         'Auth' => [
             'before' => [
                 'admin/*',
@@ -119,7 +120,19 @@ class Filters extends BaseFilters
                 'admin/login',
                 'admin/loginProcess',
                 'admin/logout',
-            ]
+            ],
+        ],
+        // Permission filter (checks role-based permissions)
+        'permission' => [
+            'before' => [
+                'admin/*',
+                'admin',
+            ],
+            'except' => [
+                'admin/login',
+                'admin/loginProcess',
+                'admin/logout',
+            ],
         ],
     ];
 }

@@ -20,7 +20,8 @@ class BranchModel extends Model
         'phone',
         'timings',
         'services',
-        'has_atm'
+        'has_atm',
+        'status'
     ];
 
      protected $useTimestamps = true;

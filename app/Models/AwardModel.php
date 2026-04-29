@@ -2,6 +2,6 @@
 class AwardModel extends Model {
     protected $table = 'awards';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['year', 'title', 'organization', 'description', 'sort_order', 'status'];
+    protected $allowedFields = ['year', 'title', 'organization', 'description', 'image', 'sort_order', 'status'];
     protected $useTimestamps = true;
 }

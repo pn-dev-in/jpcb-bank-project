@@ -47,7 +47,8 @@ class ServiceCards extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'servic-cards', $id);
         return redirect()->to('/admin/service-cards')->with('message', 'Service card added.');
     }
 
@@ -80,13 +81,14 @@ class ServiceCards extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'service-cards', $id);
         return redirect()->to('/admin/service-cards')->with('message', 'Service card updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'service-cards', $id);
         return redirect()->to('/admin/service-cards')->with('message', 'Service card deleted.');
     }
 }

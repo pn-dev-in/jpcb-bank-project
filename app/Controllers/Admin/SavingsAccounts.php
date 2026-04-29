@@ -64,7 +64,8 @@ class SavingsAccounts extends BaseController
                 'sort_order'         => $order++,
             ]);
         }
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'savings-accounts', $id);
         return redirect()->to('/admin/savings-accounts')->with('message', 'Savings account added.');
     }
 
@@ -112,7 +113,7 @@ class SavingsAccounts extends BaseController
                 'sort_order'         => $order++,
             ]);
         }
-
+        log_activity('Updated', 'savings-accounts', $id);
         return redirect()->to('/admin/savings-accounts')->with('message', 'Savings account updated.');
     }
 
@@ -120,6 +121,7 @@ class SavingsAccounts extends BaseController
     {
         $this->featureModel->where('savings_account_id', $id)->delete();
         $this->model->delete($id);
+        log_activity('Deleted', 'savings-accounts', $id);
         return redirect()->to('/admin/savings-accounts')->with('message', 'Savings account deleted.');
     }
 }

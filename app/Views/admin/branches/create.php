@@ -57,7 +57,18 @@
             <div class="form-check mb-3">
                 <input type="checkbox" name="has_atm" value="1" class="form-check-input" id="has_atm">
                 <label class="form-check-label" for="has_atm">Has ATM</label>
+
             </div>
+
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-control">
+                    <option value="1" selected>Active</option>
+                    <option value="0">Inactive</option>
+                </select>
+                <small class="text-muted d-block">Inactive branches will not appear on the website.</small>
+            </div>
+            
             <button type="submit" class="btn btn-primary">Save</button>
             <a href="<?= base_url('admin/branches') ?>" class="btn btn-secondary">Cancel</a>
         </form>

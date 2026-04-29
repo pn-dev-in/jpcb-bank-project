@@ -1,6 +1,10 @@
 <?= $this->extend('admin/layout/main') ?>
 <?= $this->section('content') ?>
 
+<?php
+// Ensure loop variable is always an array
+$items = $items ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h3 class="mb-0">About Milestones (Journey)</h3>
     <a href="<?= base_url('admin/about-milestones/create') ?>" class="btn btn-primary btn-sm">+ Add New Milestone</a>
@@ -22,24 +26,25 @@
                 </thead>
                 <tbody>
                     <?php foreach ($items as $item): ?>
-                    <tr>
-                        <td><?= esc($item['year']) ?></td>
-                        <td><?= esc($item['title']) ?></td>
-                        <td><?= esc(substr($item['description'], 0, 60)) ?>...</td>
-                        <td><?= $item['sort_order'] ?></td>
-                        <td>
-                            <span class="badge bg-<?= $item['status'] ? 'success' : 'secondary' ?>">
-                                <?= $item['status'] ? 'Active' : 'Inactive' ?>
-                            </span>
-                        </td>
-                        <td>
-                            <a href="<?= base_url('admin/about-milestones/edit/'.$item['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
-                            <form action="<?= base_url('admin/about-milestones/delete/'.$item['id']) ?>" method="post" style="display:inline;">
-                                <?= csrf_field() ?>
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
+                        <?php if (!is_array($item)) continue; ?>
+                        <tr>
+                            <td><?= esc((string)($item['year'] ?? '')) ?></td>
+                            <td><?= esc((string)($item['title'] ?? '')) ?></td>
+                            <td><?= esc(substr($item['description'], 0, 60)) ?>...</td>
+                            <td><?= $item['sort_order'] ?></td>
+                            <td>
+                                <span class="badge bg-<?= $item['status'] ? 'success' : 'secondary' ?>">
+                                    <?= $item['status'] ? 'Active' : 'Inactive' ?>
+                                </span>
+                            </td>
+                            <td>
+                                <a href="<?= base_url('admin/about-milestones/edit/' . $item['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="<?= base_url('admin/about-milestones/delete/' . $item['id']) ?>" method="post" style="display:inline;">
+                                    <?= csrf_field() ?>
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>

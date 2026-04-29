@@ -2,6 +2,6 @@
 class BoardMemberModel extends Model {
     protected $table = 'board_members';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['name', 'role', 'category', 'bio', 'sort_order', 'status'];
+    protected $allowedFields = ['name', 'role', 'category', 'bio', 'image', 'sort_order', 'status'];
     protected $useTimestamps = true;
 }

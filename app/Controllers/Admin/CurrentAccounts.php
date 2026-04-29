@@ -62,7 +62,8 @@ class CurrentAccounts extends BaseController
                 'sort_order'         => $order++,
             ]);
         }
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'current_accounts', $id);
         return redirect()->to('/admin/current-accounts')->with('message', 'Current account added.');
     }
 
@@ -108,7 +109,7 @@ class CurrentAccounts extends BaseController
                 'sort_order'         => $order++,
             ]);
         }
-
+        log_activity('Updated', 'current_accounts', $id);
         return redirect()->to('/admin/current-accounts')->with('message', 'Current account updated.');
     }
 
@@ -116,6 +117,7 @@ class CurrentAccounts extends BaseController
     {
         $this->featureModel->where('current_account_id', $id)->delete();
         $this->model->delete($id);
+        log_activity('Deleted', 'current_accounts', $id);
         return redirect()->to('/admin/current-accounts')->with('message', 'Current account deleted.');
     }
 }

@@ -531,7 +531,7 @@ class Pages extends BaseController
         // 🔥 NEW: Fetch branches from DB for the branches page
         if ($pageKey === 'branches') {
             $branchModel = new \App\Models\BranchModel();
-            $contentData['branches'] = $branchModel->orderBy('branch_name', 'asc')->findAll();
+            $contentData['branches'] = $branchModel->where('status', 1)->orderBy('branch_name', 'asc')->findAll();
             $data['branches'] = $branchModel->findAll();
         }
 

@@ -1,6 +1,10 @@
 <?= $this->extend('admin/layout/main') ?>
 <?= $this->section('content') ?>
 
+<?php
+// Ensure loop variable is always an array
+$items = $items ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h3 class="mb-0">Complaint Escalation Levels</h3>
     <a href="<?= base_url('admin/complaint-escalation-levels/create') ?>" class="btn btn-primary btn-sm">+ Add New Level</a>
@@ -24,10 +28,10 @@
                 <tbody>
                     <?php foreach ($items as $item): ?>
                     <tr>
-                        <td><?= esc($item['level']) ?></td>
-                        <td><?= esc($item['title']) ?></td>
-                        <td><?= esc($item['name']) ?></td>
-                        <td><?= esc($item['timeline']) ?></td>
+                        <td><?= esc((string)$item['level']) ?></td>
+                        <td><?= esc((string)$item['title']) ?></td>
+                        <td><?= esc((string)$item['name']) ?></td>
+                        <td><?= esc((string)$item['timeline']) ?></td>
                         <td><?= $item['sort_order'] ?></td>
                         <td>
                             <span class="badge bg-<?= $item['status'] ? 'success' : 'secondary' ?>">

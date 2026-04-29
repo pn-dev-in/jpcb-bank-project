@@ -47,7 +47,8 @@ class LockerSizes extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'locker-sizes', $id);
         return redirect()->to('/admin/locker-sizes')->with('message', 'Locker size added.');
     }
 
@@ -80,13 +81,14 @@ class LockerSizes extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'locker-sizes', $id);
         return redirect()->to('/admin/locker-sizes')->with('message', 'Locker size updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'locker-sizes', $id);
         return redirect()->to('/admin/locker-sizes')->with('message', 'Locker size deleted.');
     }
 }

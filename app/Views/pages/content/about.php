@@ -111,7 +111,11 @@ if ($galleryCategorySlug !== 'all') {
               <?php foreach ($members as $member): ?>
                 <div class="bank-card p-6 text-center">
                   <div class="w-20 h-20 rounded-full bg-muted flex items-center justify-center mx-auto mb-4">
-                    <i data-lucide="user" class="w-10 h-10" style="color: hsl(var(--muted-foreground));"></i>
+                    <?php if (!empty($member['image'])): ?>
+                      <img src="<?= base_url($member['image']) ?>" alt="<?= esc($member['name']) ?>" class="w-full h-full rounded-full object-cover">
+                    <?php else: ?>
+                      <i data-lucide="user" class="w-10 h-10" style="color: hsl(var(--muted-foreground));"></i>
+                    <?php endif; ?>
                   </div>
                   <h3 class="font-semibold text-foreground"><?= esc($member['name']) ?></h3>
                   <p class="text-sm text-primary font-medium mt-1"><?= esc($member['role']) ?></p>
@@ -135,7 +139,11 @@ if ($galleryCategorySlug !== 'all') {
             <div class="bank-card p-6">
               <div class="flex items-start gap-4">
                 <div class="w-16 h-16 rounded-full bg-muted flex items-center justify-center flex-shrink-0">
-                  <i data-lucide="user" class="w-8 h-8" style="color: hsl(var(--muted-foreground));"></i>
+                  <?php if (!empty($member['image'])): ?>
+                    <img src="<?= base_url($member['image']) ?>" alt="<?= esc($member['name']) ?>" class="w-full h-full rounded-full object-cover">
+                  <?php else: ?>
+                    <i data-lucide="user" class="w-8 h-8" style="color: hsl(var(--muted-foreground));"></i>
+                  <?php endif; ?>
                 </div>
                 <div>
                   <h3 class="font-semibold text-foreground"><?= esc($member['name']) ?></h3>
@@ -159,8 +167,12 @@ if ($galleryCategorySlug !== 'all') {
         <?php if (!empty($awards)): ?>
           <?php foreach ($awards as $award): ?>
             <div class="bank-card p-6 flex flex-col sm:flex-row items-start gap-4">
-              <div class="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0" style="background-color: hsl(var(--accent) / 0.12);">
-                <i data-lucide="trophy" class="w-8 h-8" style="color: hsl(var(--accent));"></i>
+              <div class="w-16 h-16 rounded-full flex items-center justify-center flex-shrink-0" style="background-color: <?= !empty($award['image']) ? 'transparent' : 'hsl(var(--accent) / 0.12)' ?>;">
+                <?php if (!empty($award['image'])): ?>
+                  <img src="<?= base_url($award['image']) ?>" alt="<?= esc($award['title']) ?>" class="w-full h-full rounded-full object-cover">
+                <?php else: ?>
+                  <i data-lucide="trophy" class="w-8 h-8" style="color: hsl(var(--accent));"></i>
+                <?php endif; ?>
               </div>
               <div class="flex-1">
                 <div class="flex flex-wrap items-center gap-3 mb-1">

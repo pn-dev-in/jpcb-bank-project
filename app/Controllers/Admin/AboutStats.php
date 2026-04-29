@@ -16,7 +16,7 @@ class AboutStats extends BaseController
 
     public function index()
     {
-        $data['items'] = $this->model->orderBy('sort_order', 'asc')->findAll();
+        $data['items'] = $this->model->orderBy('sort_order', 'asc')->findAll() ?? [];
         return view('admin/about_stats/index', $data);
     }
 
@@ -43,7 +43,8 @@ class AboutStats extends BaseController
             'sort_order'  => $this->request->getPost('sort_order') ?? 0,
             'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'about_stats', $id);
         return redirect()->to('/admin/about-stats')->with('message', 'Item added successfully.');
     }
 
@@ -74,13 +75,14 @@ class AboutStats extends BaseController
             'sort_order'  => $this->request->getPost('sort_order') ?? 0,
             'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'about_stats', $id);
         return redirect()->to('/admin/about-stats')->with('message', 'Item updated successfully.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'about_stats', $id);
         return redirect()->to('/admin/about-stats')->with('message', 'Item deleted.');
     }
 }

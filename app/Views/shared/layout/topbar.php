@@ -77,6 +77,36 @@ $adminUnreadCount = $notificationCount ?? count($adminNotifications);
         </div>
 
         <div class="d-flex align-items-center gap-2">
+
+                   <!-- 🔍 SEARCH FORM (DESKTOP) -->
+<form action="<?= base_url('admin/search') ?>" method="get" class="d-none d-lg-flex ms-3 me-3">
+    <div class="input-group input-group-sm">
+        <input type="text" name="q" class="form-control"
+               placeholder="Search products, notices, branches..."
+               value="<?= esc(service('request')->getGet('q') ?? '') ?>">
+        <button class="btn btn-outline-secondary" type="submit">
+            <i class="ri-search-line"></i>
+        </button>
+    </div>
+</form>
+
+<!-- 🔍 MOBILE SEARCH BUTTON -->
+<button class="btn btn-outline-secondary d-lg-none me-2" type="button"
+        data-bs-toggle="collapse" data-bs-target="#mobileSearchCollapse">
+    <i class="ri-search-line"></i>
+</button>
+
+<!-- 🔍 MOBILE SEARCH BOX -->
+<div class="collapse d-lg-none" id="mobileSearchCollapse">
+    <form action="<?= base_url('admin/search') ?>" method="get" class="mt-2">
+        <div class="input-group input-group-sm">
+            <input type="text" name="q" class="form-control" placeholder="Search...">
+            <button class="btn btn-outline-secondary" type="submit">
+                <i class="ri-search-line"></i>
+            </button>
+        </div>
+    </form>
+</div>
             <!-- Dark/Light mode toggle (optional) -->
             <div class="topbar-item d-none d-sm-flex">
                 <button class="topbar-link" id="light-dark-mode" type="button">

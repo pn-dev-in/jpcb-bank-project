@@ -41,7 +41,8 @@ class RbiDos extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'rbi-dos', $id);
         return redirect()->to('/admin/rbi-dos')->with('message', 'Do item added.');
     }
 
@@ -68,13 +69,14 @@ class RbiDos extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'rbi-dos', $id);
         return redirect()->to('/admin/rbi-dos')->with('message', 'Do item updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'rbi-dos', $id);
         return redirect()->to('/admin/rbi-dos')->with('message', 'Do item deleted.');
     }
 }

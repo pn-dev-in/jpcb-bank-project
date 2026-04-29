@@ -53,6 +53,7 @@ class Home extends BaseController
          * notices
          */
         $notices = $db->table('notices')
+            ->where('status', 1) 
             ->orderBy('date', 'DESC')
             ->limit(5)
             ->get()
@@ -76,7 +77,7 @@ class Home extends BaseController
         // Branches (Dynamic)
         $branchModel = new BranchModel();
         // Show only the latest 5 branches (or you can change to 3 or 6)
-        $branches = $branchModel->orderBy('created_at', 'DESC')->limit(5)->findAll();
+        $branches = $branchModel->where('status', 1)->orderBy('created_at', 'DESC')->limit(5)->findAll();
 
         // Products section settings
         $sectionSettingsModel = new \App\Models\ProductsSectionSettingsModel();
@@ -95,6 +96,7 @@ class Home extends BaseController
         //quick actions
 
         $quickActions = $db->table('quick_actions')
+            ->where('status', 1)  
             ->get()
             ->getResultArray();
 
@@ -203,6 +205,9 @@ class Home extends BaseController
 
         $ticker = array_column($tickerRaw, 'message');
 
+        // Alert banners (active, inline or popup)
+$alertBannerModel = new \App\Models\HomeAlertBannerModel();
+$alertBanners = $alertBannerModel->where('status', 1)->findAll();
 
 
         $data = [
@@ -226,6 +231,7 @@ class Home extends BaseController
             'ticker' => $ticker,
             'hero'        => $hero,
             'trustCards'  => $trustCards,
+            'alertBanners' => $alertBanners,
         ];
 
         return view('home/index', $data);

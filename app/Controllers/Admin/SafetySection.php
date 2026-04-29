@@ -69,7 +69,7 @@ class SafetySection extends BaseController
             'button3_text'   => $this->request->getPost('button3_text'),
             'button3_link'   => $this->request->getPost('button3_link'),
         ]);
-
+        log_activity('Updated', 'safety-section', 1);
         return redirect()->to('/admin/safety-section/edit')->with('message', 'Safety section updated successfully.');
     }
 

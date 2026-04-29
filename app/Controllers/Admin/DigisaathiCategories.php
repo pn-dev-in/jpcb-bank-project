@@ -43,7 +43,8 @@ class DigisaathiCategories extends BaseController
             'sort_order'  => $this->request->getPost('sort_order') ?? 0,
             'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'digisaathi-categories', $id);
         return redirect()->to('/admin/digisaathi-categories')->with('message', 'Category added.');
     }
 
@@ -72,13 +73,14 @@ class DigisaathiCategories extends BaseController
             'sort_order'  => $this->request->getPost('sort_order') ?? 0,
             'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'digisaathi-categories', $id);
         return redirect()->to('/admin/digisaathi-categories')->with('message', 'Category updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'digisaathi-categories', $id);
         return redirect()->to('/admin/digisaathi-categories')->with('message', 'Category deleted.');
     }
 }

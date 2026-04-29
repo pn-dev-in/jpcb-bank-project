@@ -37,6 +37,7 @@ class QuickActionsSection extends BaseController
             'heading'    => $this->request->getPost('heading'),
             'subheading' => $this->request->getPost('subheading'),
         ]);
+        log_activity('Updated', 'quick-actions-section', 1);
         return redirect()->to('/admin/quick-actions-section/edit')->with('message', 'Quick Actions section updated.');
     }
 }

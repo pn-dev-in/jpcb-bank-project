@@ -88,7 +88,7 @@ class LoanProducts extends BaseController
                 'sort_order'      => $order++,
             ]);
         }
-
+        log_activity('Created', 'loan-products', $id);
         return redirect()->to('/admin/loan-products')->with('message', 'Loan product added.');
     }
 
@@ -164,7 +164,7 @@ class LoanProducts extends BaseController
                 'sort_order'      => $order++,
             ]);
         }
-
+        log_activity('Updated', 'loan-products', $id);
         return redirect()->to('/admin/loan-products')->with('message', 'Loan product updated.');
     }
 
@@ -173,6 +173,7 @@ class LoanProducts extends BaseController
         $this->featureModel->where('loan_product_id', $id)->delete();
         $this->docModel->where('loan_product_id', $id)->delete();
         $this->model->delete($id);
+        log_activity('Deleted', 'loan-products', $id);
         return redirect()->to('/admin/loan-products')->with('message', 'Loan product deleted.');
     }
 }

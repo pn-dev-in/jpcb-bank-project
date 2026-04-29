@@ -47,7 +47,8 @@ class LoanInterestRates extends BaseController
             'sort_order'        => $this->request->getPost('sort_order') ?? 0,
             'status'            => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'loan-interest-rates', $id);
         return redirect()->to('/admin/loan-interest-rates')->with('message', 'Interest rate entry added.');
     }
 
@@ -80,13 +81,14 @@ class LoanInterestRates extends BaseController
             'sort_order'        => $this->request->getPost('sort_order') ?? 0,
             'status'            => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'loan-interest-rates', $id);
         return redirect()->to('/admin/loan-interest-rates')->with('message', 'Interest rate entry updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'loan-interest-rates', $id);
         return redirect()->to('/admin/loan-interest-rates')->with('message', 'Interest rate entry deleted.');
     }
 }

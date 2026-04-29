@@ -37,6 +37,7 @@ class RbiSettings extends BaseController
                 $this->model->insert(['key' => $key, 'value' => $value]);
             }
         }
+        log_activity('Created', 'rbi-settings', 1);
         return redirect()->to('/admin/rbi-settings/edit')->with('message', 'RBI settings updated.');
     }
 }

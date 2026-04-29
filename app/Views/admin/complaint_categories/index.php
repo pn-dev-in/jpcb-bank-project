@@ -1,6 +1,10 @@
 <?= $this->extend('admin/layout/main') ?>
 <?= $this->section('content') ?>
 
+<?php
+// Ensure loop variable is always an array
+$items = $items ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h3 class="mb-0">Complaint Categories</h3>
     <a href="<?= base_url('admin/complaint-categories/create') ?>" class="btn btn-primary btn-sm">+ Add New Category</a>
@@ -21,7 +25,7 @@
                 <tbody>
                     <?php foreach ($items as $item): ?>
                     <tr>
-                        <td><?= esc($item['name']) ?></td>
+                        <td><?= esc((string)$item['name']) ?></td>
                         <td><?= $item['sort_order'] ?></td>
                         <td>
                             <span class="badge bg-<?= $item['status'] ? 'success' : 'secondary' ?>">

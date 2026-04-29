@@ -1,6 +1,9 @@
 <?= $this->extend('admin/layout/main') ?>
 <?= $this->section('content') ?>
-
+<?php
+// Ensure loop variable is always an array
+$items = $items ?? [];
+?>
 <div class="d-flex justify-content-between align-items-center mb-3">
     <h3 class="mb-0">About Stats</h3>
     <a href="<?= base_url('admin/about-stats/create') ?>" class="btn btn-primary btn-sm">+ Add New Stat</a>
@@ -28,9 +31,10 @@
                 </thead>
                 <tbody>
                     <?php foreach ($items as $item): ?>
+                        <?php if (!is_array($item)) continue; ?>
                     <tr>
-                        <td><?= esc($item['number']) ?></td>
-                        <td><?= esc($item['label']) ?></td>
+                        <td><?= esc((string)$item['number']) ?></td>
+                        <td><?= esc((string)$item['label']) ?></td>
                         <td><?= $item['sort_order'] ?></td>
                         <td>
                             <span class="badge bg-<?= $item['status'] ? 'success' : 'secondary' ?>">

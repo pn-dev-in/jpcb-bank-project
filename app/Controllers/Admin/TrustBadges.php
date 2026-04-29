@@ -46,7 +46,8 @@ class TrustBadges extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status' => $this->request->getPost('status') ?? 1
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created','trust-badges', $id);
         return redirect()->to('/admin/trust-badges')->with('message', 'Badge added.');
     }
 
@@ -80,13 +81,14 @@ class TrustBadges extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status' => $this->request->getPost('status') ?? 1
         ]);
-
+        log_activity('Updated','trust-badges', $id);
         return redirect()->to('/admin/trust-badges')->with('message', 'Badge updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted','trust-badges', $id);
         return redirect()->to('/admin/trust-badges')->with('message', 'Badge deleted.');
     }
 }

@@ -48,7 +48,8 @@ class GalleryCategories extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'gallery-categoreis', $id);
         return redirect()->to('/admin/gallery-categories')->with('message', 'Category added.');
     }
 
@@ -82,7 +83,7 @@ class GalleryCategories extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'gallery-categoreis', $id);
         return redirect()->to('/admin/gallery-categories')->with('message', 'Category updated.');
     }
 
@@ -95,6 +96,7 @@ class GalleryCategories extends BaseController
             return redirect()->back()->with('error', 'Cannot delete category with existing gallery items. Delete items first.');
         }
         $this->model->delete($id);
+        log_activity('Deleted', 'gallery-categoreis', $id);
         return redirect()->to('/admin/gallery-categories')->with('message', 'Category deleted.');
     }
 }

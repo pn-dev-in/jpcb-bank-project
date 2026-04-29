@@ -12,7 +12,7 @@ class QuickActionModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['title', 'description', 'icon', 'link', 'is_alert'];
+    protected $allowedFields    = ['title', 'description', 'icon', 'link', 'is_alert', 'status'];
 
     protected $useTimestamps = false; // Your table doesn't have created_at/updated_at
 }

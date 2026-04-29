@@ -37,6 +37,8 @@ class DepositSettings extends BaseController
                 $this->model->insert(['key' => $key, 'value' => $value]);
             }
         }
+        $id = $this->model->getInsertID();
+        log_activity('Updated', 'deposit-settings', 1);
         return redirect()->to('/admin/deposit-settings/edit')->with('message', 'Deposit settings updated.');
     }
 }

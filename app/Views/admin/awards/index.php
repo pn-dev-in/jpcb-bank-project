@@ -12,6 +12,7 @@
             <table class="table table-sm table-hover mb-0">
                 <thead>
                     <tr>
+                        <th>Image</th>
                         <th>Year</th>
                         <th>Title</th>
                         <th>Organization</th>
@@ -21,25 +22,33 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($items as $item): ?>
-                    <tr>
-                        <td><?= esc($item['year']) ?></td>
-                        <td><?= esc($item['title']) ?></td>
-                        <td><?= esc($item['organization']) ?></td>
-                        <td><?= $item['sort_order'] ?></td>
-                        <td>
-                            <span class="badge bg-<?= $item['status'] ? 'success' : 'secondary' ?>">
-                                <?= $item['status'] ? 'Active' : 'Inactive' ?>
-                            </span>
-                        </td>
-                        <td>
-                            <a href="<?= base_url('admin/awards/edit/'.$item['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
-                            <form action="<?= base_url('admin/awards/delete/'.$item['id']) ?>" method="post" class="d-inline">
-                                <?= csrf_field() ?>
-                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
+                    <?php foreach (($items ?? []) as $item): ?>
+                        <?php if (!is_array($item)) continue; ?>
+                        <tr>
+                            <td>
+                                <?php if (!empty($item['image'])): ?>
+                                    <img src="<?= base_url($item['image']) ?>" style="width: 50px; height: 50px; object-fit: cover; border-radius: 4px;">
+                                <?php else: ?>
+                                    <i class="ri-image-line fs-3 text-muted"></i>
+                                <?php endif; ?>
+                            </td>
+                            <td><?= esc((string)($item['year'] ?? '')) ?></td>
+                            <td><?= esc((string)($item['title'] ?? '')) ?></td>
+                            <td><?= esc((string)($item['organization'] ?? '')) ?></td>
+                            <td><?= $item['sort_order'] ?></td>
+                            <td>
+                                <span class="badge bg-<?= $item['status'] ? 'success' : 'secondary' ?>">
+                                    <?= $item['status'] ? 'Active' : 'Inactive' ?>
+                                </span>
+                            </td>
+                            <td>
+                                <a href="<?= base_url('admin/awards/edit/' . $item['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
+                                <form action="<?= base_url('admin/awards/delete/' . $item['id']) ?>" method="post" class="d-inline">
+                                    <?= csrf_field() ?>
+                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>

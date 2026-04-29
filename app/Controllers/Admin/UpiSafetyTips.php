@@ -41,7 +41,8 @@ class UpiSafetyTips extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created','upi-safety-tips', $id);
         return redirect()->to('/admin/upi-safety-tips')->with('message', 'Safety tip added.');
     }
 
@@ -68,13 +69,14 @@ class UpiSafetyTips extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated','upi-safety-tips', $id);
         return redirect()->to('/admin/upi-safety-tips')->with('message', 'Safety tip updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted','upi-safety-tips', $id);
         return redirect()->to('/admin/upi-safety-tips')->with('message', 'Safety tip deleted.');
     }
 }

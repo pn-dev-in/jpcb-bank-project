@@ -48,7 +48,8 @@ class FaqCategories extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'faq-categories', $id);
         return redirect()->to('/admin/faq-categories')->with('message', 'FAQ category added.');
     }
 
@@ -82,7 +83,7 @@ class FaqCategories extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'faq-categories', $id);
         return redirect()->to('/admin/faq-categories')->with('message', 'FAQ category updated.');
     }
 
@@ -95,6 +96,7 @@ class FaqCategories extends BaseController
             return redirect()->back()->with('error', 'Cannot delete category with existing FAQs. Delete FAQs first.');
         }
         $this->model->delete($id);
+        log_activity('Deleted', 'faq-categories', $id);
         return redirect()->to('/admin/faq-categories')->with('message', 'FAQ category deleted.');
     }
 }

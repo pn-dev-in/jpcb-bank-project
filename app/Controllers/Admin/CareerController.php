@@ -18,14 +18,26 @@ class CareerController extends BaseController
     {
         $data['applications'] = $this->model
             ->orderBy('id', 'DESC')
-            ->findAll();
+            ->findAll() ?? [];
 
         return view('admin/careers/index', $data);
     }
 
     public function delete($id)
     {
-        $this->model->delete($id);
-        return redirect()->to('/admin/careers');
+        // Check if application exists
+        $application = $this->model->find($id);
+        if (!$application) {
+            return redirect()->to('/admin/careers')->with('error', 'Application not found.');
+        }
+
+        // Attempt deletion
+        $deleted = $this->model->delete($id);
+        if ($deleted) {
+            log_activity('Deleted', 'careers', $id);
+            return redirect()->to('/admin/careers')->with('success', 'Application deleted successfully.');
+        } else {
+            return redirect()->back()->with('error', 'Failed to delete application.');
+        }
     }
 }

@@ -6,7 +6,7 @@
         <h3 class="mb-0"><?= isset($step) ? 'Edit' : 'Add' ?> Grievance Step</h3>
     </div>
     <div class="card-body">
-        <form method="post" action="<?= isset($step) ? site_url('admin/grievance-steps/update/'.$step['id']) : site_url('admin/grievance-steps/store') ?>">
+        <form method="post" action="<?= isset($step) ? site_url('admin/grievance-steps/update/' . $step['id']) : site_url('admin/grievance-steps/store') ?>">
             <?= csrf_field() ?>
 
             <div class="row mb-3">
@@ -53,10 +53,19 @@
             <div class="mb-3">
                 <label class="form-label">External Link?</label>
                 <select name="external" class="form-control">
-                    <option value="0" <?= (isset($step) && $step['external']==0) ? 'selected' : '' ?>>No (internal)</option>
-                    <option value="1" <?= (isset($step) && $step['external']==1) ? 'selected' : '' ?>>Yes (opens new tab)</option>
+                    <option value="0" <?= (isset($step) && $step['external'] == 0) ? 'selected' : '' ?>>No (internal)</option>
+                    <option value="1" <?= (isset($step) && $step['external'] == 1) ? 'selected' : '' ?>>Yes (opens new tab)</option>
                 </select>
                 <small class="text-muted d-block">Select "Yes" for external websites (e.g., RBI portal).</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-control">
+                    <option value="1" <?= (isset($step) && $step['status'] == 1) ? 'selected' : '' ?>>Active</option>
+                    <option value="0" <?= (isset($step) && $step['status'] == 0) ? 'selected' : '' ?>>Inactive</option>
+                </select>
+                <small class="text-muted d-block">Inactive steps will not be shown on the frontend.</small>
             </div>
 
             <button type="submit" class="btn btn-primary"><?= isset($step) ? 'Update' : 'Create' ?></button>

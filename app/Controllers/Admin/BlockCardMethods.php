@@ -16,7 +16,7 @@ class BlockCardMethods extends BaseController
 
     public function index()
     {
-        $data['items'] = $this->model->orderBy('sort_order', 'asc')->findAll();
+        $data['items'] = $this->model->orderBy('sort_order', 'asc')->findAll() ?? [];
         return view('admin/block_card_methods/index', $data);
     }
 
@@ -45,7 +45,8 @@ class BlockCardMethods extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'block_card_methods', $id);
         return redirect()->to('/admin/block-card-methods')->with('message', 'Method added.');
     }
 
@@ -76,13 +77,14 @@ class BlockCardMethods extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'block_card_methods', $id);
         return redirect()->to('/admin/block-card-methods')->with('message', 'Method updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'block_card_methods', $id);
         return redirect()->to('/admin/block-card-methods')->with('message', 'Method deleted.');
     }
 }

@@ -6,7 +6,7 @@
         <h3 class="mb-0"><?= isset($quickAction) ? 'Edit' : 'Add' ?> Quick Action</h3>
     </div>
     <div class="card-body">
-        <form method="post" action="<?= isset($quickAction) ? site_url('admin/quick-actions/update/'.$quickAction['id']) : site_url('admin/quick-actions/store') ?>">
+        <form method="post" action="<?= isset($quickAction) ? site_url('admin/quick-actions/update/' . $quickAction['id']) : site_url('admin/quick-actions/store') ?>">
             <?= csrf_field() ?>
 
             <div class="mb-3">
@@ -35,6 +35,15 @@
             <div class="mb-3 form-check">
                 <input type="checkbox" name="is_alert" value="1" class="form-check-input" id="is_alert" <?= (isset($quickAction) && $quickAction['is_alert']) ? 'checked' : '' ?>>
                 <label class="form-check-label" for="is_alert">Mark as Alert (highlight with different color)</label>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                <select name="status" class="form-control">
+                    <option value="1" <?= (isset($quickAction) && $quickAction['status'] == 1) ? 'selected' : '' ?>>Active</option>
+                    <option value="0" <?= (isset($quickAction) && $quickAction['status'] == 0) ? 'selected' : '' ?>>Inactive</option>
+                </select>
+                <small class="text-muted d-block">Inactive quick actions will not appear on the homepage.</small>
             </div>
 
             <button type="submit" class="btn btn-primary"><?= isset($quickAction) ? 'Update' : 'Create' ?></button>

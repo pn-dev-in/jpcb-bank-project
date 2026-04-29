@@ -27,7 +27,10 @@ class NoticeController extends BaseController
             'description' => $this->request->getPost('description'),
             'type'        => $this->request->getPost('type'),
             'date'        => $this->request->getPost('date'),
+            'status'      => $this->request->getPost('status') ?? 1,
         ]);
+        $noticeId = $model->getInsertID();
+        log_activity('Created', 'notices', $noticeId);
         return redirect()->to('/admin/notices')->with('success', 'Notice added.');
     }
 
@@ -49,7 +52,9 @@ class NoticeController extends BaseController
             'description' => $this->request->getPost('description'),
             'type'        => $this->request->getPost('type'),
             'date'        => $this->request->getPost('date'),
+            'status'      => $this->request->getPost('status') ?? 1,
         ]);
+        log_activity('Updated', 'notices', $id);
         return redirect()->to('/admin/notices')->with('success', 'Notice updated.');
     }
 
@@ -57,6 +62,7 @@ class NoticeController extends BaseController
     {
         $model = new NoticeModel();
         $model->delete($id);
+        log_activity('Deleted', 'notices', $id);
         return redirect()->to('/admin/notices')->with('success', 'Notice deleted.');
     }
 }

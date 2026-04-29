@@ -96,7 +96,7 @@ class Settings extends BaseController
             'linkedin_url' => $this->request->getPost('linkedin_url'),
             'youtube_url' => $this->request->getPost('youtube_url'),
         ]);
-
+        log_activity('Updated', 'settings', 1);
         return redirect()->to('/admin/settings/edit')->with('message', 'Settings updated successfully.');
     }
 }

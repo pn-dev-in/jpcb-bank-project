@@ -42,7 +42,7 @@ class TrustRegulatory extends BaseController
             'description' => $this->request->getPost('description'),
             'disclaimer' => $this->request->getPost('disclaimer')
         ]);
-
+        log_activity('Updated','trust-regulatory', 1);
         return redirect()->to('/admin/trust-regulatory/edit')->with('message', 'Regulatory section updated.');
     }
 }

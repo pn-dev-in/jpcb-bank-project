@@ -47,7 +47,8 @@ class RbiTopics extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'rbi-topics', $id);
         return redirect()->to('/admin/rbi-topics')->with('message', 'RBI topic added.');
     }
 
@@ -80,13 +81,14 @@ class RbiTopics extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'rbi-topics', $id);
         return redirect()->to('/admin/rbi-topics')->with('message', 'RBI topic updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'rbi-topics', $id);
         return redirect()->to('/admin/rbi-topics')->with('message', 'RBI topic deleted.');
     }
 }

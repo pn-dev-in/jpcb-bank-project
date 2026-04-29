@@ -44,6 +44,8 @@ class SocialLinks extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status' => $this->request->getPost('status') ?? 1
         ]);
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'social-links', $id);
         return redirect()->to('/admin/social-links')->with('message', 'Social link added.');
     }
 
@@ -73,12 +75,14 @@ class SocialLinks extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status' => $this->request->getPost('status') ?? 1
         ]);
+        log_activity('Updated', 'social-links', $id);
         return redirect()->to('/admin/social-links')->with('message', 'Social link updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'social-links', $id);
         return redirect()->to('/admin/social-links')->with('message', 'Social link deleted.');
     }
 }

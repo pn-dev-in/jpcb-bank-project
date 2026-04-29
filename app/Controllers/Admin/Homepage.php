@@ -34,6 +34,7 @@ class Homepage extends BaseController
                 'button2_link' => 'about/branches',
                 'search_placeholder' => 'Search products, forms, rates, branch...'
             ]);
+            log_activity('Created', 'home_hero', 1);
             $hero = $this->heroModel->find(1);
         }
 
@@ -69,7 +70,7 @@ class Homepage extends BaseController
             'button2_link'       => $this->request->getPost('button2_link'),
             'search_placeholder' => $this->request->getPost('search_placeholder'),
         ]);
-
+        log_activity('Updated', 'home_hero', 1);
         return redirect()->to('/admin/homepage/edit-hero')->with('message', 'Hero section updated successfully.');
     }
 
@@ -108,7 +109,8 @@ class Homepage extends BaseController
             'sort_order'  => $this->request->getPost('sort_order') ?? 0,
             'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->trustCardModel->getInsertID();
+        log_activity('Created', 'home-trust-cards', $id);
         return redirect()->to('/admin/homepage/trust-cards')->with('message', 'Trust card added.');
     }
 
@@ -144,18 +146,19 @@ class Homepage extends BaseController
             'sort_order'  => $this->request->getPost('sort_order') ?? 0,
             'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'home-trust-cards', $id);
         return redirect()->to('/admin/homepage/trust-cards')->with('message', 'Trust card updated.');
     }
 
     public function deleteCard($id)
     {
         $this->trustCardModel->delete($id);
+        log_activity('Deleted', 'home-trust-cards', $id);
         return redirect()->to('/admin/homepage/trust-cards')->with('message', 'Card deleted.');
     }
 
     public function index()
-{
-    return view('admin/homepage/index');
-}
+    {
+        return view('admin/homepage/index');
+    }
 }

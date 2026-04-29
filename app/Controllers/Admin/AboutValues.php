@@ -16,7 +16,7 @@ class AboutValues extends BaseController
 
     public function index()
     {
-        $data['items'] = $this->model->orderBy('sort_order', 'asc')->findAll();
+        $data['items'] = $this->model->orderBy('sort_order', 'asc')->findAll() ?? [];
         return view('admin/about_values/index', $data);
     }
 
@@ -45,7 +45,8 @@ class AboutValues extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'about_values', $id);
         return redirect()->to('/admin/about-values')->with('message', 'Value added successfully.');
     }
 
@@ -78,13 +79,14 @@ class AboutValues extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'about_values', $id);
         return redirect()->to('/admin/about-values')->with('message', 'Value updated successfully.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'about_values', $id);
         return redirect()->to('/admin/about-values')->with('message', 'Value deleted.');
     }
 }

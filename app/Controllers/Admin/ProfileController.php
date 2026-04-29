@@ -79,7 +79,7 @@ class ProfileController extends BaseController
 
         // Update session name
         session()->set('admin_name', $data['name']);
-
+        log_activity('Updated', 'profile', 1);
         return redirect()->to('/admin/profile')->with('message', 'Profile updated successfully.');
     }
 }

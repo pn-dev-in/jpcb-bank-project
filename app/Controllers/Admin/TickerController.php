@@ -39,7 +39,8 @@ class TickerController extends BaseController
             'message' => $this->request->getPost('message'),
             'status'  => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created','ticker', $id);
         return redirect()->to('/admin/ticker')->with('message', 'Ticker message added.');
     }
 
@@ -66,13 +67,14 @@ class TickerController extends BaseController
             'message' => $this->request->getPost('message'),
             'status'  => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated','ticker', $id);
         return redirect()->to('/admin/ticker')->with('message', 'Ticker message updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted','ticker', $id);
         return redirect()->to('/admin/ticker')->with('message', 'Ticker message deleted.');
     }
 }

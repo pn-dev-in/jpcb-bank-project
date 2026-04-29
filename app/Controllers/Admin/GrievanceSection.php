@@ -22,6 +22,7 @@ class GrievanceSection extends BaseController
                 'heading' => 'Grievance Redressal',
                 'subheading' => 'We are committed to resolving your complaints fairly and promptly. Follow the RBI-aligned escalation process below.'
             ]);
+            log_activity('Created', 'grievance_section', 1);
             $settings = $this->settingsModel->find(1);
         }
         return view('admin/grievance_section/edit', ['settings' => $settings]);
@@ -42,7 +43,7 @@ class GrievanceSection extends BaseController
             'heading'    => $this->request->getPost('heading'),
             'subheading' => $this->request->getPost('subheading'),
         ]);
-
+        log_activity('Updated', 'grievance_section', 1);
         return redirect()->to('/admin/grievance-section/edit')->with('message', 'Grievance section updated successfully.');
     }
 }

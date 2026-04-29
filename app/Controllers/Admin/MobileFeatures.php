@@ -41,7 +41,8 @@ class MobileFeatures extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'mobile-features', $id);
         return redirect()->to('/admin/mobile-features')->with('message', 'Feature added.');
     }
 
@@ -68,13 +69,14 @@ class MobileFeatures extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'mobile-features', $id);
         return redirect()->to('/admin/mobile-features')->with('message', 'Feature updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'mobile-features', $id);
         return redirect()->to('/admin/mobile-features')->with('message', 'Feature deleted.');
     }
 }

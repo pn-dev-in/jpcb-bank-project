@@ -19,9 +19,9 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($items as $item): ?>
+                    <?php foreach (($items ?? []) as $item): ?>
                     <tr>
-                        <td><?= esc($item['feature']) ?></td>
+                        <td><?= esc((string)$item['feature']) ?></td>
                         <td><?= $item['sort_order'] ?></td>
                         <td>
                             <span class="badge bg-<?= $item['status'] ? 'success' : 'secondary' ?>">

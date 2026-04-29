@@ -69,7 +69,7 @@ class DepositProducts extends BaseController
                 'sort_order' => $order++,
             ]);
         }
-
+        log_activity('Created', 'deposit-products', $id);
         return redirect()->to('/admin/deposit-products')->with('message', 'Deposit product added.');
     }
 
@@ -122,7 +122,7 @@ class DepositProducts extends BaseController
                 'sort_order' => $order++,
             ]);
         }
-
+        log_activity('Updated', 'deposit-products', $id);
         return redirect()->to('/admin/deposit-products')->with('message', 'Deposit product updated.');
     }
 
@@ -130,6 +130,7 @@ class DepositProducts extends BaseController
     {
         $this->featureModel->where('product_id', $id)->delete();
         $this->model->delete($id);
+        log_activity('Deleted', 'deposit-products', $id);
         return redirect()->to('/admin/deposit-products')->with('message', 'Deposit product deleted.');
     }
 }

@@ -45,7 +45,8 @@ class MobileRegistrationSteps extends BaseController
             'sort_order'  => $this->request->getPost('sort_order') ?? 0,
             'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'mobile-registration-steps', $id);
         return redirect()->to('/admin/mobile-registration-steps')->with('message', 'Step added.');
     }
 
@@ -76,13 +77,14 @@ class MobileRegistrationSteps extends BaseController
             'sort_order'  => $this->request->getPost('sort_order') ?? 0,
             'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'mobile-registration-steps', $id);
         return redirect()->to('/admin/mobile-registration-steps')->with('message', 'Step updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'mobile-registration-steps', $id);
         return redirect()->to('/admin/mobile-registration-steps')->with('message', 'Step deleted.');
     }
 }

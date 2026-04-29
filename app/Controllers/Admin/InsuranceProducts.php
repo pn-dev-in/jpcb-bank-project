@@ -66,7 +66,7 @@ class InsuranceProducts extends BaseController
                 'sort_order' => $order++,
             ]);
         }
-
+        log_activity('Created', 'insurance-products', $id);
         return redirect()->to('/admin/insurance-products')->with('message', 'Insurance product added.');
     }
 
@@ -116,7 +116,7 @@ class InsuranceProducts extends BaseController
                 'sort_order' => $order++,
             ]);
         }
-
+        log_activity('Updated', 'insurance-products', $id);
         return redirect()->to('/admin/insurance-products')->with('message', 'Insurance product updated.');
     }
 
@@ -124,6 +124,7 @@ class InsuranceProducts extends BaseController
     {
         $this->featureModel->where('product_id', $id)->delete();
         $this->model->delete($id);
+        log_activity('Deleted', 'insurance-products', $id);
         return redirect()->to('/admin/insurance-products')->with('message', 'Insurance product deleted.');
     }
 }

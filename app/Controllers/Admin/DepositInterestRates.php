@@ -45,7 +45,8 @@ class DepositInterestRates extends BaseController
             'sort_order'   => $this->request->getPost('sort_order') ?? 0,
             'status'       => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'deposit-interest-rates', $id);
         return redirect()->to('/admin/deposit-interest-rates')->with('message', 'Interest rate added.');
     }
 
@@ -76,13 +77,14 @@ class DepositInterestRates extends BaseController
             'sort_order'   => $this->request->getPost('sort_order') ?? 0,
             'status'       => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'deposit-interest-rates', $id);
         return redirect()->to('/admin/deposit-interest-rates')->with('message', 'Interest rate updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'deposit-interest-rates', $id);
         return redirect()->to('/admin/deposit-interest-rates')->with('message', 'Interest rate deleted.');
     }
 }

@@ -41,7 +41,8 @@ class UpiBenefits extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created','upi-benefits', $id);
         return redirect()->to('/admin/upi-benefits')->with('message', 'Benefit added.');
     }
 
@@ -68,13 +69,14 @@ class UpiBenefits extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+         log_activity('Updated','upi-benefits', $id);
         return redirect()->to('/admin/upi-benefits')->with('message', 'Benefit updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+         log_activity('Deleted','upi-benefits', $id);
         return redirect()->to('/admin/upi-benefits')->with('message', 'Benefit deleted.');
     }
 }

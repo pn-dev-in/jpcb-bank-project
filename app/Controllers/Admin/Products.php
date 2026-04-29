@@ -68,6 +68,7 @@ class Products extends BaseController
                 'sort_order' => $order++,
             ]);
         }
+        log_activity('Created', 'products', $productId);
         return redirect()->to('/admin/products')->with('message', 'Product created.');
     }
 
@@ -119,6 +120,7 @@ class Products extends BaseController
                 'sort_order' => $order++,
             ]);
         }
+        log_activity('Updated', 'products', $id);
         return redirect()->to('/admin/products')->with('message', 'Product updated.');
     }
 
@@ -126,6 +128,7 @@ class Products extends BaseController
     {
         $this->featureModel->where('product_id', $id)->delete();
         $this->productModel->delete($id);
+        log_activity('Deleted', 'products', $id);
         return redirect()->to('/admin/products')->with('message', 'Product deleted.');
     }
 }

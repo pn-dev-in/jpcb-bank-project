@@ -41,7 +41,8 @@ class RbiFairPracticePrinciples extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'rbi-fair-practice-principles', $id);
         return redirect()->to('/admin/rbi-fair-practice-principles')->with('message', 'Principle added.');
     }
 
@@ -68,13 +69,14 @@ class RbiFairPracticePrinciples extends BaseController
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status'     => $this->request->getPost('status') ?? 1,
         ]);
-
+         log_activity('Updated', 'rbi-fair-practice-principles', $id);
         return redirect()->to('/admin/rbi-fair-practice-principles')->with('message', 'Principle updated.');
     }
 
     public function delete($id)
     {
         $this->model->delete($id);
+        log_activity('Deleted', 'rbi-fair-practice-principles', $id);
         return redirect()->to('/admin/rbi-fair-practice-principles')->with('message', 'Principle deleted.');
     }
 }

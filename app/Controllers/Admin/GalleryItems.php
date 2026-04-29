@@ -62,7 +62,8 @@ class GalleryItems extends BaseController
             'sort_order'  => $this->request->getPost('sort_order') ?? 0,
             'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        $id = $this->model->getInsertID();
+        log_activity('Created', 'gallery-items', $id);
         return redirect()->to('/admin/gallery-items')->with('message', 'Gallery item added.');
     }
 
@@ -113,7 +114,7 @@ class GalleryItems extends BaseController
             'sort_order'  => $this->request->getPost('sort_order') ?? 0,
             'status'      => $this->request->getPost('status') ?? 1,
         ]);
-
+        log_activity('Updated', 'gallery-items', $id);
         return redirect()->to('/admin/gallery-items')->with('message', 'Gallery item updated.');
     }
 
@@ -124,6 +125,7 @@ class GalleryItems extends BaseController
             unlink(FCPATH . $item['image']);
         }
         $this->model->delete($id);
+        log_activity('Deleted', 'gallery-items', $id);
         return redirect()->to('/admin/gallery-items')->with('message', 'Gallery item deleted.');
     }
 }

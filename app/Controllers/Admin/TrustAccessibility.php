@@ -49,7 +49,7 @@ class TrustAccessibility extends BaseController
             'button_text' => $this->request->getPost('button_text'),
             'button_link' => $this->request->getPost('button_link')
         ]);
-
+        log_activity('Updated','trust-accessibility', 1);
         return redirect()->to('/admin/trust-accessibility/edit')->with('message', 'Accessibility section updated.');
     }
 }
