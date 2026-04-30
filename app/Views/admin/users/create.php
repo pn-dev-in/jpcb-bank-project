@@ -13,6 +13,11 @@
                 <input type="text" name="name" class="form-control" placeholder="Full name" required>
             </div>
             <div class="mb-3">
+    <label class="form-label">Employee ID (optional)</label>
+    <input type="text" name="employee_id" class="form-control" value="<?= old('employee_id') ?>" maxlength="50">
+    <small class="text-muted">Unique identifier for employees. Leave blank if not needed.</small>
+</div>
+            <div class="mb-3">
                 <label class="form-label">Email</label>
                 <input type="email" name="email" class="form-control" placeholder="admin@example.com" required>
             </div>

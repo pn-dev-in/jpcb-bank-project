@@ -4,6 +4,7 @@
     <div class="card-header"><h3 class="mb-0">Admin Details</h3></div>
     <div class="card-body">
         <p><strong>Name:</strong> <?= esc($admin['name']) ?></p>
+        <p><strong>Employee ID:</strong> <?= esc($admin['employee_id'] ?? '-') ?></p>
         <p><strong>Email:</strong> <?= esc($admin['email']) ?></p>
         <p><strong>Role:</strong> <?= esc($admin['role_name']) ?></p>
         <p><strong>Created At:</strong> <?= date('d M Y H:i', strtotime($admin['created_at'])) ?></p>

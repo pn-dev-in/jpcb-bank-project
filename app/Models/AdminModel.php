@@ -11,8 +11,11 @@ class AdminModel extends Model
 
     protected $allowedFields = [
         'name',
+        'employee_id',
         'email',
         'password',
+        'profile_image',
+        'gender',
         'role_id',
         'is_active',
         'last_login',      // add this

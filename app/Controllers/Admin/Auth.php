@@ -13,33 +13,41 @@ class Auth extends BaseController
     }
 
     public function loginProcess()
-    {
-        $session = session();
-        $model = new AdminModel();
+{
+    $session = session();
+    $model = new AdminModel();
 
-        $email = $this->request->getPost('email');
-        $password = $this->request->getPost('password');
+    $email = $this->request->getPost('email');
+    $password = $this->request->getPost('password');
 
-        $admin = $model->where('email', $email)->first();
+    $admin = $model->where('email', $email)->first();
 
-        if ($admin && password_verify($password, $admin['password'])) {
+    if ($admin && password_verify($password, $admin['password'])) {
 
-            $session->set([
-                'admin_id' => $admin['id'],
-                'admin_email' => $admin['email'],
-                'admin_name'  => $admin['name'],
-                'role_id' => $admin['role_id'],
-                'isLoggedIn' => true
-            ]);
-            // After setting session
-            $model->update($admin['id'], ['last_login' => date('Y-m-d H:i:s')]);
-            log_activity('Logged In', 'auth', $admin['id']);
-            return redirect()->to('/admin/dashboard');
-        }
-        
-        log_activity('Failed Login', 'auth', null, ['email' => $email]);
-        return redirect()->back()->with('error', 'Invalid credentials');
+        // Fetch role name
+        $roleModel = new \App\Models\RoleModel();
+        $role = $roleModel->find($admin['role_id']);
+        $roleName = $role['name'] ?? 'Unknown Role';
+
+        $session->set([
+            'admin_id'    => $admin['id'],
+            'admin_email' => $admin['email'],
+            'admin_name'  => $admin['name'],
+            'employee_id' => $admin['employee_id'] ?? '',
+            'role_id'     => $admin['role_id'],
+            'role_name'   => $roleName,          // <-- Add this line
+            'isLoggedIn'  => true
+        ]);
+
+        // Update last login
+        $model->update($admin['id'], ['last_login' => date('Y-m-d H:i:s')]);
+        log_activity('Logged In', 'auth', $admin['id']);
+        return redirect()->to('/admin/dashboard');
     }
+
+    log_activity('Failed Login', 'auth', null);
+    return redirect()->back()->with('error', 'Invalid credentials');
+}
 
     public function logout()
     {   

@@ -15,9 +15,16 @@ $gender = ($gender === 'female') ? 'female' : 'male';
 
 $adminImageToShow = null;
 if (!empty($profileImage)) {
-    $profileFile = FCPATH . 'uploads/profile/' . basename((string) $profileImage);
-    if (is_file($profileFile)) {
-        $adminImageToShow = base_url('uploads/profile/' . basename((string) $profileImage));
+    // Check if profile_image contains a full relative path (e.g., 'uploads/profile/xxx.jpg')
+    $fullPath = FCPATH . $profileImage;
+    if (is_file($fullPath)) {
+        $adminImageToShow = base_url($profileImage);
+    } else {
+        // Backward compatibility: if stored as just a filename (old way)
+        $legacyPath = FCPATH . 'uploads/profile/' . basename((string) $profileImage);
+        if (is_file($legacyPath)) {
+            $adminImageToShow = base_url('uploads/profile/' . basename((string) $profileImage));
+        }
     }
 }
 if ($adminImageToShow === null) {
@@ -38,14 +45,19 @@ if ($adminImageToShow === null) {
 
     <div data-simplebar>
         <div class="sidenav-user">
-            <div class="text-center px-3 py-2">
-                <img src="<?= esc($adminImageToShow) ?>" width="46" height="46" class="rounded-circle object-fit-cover" alt="user-image">
-                <div class="mt-2">
-                    <span class="mb-0 fw-semibold lh-base fs-15 d-block"><?= esc((string)($userName)) ?></span>
-                    <p class="my-0 fs-13 text-muted">Administrator</p>
-                </div>
-            </div>
+    <div class="text-center px-3 py-2">
+        <img src="<?= esc($adminImageToShow) ?>" width="46" height="46" class="rounded-circle object-fit-cover" alt="user-image">
+        <div class="mt-2">
+            <span class="mb-0 fw-semibold lh-base fs-15 d-block"><?= esc($userName) ?></span>
+            <p class="my-0 fs-13 text-muted"><?= esc(session()->get('role_name') ?? 'User') ?></p>
+            <?php if (session()->get('employee_id')): ?>
+                <p class="my-0 fs-12 text-muted mt-1">
+                    <i class="ti ti-id-badge me-1"></i> Emp ID: <?= esc(session()->get('employee_id')) ?>
+                </p>
+            <?php endif; ?>
         </div>
+    </div>
+</div>
 
         <ul class="side-nav">
             <!-- Dashboard -->

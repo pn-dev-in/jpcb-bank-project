@@ -20,10 +20,17 @@ class ProfileController extends BaseController
         if (!$adminId) {
             return redirect()->to('/admin/login');
         }
-        $admin = $this->adminModel->find($adminId);
+
+        // Fetch admin with role name
+        $admin = $this->adminModel
+            ->select('admins.*, roles.name as role_name')
+            ->join('roles', 'roles.id = admins.role_id', 'left')
+            ->find($adminId);
+
         if (!$admin) {
             return redirect()->to('/admin/login');
         }
+
         return view('admin/profile/index', ['admin' => $admin]);
     }
 
@@ -44,8 +51,8 @@ class ProfileController extends BaseController
         }
 
         $data = [
-            'name'  => $this->request->getPost('name'),
-            'email' => $this->request->getPost('email'),
+            'name'   => $this->request->getPost('name'),
+            'email'  => $this->request->getPost('email'),
             'gender' => $this->request->getPost('gender'),
         ];
 
@@ -58,28 +65,37 @@ class ProfileController extends BaseController
         // Handle profile image upload
         $file = $this->request->getFile('profile_image');
         if ($file && $file->isValid() && !$file->hasMoved()) {
-            $allowed = ['image/jpeg', 'image/png', 'image/gif'];
+            $allowed = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'];
             if (!in_array($file->getMimeType(), $allowed)) {
-                return redirect()->back()->withInput()->with('error', 'Only JPG, PNG, GIF images are allowed.');
+                return redirect()->back()->withInput()->with('error', 'Only JPG, PNG, GIF, WEBP images are allowed.');
             }
             if ($file->getSize() > 2 * 1024 * 1024) {
                 return redirect()->back()->withInput()->with('error', 'Image size must be less than 2MB.');
             }
-            // Delete old image if exists
+
+            // Delete old image if exists (full path)
             $oldAdmin = $this->adminModel->find($adminId);
-            if (!empty($oldAdmin['profile_image']) && file_exists(FCPATH . 'uploads/profile/' . $oldAdmin['profile_image'])) {
-                unlink(FCPATH . 'uploads/profile/' . $oldAdmin['profile_image']);
+            if (!empty($oldAdmin['profile_image']) && is_file(FCPATH . $oldAdmin['profile_image'])) {
+                unlink(FCPATH . $oldAdmin['profile_image']);
             }
+
             $newName = $file->getRandomName();
             $file->move(FCPATH . 'uploads/profile', $newName);
-            $data['profile_image'] = $newName;
+            // Store full relative path from base_url
+            $relativePath = 'uploads/profile/' . $newName;
+            $data['profile_image'] = $relativePath;
         }
 
         $this->adminModel->update($adminId, $data);
 
-        // Update session name
+        // Update session values
         session()->set('admin_name', $data['name']);
-        log_activity('Updated', 'profile', 1);
-        return redirect()->to('/admin/profile')->with('message', 'Profile updated successfully.');
+        if (isset($data['profile_image'])) {
+            session()->set('profile_image', $data['profile_image']);
+        }
+
+        log_activity('Updated', 'profile', $adminId);
+
+        return redirect()->to('/admin/profile')->with('success', 'Profile updated successfully.');
     }
 }

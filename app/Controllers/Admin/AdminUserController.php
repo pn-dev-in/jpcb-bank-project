@@ -36,17 +36,19 @@ class AdminUserController extends BaseController
     public function store()
     {
         $rules = [
-            'name'     => 'required|max_length[100]',
-            'email'    => 'required|valid_email|max_length[150]|is_unique[admins.email]',
-            'password' => 'required|min_length[6]',
-            'role_id'  => 'required|integer',
-        ];
+    'name'        => 'required|max_length[100]',
+    'employee_id' => 'permit_empty|max_length[50]|is_unique[admins.employee_id]',
+    'email'       => 'required|valid_email|max_length[150]|is_unique[admins.email]',
+    'password'    => 'required|min_length[6]',
+    'role_id'     => 'required|integer',
+];
         if (!$this->validate($rules)) {
             return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
         $data = [
             'name'     => $this->request->getPost('name'),
+            'employee_id' => $this->request->getPost('employee_id'),
             'email'    => $this->request->getPost('email'),
             'password' => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT),
             'role_id'  => $this->request->getPost('role_id'),
@@ -74,10 +76,11 @@ class AdminUserController extends BaseController
     public function update($id)
     {
         $rules = [
-            'name'  => 'required|max_length[100]',
-            'email' => 'required|valid_email|max_length[150]|is_unique[admins.email,id,' . $id . ']',
-            'role_id' => 'required|integer',
-        ];
+    'name'        => 'required|max_length[100]',
+    'employee_id' => "permit_empty|max_length[50]|is_unique[admins.employee_id,id,{$id}]",
+    'email'       => "required|valid_email|max_length[150]|is_unique[admins.email,id,{$id}]",
+    'role_id'     => 'required|integer',
+];
         $password = $this->request->getPost('password');
         if (!empty($password)) {
             $rules['password'] = 'min_length[6]';
@@ -88,6 +91,7 @@ class AdminUserController extends BaseController
 
         $data = [
             'name'  => $this->request->getPost('name'),
+            'employee_id' => $this->request->getPost('employee_id'),
             'email' => $this->request->getPost('email'),
             'role_id' => $this->request->getPost('role_id'),
         ];

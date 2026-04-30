@@ -15,6 +15,7 @@
                 <thead class="table-light">
                     <tr>
                         <th>Name</th>
+                        <th>Employee ID</th>
                         <th>Email</th>
                         <th>Role</th>
                         <th width="180">Actions</th>
@@ -25,6 +26,7 @@
                         <?php foreach ($admins as $a): ?>
                             <tr>
                                 <td><?= esc($a['name']) ?></td>
+                                <td><?= esc($a['employee_id'] ?? '-') ?></td>
                                 <td><?= esc($a['email']) ?></td>
                                 <td><?= esc($a['role_name']) ?></td>
                                 <td>

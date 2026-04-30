@@ -208,7 +208,8 @@ class Home extends BaseController
         // Alert banners (active, inline or popup)
 $alertBannerModel = new \App\Models\HomeAlertBannerModel();
 $alertBanners = $alertBannerModel->where('status', 1)->findAll();
-
+// Get the first active popup banner (status=1, is_popup=1)
+$popupBanners = $alertBannerModel->where('status', 1)->where('is_popup', 1)->orderBy('id', 'ASC')->findAll() ?? [];
 
         $data = [
             'title'       => 'The Jalgaon Peoples Co-Op. Bank Ltd. | Trusted Banking Since 1933',
@@ -232,6 +233,7 @@ $alertBanners = $alertBannerModel->where('status', 1)->findAll();
             'hero'        => $hero,
             'trustCards'  => $trustCards,
             'alertBanners' => $alertBanners,
+            'popupBanners' => $popupBanners,
         ];
 
         return view('home/index', $data);

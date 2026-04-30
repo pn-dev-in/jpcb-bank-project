@@ -6,42 +6,36 @@
         <h3 class="mb-0">My Profile</h3>
     </div>
     <div class="card-body">
-        <?php if(session()->getFlashdata('message')): ?>
-            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                <?= session()->getFlashdata('message') ?>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        <?php endif; ?>
-        <?php if(session()->getFlashdata('error')): ?>
-            <div class="alert alert-danger"><?= session()->getFlashdata('error') ?></div>
-        <?php endif; ?>
-        <?php if(session()->getFlashdata('errors')): ?>
-            <div class="alert alert-danger">
-                <?php foreach(session()->getFlashdata('errors') as $error): ?>
-                    <p class="mb-0"><?= $error ?></p>
-                <?php endforeach; ?>
-            </div>
-        <?php endif; ?>
 
         <form method="post" action="<?= base_url('admin/profile/update') ?>" enctype="multipart/form-data">
             <?= csrf_field() ?>
 
             <div class="row mb-3">
                 <div class="col-md-3 text-center">
-                    <?php 
-                    $profileImage = !empty($admin['profile_image']) ? base_url('uploads/profile/' . $admin['profile_image']) : '';
+                    <?php
+                    $profileImgPath = $admin['profile_image'] ?? '';
                     $defaultMale = base_url('admin-assets/images/users/avatar-3.jpg');
                     $defaultFemale = base_url('admin-assets/images/users/avatar-2.jpg');
                     $gender = $admin['gender'] ?? 'male';
                     $defaultImg = ($gender === 'female') ? $defaultFemale : $defaultMale;
+                    $imgSrc = !empty($profileImgPath) ? base_url($profileImgPath) : $defaultImg;
                     ?>
-                    <img src="<?= $profileImage ?: $defaultImg ?>" class="rounded-circle mb-3" width="120" height="120" style="object-fit: cover;" alt="Profile Picture">
+                    <img src="<?= $imgSrc ?>" class="rounded-circle mb-3" width="120" height="120" style="object-fit: cover;" alt="Profile Picture">
                     <div class="mb-2">
-                        <input type="file" name="profile_image" class="form-control" accept="image/jpeg,image/png,image/gif">
-                        <small class="text-muted">Max 2MB, JPG/PNG/GIF</small>
+                        <input type="file" name="profile_image" class="form-control" accept="image/jpeg,image/png,image/gif,image/webp">
+                        <small class="text-muted">Max 2MB, JPG/PNG/GIF/WEBP</small>
                     </div>
                 </div>
                 <div class="col-md-9">
+                    <div class="mb-3">
+                        <label class="form-label">Employee ID</label>
+                        <input type="text" class="form-control" value="<?= esc($admin['employee_id'] ?? '-') ?>" readonly disabled>
+                        <small class="text-muted">Employee ID cannot be changed here. Contact super admin.</small>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Role</label>
+                        <input type="text" class="form-control" value="<?= esc($admin['role_name'] ?? 'No role') ?>" readonly disabled>
+                    </div>
                     <div class="mb-3">
                         <label class="form-label">Full Name</label>
                         <input type="text" name="name" class="form-control" value="<?= old('name', $admin['name']) ?>" required>

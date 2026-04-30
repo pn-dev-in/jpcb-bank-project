@@ -6,6 +6,10 @@
         <form method="post" action="<?= base_url('admin/users/update/'.$admin['id']) ?>">
             <?= csrf_field() ?>
             <div class="mb-3"><label>Name</label><input type="text" name="name" class="form-control" value="<?= old('name', $admin['name']) ?>" required></div>
+            <div class="mb-3">
+    <label class="form-label">Employee ID</label>
+    <input type="text" name="employee_id" class="form-control" value="<?= esc($admin['employee_id'] ?? '') ?>" maxlength="50">
+</div>
             <div class="mb-3"><label>Email</label><input type="email" name="email" class="form-control" value="<?= old('email', $admin['email']) ?>" required></div>
             <div class="mb-3"><label>Password (leave blank to keep current)</label><input type="password" name="password" class="form-control" placeholder="New password"></div>
             <div class="mb-3"><label>Role</label><select name="role_id" class="form-control"><?php foreach ($roles as $role): ?><option value="<?= $role['id'] ?>" <?= $admin['role_id'] == $role['id'] ? 'selected' : '' ?>><?= esc($role['name']) ?></option><?php endforeach; ?></select></div>
