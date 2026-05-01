@@ -6,9 +6,13 @@
 $branches = $branches ?? [];
 ?>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
     <h3 class="mb-0">Branches</h3>
-    <a href="<?= base_url('admin/branches/create') ?>" class="btn btn-primary btn-sm">+ Add New Branch</a>
+    <div>
+        <?php if (has_permission('branches.import')): ?>
+        <a href="<?= base_url('admin/branches/import') ?>" class="btn btn-info btn-sm">📂 Bulk Import Branches</a> <?php endif; ?>
+        <a href="<?= base_url('admin/branches/create') ?>" class="btn btn-primary btn-sm">+ Add New Branch</a>
+    </div>
 </div>
 
 <div class="card">
@@ -20,6 +24,7 @@ $branches = $branches ?? [];
                         <th>Branch Name</th>
                         <th>City</th>
                         <th>IFSC</th>
+                        <th>MICR</th>
                         <th>Phone</th>
                         <th>Status</th>
                         <th>Actions</th>
@@ -32,6 +37,7 @@ $branches = $branches ?? [];
                             <td><?= esc((string)($branch['branch_name'] ?? '')) ?></td>
                             <td><?= esc((string)($branch['city'] ?? '')) ?></td>
                             <td><?= esc((string)($branch['ifsc'] ?? '-')) ?></td>
+                            <td><?= esc((string)($branch['micr'] ?? '-')) ?></td>
                             <td><?= esc((string)($branch['phone'] ?? '')) ?></td>
                             <td>
                                 <?php $status = (int)($branch['status'] ?? 1); ?>

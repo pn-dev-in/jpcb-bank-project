@@ -27,6 +27,12 @@
                 <small class="text-muted d-block">Examples: Established, Happy Customers, Branches & ATMs, State Scheduled Bank</small>
             </div>
 
+            <div class="mb-3">
+    <label class="form-label">Link (optional)</label>
+    <input type="text" name="link" class="form-control" value="<?= old('link', $item['link'] ?? '') ?>" placeholder="/about/branches or https://example.com">
+    <small class="text-muted">Relative path (e.g., /about/branches) or absolute URL (e.g., https://...). Leave empty for no link.</small>
+</div>
+
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label class="form-label">Sort Order (lower = appears first)</label>

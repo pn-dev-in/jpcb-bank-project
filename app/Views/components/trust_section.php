@@ -10,17 +10,31 @@
     </div>
 
     <!-- Stats Grid -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mb-10">
-      <?php foreach ($trustStats as $stat): ?>
-        <div class="text-center">
-          <div class="w-14 h-14 md:w-16 md:h-16 rounded-full gradient-primary flex items-center justify-center mx-auto mb-3">
-            <i data-lucide="<?= esc($stat['icon']) ?>" class="w-7 h-7 md:w-8 md:h-8" style="color: hsl(var(--primary-foreground));"></i>
-          </div>
-          <div class="font-heading text-2xl md:text-3xl font-bold" style="color: hsl(var(--primary));"><?= esc($stat['value']) ?></div>
-          <p class="text-sm mt-1" style="color: hsl(var(--muted-foreground));"><?= esc($stat['label']) ?></p>
-        </div>
-      <?php endforeach; ?>
+    <div class="flex justify-between items-center gap-6 mb-10 w-full">
+  <?php foreach ($trustStats as $stat): ?>
+    <?php if (!empty($stat['link'])): ?>
+      <a href="<?= esc($stat['link']) ?>" target="_blank" rel="noopener noreferrer" class="text-center flex-1 min-w-[120px] block transition-transform hover:scale-105">
+    <?php else: ?>
+      <div class="text-center flex-1 min-w-[120px]">
+    <?php endif; ?>
+    
+    <div class="w-14 h-14 md:w-16 md:h-16 rounded-full gradient-primary flex items-center justify-center mx-auto mb-3">
+      <i data-lucide="<?= esc($stat['icon']) ?>" class="w-7 h-7 md:w-8 md:h-8" style="color: hsl(var(--primary-foreground));"></i>
     </div>
+    <div class="font-heading text-2xl md:text-3xl font-bold" style="color: hsl(var(--primary));">
+      <?= esc($stat['value']) ?>
+    </div>
+    <p class="text-sm mt-1" style="color: hsl(var(--muted-foreground));">
+      <?= esc($stat['label']) ?>
+    </p>
+
+    <?php if (!empty($stat['link'])): ?>
+      </a>
+    <?php else: ?>
+      </div>
+    <?php endif; ?>
+  <?php endforeach; ?>
+</div>
 
     <!-- Accessibility card -->
     <div class="bank-card p-6 md:p-8 mb-8">

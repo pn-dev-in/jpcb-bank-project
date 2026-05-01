@@ -12,7 +12,7 @@ class TrustStatModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ['icon', 'value', 'label', 'sort_order', 'status'];
+    protected $allowedFields    = ['icon', 'value', 'label', 'link', 'sort_order', 'status'];
 
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';

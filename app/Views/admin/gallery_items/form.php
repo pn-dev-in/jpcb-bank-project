@@ -25,17 +25,40 @@
                 <label class="form-label">Description</label>
                 <textarea name="description" class="form-control" rows="3"><?= old('description', $item['description'] ?? '') ?></textarea>
             </div>
+
             <div class="mb-3">
-                <label class="form-label">Image</label>
-                <?php if (isset($item) && $item['image']): ?>
-                    <div class="mb-2">
-                        <img src="<?= base_url($item['image']) ?>" style="width: 100px; height: 100px; object-fit: cover;">
-                        <p class="text-muted small">Current image. Upload new to replace.</p>
+    <label class="form-label">Event Date (optional)</label>
+    <input type="date" name="event_date" class="form-control" value="<?= old('event_date', $item['event_date'] ?? '') ?>">
+</div>
+            <div class="mb-3">
+    <label class="form-label">Main Image</label>
+    <input type="file" name="image" class="form-control" accept="image/*">
+    <?php if (!empty($item['image'])): ?>
+        <img src="<?= base_url($item['image']) ?>" style="max-width: 200px;" class="mt-2">
+    <?php endif; ?>
+</div>
+
+<div class="mb-3">
+    <label class="form-label">Additional Images (sub‑photos)</label>
+    <input type="file" name="sub_images[]" class="form-control" accept="image/*" multiple>
+    <small class="text-muted">You can select multiple images. Existing ones are listed below.</small>
+</div>
+
+<?php if (!empty($subImages)): ?>
+    <div class="mb-3">
+        <label class="form-label">Current Sub‑Photos (uncheck to delete)</label>
+        <div class="row">
+            <?php foreach ($subImages as $sub): ?>
+                <div class="col-md-3 text-center mb-2">
+                    <img src="<?= base_url($sub['image_path']) ?>" style="max-width: 100px;" class="img-thumbnail">
+                    <div class="form-check">
+                        <input type="checkbox" name="keep_sub_image_ids[]" value="<?= $sub['id'] ?>" checked> Keep
                     </div>
-                <?php endif; ?>
-                <input type="file" name="image" class="form-control" accept="image/*" <?= !isset($item) ? 'required' : '' ?>>
-                <small class="text-muted d-block">Allowed: JPG, PNG, GIF. Max 5MB.</small>
-            </div>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </div>
+<?php endif; ?>
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label class="form-label">Sort Order</label>

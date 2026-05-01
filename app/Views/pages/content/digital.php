@@ -20,6 +20,22 @@ if ($codeSearch !== '') {
         return str_contains($haystack, $needle);
     }));
 }
+
+// ATM search logic (same as before, but search also in address and location_type if desired)
+$atmSearch = trim($query['q'] ?? '');
+$filteredAtmLocations = $atmLocations ?? [];
+if ($atmSearch !== '') {
+    $needle = strtolower($atmSearch);
+    $filteredAtmLocations = array_values(array_filter($atmLocations, function($loc) use ($needle) {
+        $haystack = strtolower(($loc['name'] ?? '') . ' ' . 
+                              ($loc['address'] ?? '') . ' ' .
+                              ($loc['city'] ?? '') . ' ' . 
+                              ($loc['area'] ?? '') . ' ' . 
+                              ($loc['pin'] ?? ''));
+        return str_contains($haystack, $needle);
+    }));
+}
+
 ?>
 
 <?php if ($pageKey === 'overview'): ?>
@@ -120,10 +136,10 @@ if ($codeSearch !== '') {
   <div class="container-bank">
     <div class="max-w-xl mb-8">
       <form method="get" action="<?= current_url() ?>">
-        <label for="atm-search-page" class="text-sm font-medium text-foreground mb-2 block">Search by city, area, or PIN code</label>
+        <label for="atm-search-page" class="text-sm font-medium text-foreground mb-2 block">Search by city, area, PIN, or ATM name</label>
         <div class="relative">
           <i data-lucide="search" class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5" style="color: hsl(var(--muted-foreground));"></i>
-          <input id="atm-search-page" type="search" name="q" value="<?= esc($atmSearch) ?>" placeholder="e.g. Jalgaon, 425001" class="w-full pl-10 pr-4 py-3 rounded-lg border bg-background text-foreground focus:ring-2 focus:outline-none" style="border-color: hsl(var(--border));">
+          <input id="atm-search-page" type="search" name="q" value="<?= esc($atmSearch) ?>" placeholder="e.g. Jalgaon, 425001, Head Office" class="w-full pl-10 pr-4 py-3 rounded-lg border bg-background text-foreground focus:ring-2 focus:outline-none" style="border-color: hsl(var(--border));">
         </div>
       </form>
     </div>
@@ -135,10 +151,28 @@ if ($codeSearch !== '') {
         <div class="bank-card p-5">
           <div class="flex items-start justify-between mb-2">
             <h3 class="font-semibold text-foreground"><?= esc($location['name']) ?></h3>
-            <span class="text-xs px-2 py-0.5 rounded-full font-medium" style="background-color: <?= $location['atm_status'] === 'Active' ? 'hsl(var(--primary) / 0.1)' : 'hsl(var(--accent) / 0.15)' ?>; color: <?= $location['atm_status'] === 'Active' ? 'hsl(var(--primary))' : 'hsl(var(--accent-foreground))' ?>;"><?= esc($location['atm_status']) ?></span>
+            <span class="text-xs px-2 py-0.5 rounded-full font-medium" style="background-color: <?= $location['atm_status'] === 'Active' ? 'hsl(var(--primary) / 0.1)' : 'hsl(var(--accent) / 0.15)' ?>; color: <?= $location['atm_status'] === 'Active' ? 'hsl(var(--primary))' : 'hsl(var(--accent-foreground))' ?>;">
+              <?= esc($location['atm_status']) ?>
+            </span>
           </div>
-          <p class="text-sm flex items-center gap-1" style="color: hsl(var(--muted-foreground));"><i data-lucide="map-pin" class="w-4 h-4"></i><?= esc($location['area']) ?>, <?= esc($location['city']) ?> - <?= esc($location['pin']) ?></p>
-          <p class="text-sm flex items-center gap-1 mt-1" style="color: hsl(var(--muted-foreground));"><i data-lucide="clock" class="w-4 h-4"></i><?= esc($location['hours']) ?></p>
+          <p class="text-sm flex items-center gap-1" style="color: hsl(var(--muted-foreground));">
+            <i data-lucide="map-pin" class="w-4 h-4"></i>
+            <?= esc($location['address'] ?: ($location['area'] . ', ' . $location['city'])) ?>
+            <?php if ($location['pin']): ?> - <?= esc($location['pin']) ?><?php endif; ?>
+          </p>
+          <?php if ($location['location_type']): ?>
+            <p class="text-xs mt-1" style="color: hsl(var(--muted-foreground));">
+              <?= esc($location['location_type']) ?>
+            </p>
+          <?php endif; ?>
+          <p class="text-sm flex items-center gap-1 mt-1" style="color: hsl(var(--muted-foreground));">
+            <i data-lucide="clock" class="w-4 h-4"></i><?= esc($location['hours']) ?>
+          </p>
+          <?php if (!empty($location['latitude']) && !empty($location['longitude'])): ?>
+            <a href="https://www.google.com/maps?q=<?= $location['latitude'] ?>,<?= $location['longitude'] ?>" target="_blank" class="text-xs mt-2 inline-block text-primary">
+              <i data-lucide="map"></i> View on map
+            </a>
+          <?php endif; ?>
         </div>
         <?php endforeach; ?>
       <?php else: ?>

@@ -190,57 +190,101 @@ if ($galleryCategorySlug !== 'all') {
   </section>
 
 <?php elseif ($pageKey === 'gallery'): ?>
-  <section class="section-padding bg-background">
-    <div class="container-bank">
-      <div class="flex flex-wrap gap-2 mb-8" role="tablist" aria-label="Gallery categories">
-        <?php if (!empty($galleryCategories)): ?>
-          <?php foreach ($galleryCategories as $cat): ?>
-            <a href="<?= current_url() . '?category=' . rawurlencode($cat['slug']) ?>"
-              class="px-4 py-2 rounded-full text-sm font-medium transition-colors tap-target <?= $galleryCategorySlug === $cat['slug'] ? 'bg-primary text-primary-foreground' : 'bg-muted' ?>"
-              style="<?= $galleryCategorySlug === $cat['slug'] ? '' : 'color: hsl(var(--muted-foreground));' ?>">
-              <?= esc($cat['name']) ?>
-            </a>
-          <?php endforeach; ?>
-        <?php endif; ?>
-      </div>
-      <?php
-      // Get the selected category slug from URL (default: 'all')
-      $galleryCategorySlug = $query['category'] ?? 'all';
-      // Convert to lowercase for consistent comparison
-      $galleryCategorySlug = strtolower($galleryCategorySlug);
-
-      $filteredGalleryItems = $galleryItems ?? [];
-      if ($galleryCategorySlug !== 'all') {
+<section class="section-padding bg-background">
+  <div class="container-bank">
+    <!-- Category tabs (unchanged) -->
+    <div class="flex flex-wrap gap-2 mb-8" role="tablist" aria-label="Gallery categories">
+      <?php if (!empty($galleryCategories)): ?>
+        <?php foreach ($galleryCategories as $cat): ?>
+          <a href="<?= current_url() . '?category=' . rawurlencode($cat['slug']) ?>"
+             class="px-4 py-2 rounded-full text-sm font-medium transition-colors tap-target <?= $galleryCategorySlug === $cat['slug'] ? 'bg-primary text-primary-foreground' : 'bg-muted' ?>"
+             style="<?= $galleryCategorySlug === $cat['slug'] ? '' : 'color: hsl(var(--muted-foreground));' ?>">
+            <?= esc($cat['name']) ?>
+          </a>
+        <?php endforeach; ?>
+      <?php endif; ?>
+    </div>
+    <?php
+    // Category filter logic (already there)
+    $galleryCategorySlug = $query['category'] ?? 'all';
+    $galleryCategorySlug = strtolower($galleryCategorySlug);
+    $filteredGalleryItems = $galleryItems ?? [];
+    if ($galleryCategorySlug !== 'all') {
         $filteredGalleryItems = array_values(array_filter($galleryItems, function ($item) use ($galleryCategorySlug) {
-          // Compare using category slug (you need to pass slug from controller)
-          return strtolower($item['category_slug'] ?? '') === $galleryCategorySlug;
+            return strtolower($item['category_slug'] ?? '') === $galleryCategorySlug;
         }));
-      }
-      ?>
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <?php if (!empty($filteredGalleryItems)): ?>
-          <?php foreach ($filteredGalleryItems as $item): ?>
-            <article class="bank-card overflow-hidden">
-              <?php if (!empty($item['image'])): ?>
-                <img src="<?= base_url($item['image']) ?>" alt="<?= esc($item['title']) ?>" class="w-full h-48 object-cover">
-              <?php else: ?>
-                <div class="aspect-video bg-muted flex items-center justify-center">
-                  <i data-lucide="image" class="w-12 h-12" style="color: hsl(var(--muted-foreground) / 0.4);"></i>
+    }
+    ?>
+
+    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <?php if (!empty($filteredGalleryItems)): ?>
+        <?php foreach ($filteredGalleryItems as $item): ?>
+          <?php
+            // Collect all images for lightbox (main + sub)
+            $allImages = [];
+            if (!empty($item['image'])) {
+                $allImages[] = ['path' => $item['image'], 'title' => $item['title']];
+            }
+            if (!empty($item['sub_images'])) {
+                foreach ($item['sub_images'] as $sub) {
+                    $allImages[] = ['path' => $sub['image_path'], 'title' => $sub['title'] ?? $item['title']];
+                }
+            }
+          ?>
+          <article class="bank-card overflow-hidden group">
+
+            <!-- Main image (clickable) -->
+            <a href="<?= base_url($allImages[0]['path'] ?? '#') ?>"
+               data-lightbox="gallery-<?= $item['id'] ?>"
+               data-title="<?= esc($item['title']) ?>">
+              <img src="<?= base_url($item['image'] ?? ($allImages[0]['path'] ?? '')) ?>"
+                   alt="<?= esc($item['title']) ?>"
+                   class="w-full h-48 object-cover transition-transform group-hover:scale-105">
+            </a>
+
+            <!-- Hidden links for remaining images (so they appear in same lightbox) -->
+            <?php foreach (array_slice($allImages, 1) as $img): ?>
+              <a href="<?= base_url($img['path']) ?>"
+                 data-lightbox="gallery-<?= $item['id'] ?>"
+                 data-title="<?= esc($img['title']) ?>"
+                 class="hidden"></a>
+            <?php endforeach; ?>
+
+            <div class="p-4">
+              <span class="text-xs text-primary font-medium"><?= esc($item['category_name']) ?></span>
+              <h3 class="font-semibold text-foreground mt-1"><?= esc($item['title']) ?></h3>
+              <p class="text-sm mt-1" style="color: hsl(var(--muted-foreground));"><?= esc($item['description']) ?></p>
+              <?php if (!empty($item['event_date'])): ?>
+                <p class="text-xs mt-1 flex items-center gap-1" style="color: hsl(var(--muted-foreground));">
+                  <i data-lucide="calendar" class="w-3 h-3"></i>
+                  <?= date('d M Y', strtotime($item['event_date'])) ?>
+                </p>
+              <?php endif; ?>
+
+              <!-- Sub‑photo thumbnails (max 2) + more button -->
+              <?php if (!empty($item['sub_images'])): ?>
+                <div class="flex flex-wrap gap-2 mt-3">
+                  <?php $displayCount = min(5, count($item['sub_images'])); ?>
+                  <?php for ($i = 0; $i < $displayCount; $i++): ?>
+                    <a href="<?= base_url($item['sub_images'][$i]['image_path']) ?>"
+                       data-lightbox="gallery-<?= $item['id'] ?>"
+                       data-title="<?= esc($item['title']) ?>"
+                       class="block w-12 h-12 rounded overflow-hidden border shadow-sm">
+                      <img src="<?= base_url($item['sub_images'][$i]['image_path']) ?>"
+                           class="w-full h-full object-cover">
+                    </a>
+                  <?php endfor; ?>
                 </div>
               <?php endif; ?>
-              <div class="p-4">
-                <span class="text-xs text-primary font-medium"><?= esc($item['category_name']) ?></span>
-                <h3 class="font-semibold text-foreground mt-1"><?= esc($item['title']) ?></h3>
-                <p class="text-sm mt-1" style="color: hsl(var(--muted-foreground));"><?= esc($item['description']) ?></p>
-              </div>
-            </article>
-          <?php endforeach; ?>
-        <?php else: ?>
-          <p class="text-center col-span-full" style="color: hsl(var(--muted-foreground));">No gallery items found.</p>
-        <?php endif; ?>
-      </div>
+            </div>
+          </article>
+        <?php endforeach; ?>
+      <?php else: ?>
+        <p class="text-center col-span-full" style="color: hsl(var(--muted-foreground));">No gallery items found.</p>
+      <?php endif; ?>
     </div>
-  </section>
+  </div>
+</section>
 
 <?php elseif ($pageKey === 'branches'): ?>
   <!-- Branches section remains as previously dynamic -->

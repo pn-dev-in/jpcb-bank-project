@@ -1,7 +1,10 @@
-<footer id="contact" role="contentinfo" style="background-color: hsl(var(--foreground)); color: hsl(var(--background));">
+<footer id="contact" role="contentinfo"
+  style="background-color: hsl(var(--foreground)); color: hsl(var(--background));">
   <div class="container-bank">
     <div class="flex justify-end py-3 border-b" style="border-color: rgba(255,255,255,0.1);">
-      <a href="#top" class="flex items-center gap-1.5 text-sm tap-target transition-colors" style="color: rgba(255,255,255,0.6);" onmouseover="this.style.color='rgba(255,255,255,1)'" onmouseout="this.style.color='rgba(255,255,255,0.6)'">
+      <a href="#top" class="flex items-center gap-1.5 text-sm tap-target transition-colors"
+        style="color: rgba(255,255,255,0.6);" onmouseover="this.style.color='rgba(255,255,255,1)'"
+        onmouseout="this.style.color='rgba(255,255,255,0.6)'">
         <i data-lucide="arrow-up" class="w-4 h-4" aria-hidden="true"></i> Back to top
       </a>
     </div>
@@ -10,38 +13,83 @@
   <div class="container-bank py-10 md:py-14">
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-8">
       <div class="col-span-2 md:col-span-3 lg:col-span-1">
-        <img src="<?= base_url('assets/images/bank-logo.png') ?>" alt="JPC Bank" class="h-10 w-auto mb-4" style="filter: brightness(0) invert(1);">
+        <img src="<?= base_url('assets/images/bank-logo.png') ?>" alt="JPC Bank" class="h-10 w-auto mb-4"
+          style="filter: brightness(0) invert(1);">
 
         <div class="space-y-2.5 text-sm" style="color: rgba(255,255,255,0.7);">
-          <a href="tel:<?= str_replace(['-', ' '], '', $siteSettings['phone'] ?? '02572220055') ?>" class="flex items-center gap-2 tap-target transition-colors" onmouseover="this.style.color='rgba(255,255,255,1)'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">
-            <i data-lucide="phone" class="w-4 h-4 flex-shrink-0" aria-hidden="true"></i><?= esc($siteSettings['phone'] ?? '0257-2220055') ?>
-          </a>
-          <a href="mailto:<?= esc($siteSettings['email'] ?? 'info@jpcb.in') ?>" class="flex items-center gap-2 tap-target transition-colors" onmouseover="this.style.color='rgba(255,255,255,1)'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">
-            <i data-lucide="mail" class="w-4 h-4 flex-shrink-0" aria-hidden="true"></i><?= esc($siteSettings['email'] ?? 'info@jpcb.in') ?>
-          </a>
-          <p class="flex items-start gap-2">
-            <i data-lucide="map-pin" class="w-4 h-4 flex-shrink-0 mt-0.5" aria-hidden="true"></i>
-            <?php
-            $address = $siteSettings['footer_address'] ?? '';
-            if (empty($address)) {
-                $address = $siteSettings['address'] ?? '';
-            }
-            if (empty($address)) {
-                $address = 'Near Railway Station,<br>Jalgaon - 425001, Maharashtra';
-            }
-            ?>
-            <span><?= $address ?></span>
-          </p>
+          <!-- Phone numbers -->
+          <div class="flex flex-col gap-1">
+            <?php if (!empty($siteSettings['phone'])): ?>
+              <div class="flex items-center gap-1 tap-target transition-colors"
+                onmouseover="this.style.color='rgba(255,255,255,1)'"
+                onmouseout="this.style.color='rgba(255,255,255,0.7)'">
+                <i data-lucide="phone" class="w-4 h-4 flex-shrink-0"></i>
+                Ph.No: <?= esc($siteSettings['phone']) ?>
+              </div>
+            <?php endif; ?>
+            <?php if (!empty($siteSettings['phone_alternate'])): ?>
+              <div class="flex items-center gap-1 tap-target transition-colors"
+                onmouseover="this.style.color='rgba(255,255,255,1)'"
+                onmouseout="this.style.color='rgba(255,255,255,0.7)'">
+                <i data-lucide="phone" class="w-4 h-4 flex-shrink-0"></i>
+               Contact: <?= esc($siteSettings['phone_alternate']) ?>
+              </div>
+            <?php endif; ?>
+            <?php if (!empty($siteSettings['toll_free'])): ?>
+              <div class="flex items-center gap-1 tap-target transition-colors"
+                onmouseover="this.style.color='rgba(255,255,255,1)'"
+                onmouseout="this.style.color='rgba(255,255,255,0.7)'">
+                <i data-lucide="phone" class="w-4 h-4 flex-shrink-0"></i>
+                Toll Free: <?= esc($siteSettings['toll_free']) ?>
+              </div>
+            <?php endif; ?>
+            <?php if (!empty($siteSettings['helpline'])): ?>
+              <div class="flex items-center gap-1 tap-target transition-colors"
+                onmouseover="this.style.color='rgba(255,255,255,1)'"
+                onmouseout="this.style.color='rgba(255,255,255,0.7)'">
+                <i data-lucide="phone" class="w-4 h-4 flex-shrink-0"></i>
+                Helpline: <?= esc($siteSettings['helpline']) ?>
+              </div>
+            <?php endif; ?>
+          </div>
+
+          <!-- Emails -->
+          <?php if (!empty($siteSettings['email'])): ?>
+            <div class="flex items-center gap-2 tap-target transition-colors"
+              onmouseover="this.style.color='rgba(255,255,255,1)'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">
+              <i data-lucide="mail" class="w-4 h-4 flex-shrink-0"></i>
+              <?= esc($siteSettings['email']) ?>
+            </div>
+          <?php endif; ?>
+          <?php if (!empty($siteSettings['email_support'])): ?>
+            <div class="flex items-center gap-2 tap-target transition-colors"
+              onmouseover="this.style.color='rgba(255,255,255,1)'" onmouseout="this.style.color='rgba(255,255,255,0.7)'">
+              <i data-lucide="mail" class="w-4 h-4 flex-shrink-0"></i>
+              24x7 Support: <?= esc($siteSettings['email_support']) ?>
+            </div>
+          <?php endif; ?>
+
+          <!-- Address -->
+          <?php
+          $address = $siteSettings['footer_address'] ?? $siteSettings['address'] ?? '';
+          if (empty($address)) {
+            $address = 'Near Railway Station,<br>Jalgaon - 425001, Maharashtra';
+          }
+          ?>
+          <div class="flex items-start gap-2 hover:text-white transition-colors duration-200">
+            <i data-lucide="map-pin" class="w-4 h-4 flex-shrink-0 mt-0.5"></i>
+            <span><?= nl2br(esc($address)) ?></span>
+          </div>
         </div>
 
         <div class="flex items-center gap-2 mt-4">
-          <?php foreach($socialLinks as $social): ?>
+          <?php foreach ($socialLinks as $social): ?>
             <a href="<?= esc($social['url']) ?>" target="_blank"
-               class="w-9 h-9 rounded-full flex items-center justify-center tap-target transition-colors"
-               style="background-color: rgba(255,255,255,0.1);"
-               onmouseover="this.style.backgroundColor='rgba(255,255,255,0.2)'"
-               onmouseout="this.style.backgroundColor='rgba(255,255,255,0.1)'"
-               aria-label="<?= esc($social['name'] ?? $social['icon']) ?>">
+              class="w-9 h-9 rounded-full flex items-center justify-center tap-target transition-colors"
+              style="background-color: rgba(255,255,255,0.1);"
+              onmouseover="this.style.backgroundColor='rgba(255,255,255,0.2)'"
+              onmouseout="this.style.backgroundColor='rgba(255,255,255,0.1)'"
+              aria-label="<?= esc($social['name'] ?? $social['icon']) ?>">
               <i data-lucide="<?= esc($social['icon']) ?>" class="w-4 h-4"></i>
             </a>
           <?php endforeach; ?>
@@ -108,11 +156,16 @@
 
   <div class="border-t" style="border-color: rgba(255,255,255,0.1);">
     <div class="container-bank py-4">
-      <div class="flex flex-col md:flex-row items-center justify-between gap-3 text-xs" style="color: rgba(255,255,255,0.5);">
-        <p>© <?= date('Y') ?> <?= esc($siteSettings['copyright_text'] ?? 'The Jalgaon Peoples Co-Op. Bank Ltd. All rights reserved.') ?></p>
+      <div class="flex flex-col md:flex-row items-center justify-between gap-3 text-xs"
+        style="color: rgba(255,255,255,0.5);">
+        <p>© <?= date('Y') ?>
+          <?= esc($siteSettings['copyright_text'] ?? 'The Jalgaon Peoples Co-Op. Bank Ltd. All rights reserved.') ?></p>
         <div class="flex items-center gap-3">
-          <a href="<?= esc($siteSettings['rbi_guidelines_link'] ?? 'https://rbi.org.in') ?>" target="_blank" rel="noopener" class="transition-colors flex items-center gap-1" onmouseover="this.style.color='rgba(255,255,255,1)'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
-            <?= esc($siteSettings['rbi_guidelines_text'] ?? 'RBI Guidelines') ?> <i data-lucide="external-link" class="w-3 h-3" aria-hidden="true"></i>
+          <a href="<?= esc($siteSettings['rbi_guidelines_link'] ?? 'https://rbi.org.in') ?>" target="_blank"
+            rel="noopener" class="transition-colors flex items-center gap-1"
+            onmouseover="this.style.color='rgba(255,255,255,1)'" onmouseout="this.style.color='rgba(255,255,255,0.5)'">
+            <?= esc($siteSettings['rbi_guidelines_text'] ?? 'RBI Guidelines') ?> <i data-lucide="external-link"
+              class="w-3 h-3" aria-hidden="true"></i>
           </a>
           <span>|</span>
           <span><?= esc($siteSettings['bank_type_text'] ?? 'Multi-State Scheduled Co-operative Bank') ?></span>

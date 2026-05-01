@@ -31,6 +31,7 @@ class TrustStats extends BaseController
             'icon' => 'required|max_length[50]',
             'value' => 'required|max_length[50]',
             'label' => 'required|max_length[100]',
+            'link' => 'permit_empty|max_length[255]',
             'sort_order' => 'permit_empty|integer',
             'status' => 'permit_empty|integer'
         ];
@@ -41,6 +42,7 @@ class TrustStats extends BaseController
             'icon' => $this->request->getPost('icon'),
             'value' => $this->request->getPost('value'),
             'label' => $this->request->getPost('label'),
+            'link' => $this->request->getPost('link'),
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status' => $this->request->getPost('status') ?? 1
         ]);
@@ -62,6 +64,7 @@ class TrustStats extends BaseController
             'icon' => 'required|max_length[50]',
             'value' => 'required|max_length[50]',
             'label' => 'required|max_length[100]',
+            'link' => 'permit_empty|max_length[255]',
             'sort_order' => 'permit_empty|integer',
             'status' => 'permit_empty|integer'
         ];
@@ -72,6 +75,7 @@ class TrustStats extends BaseController
             'icon' => $this->request->getPost('icon'),
             'value' => $this->request->getPost('value'),
             'label' => $this->request->getPost('label'),
+            'link' => $this->request->getPost('link'),
             'sort_order' => $this->request->getPost('sort_order') ?? 0,
             'status' => $this->request->getPost('status') ?? 1
         ]);

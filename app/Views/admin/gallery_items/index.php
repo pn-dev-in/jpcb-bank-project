@@ -14,6 +14,7 @@
                     <tr>
                         <th>Image</th>
                         <th>Title</th>
+                        <th>Event Date</th>
                         <th>Category</th>
                         <th>Order</th>
                         <th>Status</th>
@@ -31,6 +32,7 @@
                             <?php endif; ?>
                         </td>
                         <td><?= esc($item['title']) ?></td>
+                        <td><?= esc($item['event_date'] ?? '-') ?>
                         <td><?= esc($item['category_name']) ?></td>
                         <td><?= $item['sort_order'] ?></td>
                         <td>

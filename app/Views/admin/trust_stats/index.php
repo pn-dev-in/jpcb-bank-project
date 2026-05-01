@@ -30,6 +30,7 @@
                         <th>Icon (Lucide)</th>
                         <th>Value</th>
                         <th>Label</th>
+                        <th>Link (URL)</th>
                         <th>Sort Order</th>
                         <th>Status</th>
                         <th>Actions</th>
@@ -45,6 +46,7 @@
                             <td><?= esc($stat['icon']) ?></td>
                             <td><?= esc($stat['value']) ?></td>
                             <td><?= esc($stat['label']) ?></td>
+                            <td><?= esc($stat['link'] ?? '-') ?></td>
                             <td><?= $stat['sort_order'] ?></td>
                             <td>
                                 <span class="badge bg-<?= $stat['status'] ? 'success' : 'secondary' ?>">

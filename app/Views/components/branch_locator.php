@@ -8,7 +8,7 @@
           Find Branch / ATM
         </h2>
         <p class="readable mb-6" style="color: hsl(var(--muted-foreground));">
-          Locate our branches and ATMs near you. Enter your pincode, city, or IFSC code.
+          Locate our branches and ATMs near you. Enter pincode, city, or IFSC code.
         </p>
 
         <form id="branch-search-form" action="<?= site_url('about/branches') ?>" method="get" class="mb-6" role="search">
@@ -29,29 +29,45 @@
           </div>
         </form>
 
-        <div class="space-y-3">
+        <div class="space-y-3 max-h-[600px] overflow-y-auto pr-2">
           <?php foreach ($branches as $branch): ?>
-    <article class="bank-card p-4">
-        <div class="flex items-start gap-3">
-            <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style="background-color: hsl(var(--primary) / 0.1);">
-                <i data-lucide="map-pin" class="w-4 h-4" style="color: hsl(var(--primary));"></i>
-            </div>
-            <div class="flex-1 min-w-0">
-                <div class="flex items-start justify-between gap-2">
+            <article class="bank-card p-4" data-lat="<?= esc($branch['latitude'] ?? '') ?>" data-lng="<?= esc($branch['longitude'] ?? '') ?>" data-name="<?= esc($branch['branch_name']) ?>">
+              <div class="flex items-start gap-3">
+                <div class="w-9 h-9 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5" style="background-color: hsl(var(--primary) / 0.1);">
+                  <i data-lucide="map-pin" class="w-4 h-4" style="color: hsl(var(--primary));"></i>
+                </div>
+                <div class="flex-1 min-w-0">
+                  <div class="flex items-start justify-between gap-2 flex-wrap">
                     <h3 class="font-semibold text-sm" style="color: hsl(var(--foreground));"><?= esc($branch['branch_name']) ?></h3>
                     <?php if ($branch['has_atm']): ?>
-                        <span class="text-xs px-2 py-0.5 rounded font-medium flex-shrink-0" style="background-color: hsl(var(--primary) / 0.1); color: hsl(var(--primary));">ATM</span>
+                      <span class="text-xs px-2 py-0.5 rounded font-medium flex-shrink-0" style="background-color: hsl(var(--primary) / 0.1); color: hsl(var(--primary));">ATM</span>
                     <?php endif; ?>
+                  </div>
+                  <p class="text-sm mt-0.5" style="color: hsl(var(--muted-foreground));">
+                    <?= nl2br(esc($branch['address'] ?? '')) ?>
+                    <?php if (!empty($branch['city'])): ?>, <?= esc($branch['city']) ?><?php endif; ?>
+                    <?php if (!empty($branch['pincode'])): ?> - <?= esc($branch['pincode']) ?><?php endif; ?>
+                  </p>
+                  <div class="flex flex-wrap items-center gap-3 mt-1.5 text-xs" style="color: hsl(var(--muted-foreground));">
+                    <?php if (!empty($branch['phone'])): ?>
+                      <span class="flex items-center gap-1"><i data-lucide="phone" class="w-3 h-3"></i><?= esc($branch['phone']) ?></span>
+                    <?php endif; ?>
+                    <?php if (!empty($branch['timings'])): ?>
+                      <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i><?= esc($branch['timings']) ?></span>
+                    <?php endif; ?>
+                    <?php if (!empty($branch['ifsc'])): ?>
+                      <span class="flex items-center gap-1"><i data-lucide="credit-card" class="w-3 h-3"></i>IFSC: <?= esc($branch['ifsc']) ?></span>
+                    <?php endif; ?>
+                  </div>
+                  <?php if (!empty($branch['latitude']) && !empty($branch['longitude'])): ?>
+                    <a href="https://www.google.com/maps?q=<?= $branch['latitude'] ?>,<?= $branch['longitude'] ?>" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1 text-xs mt-2 hover:underline" style="color: hsl(var(--primary));">
+                      <i data-lucide="external-link" class="w-3 h-3"></i> View on map
+                    </a>
+                  <?php endif; ?>
                 </div>
-                <p class="text-sm mt-0.5" style="color: hsl(var(--muted-foreground));"><?= esc($branch['address']) ?><?= $branch['area'] ? ', ' . esc($branch['area']) : '' ?></p>
-                <div class="flex flex-wrap items-center gap-3 mt-1.5 text-xs" style="color: hsl(var(--muted-foreground));">
-                    <span class="flex items-center gap-1"><i data-lucide="phone" class="w-3 h-3"></i><?= esc($branch['phone']) ?></span>
-                    <span class="flex items-center gap-1"><i data-lucide="clock" class="w-3 h-3"></i><?= esc($branch['timings']) ?></span>
-                </div>
-            </div>
-        </div>
-    </article>
-<?php endforeach; ?>
+              </div>
+            </article>
+          <?php endforeach; ?>
         </div>
 
         <a href="<?= site_url('about/branches') ?>" class="inline-flex items-center gap-2 font-medium tap-target mt-4 text-sm" style="color: hsl(var(--primary));">
@@ -78,3 +94,33 @@
     </div>
   </div>
 </section>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize map
+  var map = L.map('branchMap').setView([21.0142, 75.5690], 10); // Default: Jalgaon centre
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a> &copy; CartoDB',
+    subdomains: 'abcd',
+    maxZoom: 19
+  }).addTo(map);
+
+  // Collect markers
+  var branches = document.querySelectorAll('#branch-locator article');
+  var markers = [];
+  branches.forEach(function(el) {
+    var lat = el.getAttribute('data-lat');
+    var lng = el.getAttribute('data-lng');
+    var name = el.getAttribute('data-name');
+    if (lat && lng && !isNaN(parseFloat(lat)) && !isNaN(parseFloat(lng))) {
+      var marker = L.marker([parseFloat(lat), parseFloat(lng)]).addTo(map);
+      marker.bindPopup('<strong>' + name + '</strong><br>' + el.querySelector('p').innerText);
+      markers.push(marker);
+    }
+  });
+  if (markers.length > 0) {
+    var group = L.featureGroup(markers);
+    map.fitBounds(group.getBounds().pad(0.2));
+  }
+});
+</script>

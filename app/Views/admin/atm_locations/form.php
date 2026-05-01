@@ -6,41 +6,76 @@
         <h3 class="mb-0"><?= isset($item) ? 'Edit' : 'Add' ?> ATM Location</h3>
     </div>
     <div class="card-body">
-        <form method="post" action="<?= isset($item) ? base_url('admin/atm-locations/update/' . $item['id']) : base_url('admin/atm-locations/store') ?>">
+        <form method="post"
+            action="<?= isset($item) ? base_url('admin/atm-locations/update/' . $item['id']) : base_url('admin/atm-locations/store') ?>">
             <?= csrf_field() ?>
 
             <div class="mb-3">
                 <label class="form-label">ATM Name *</label>
-                <input type="text" name="name" class="form-control" value="<?= old('name', $item['name'] ?? '') ?>" required placeholder="e.g., Head Office ATM">
+                <input type="text" name="name" class="form-control" value="<?= old('name', $item['name'] ?? '') ?>"
+                    required placeholder="e.g., Head Office ATM">
                 <small class="text-muted d-block">Unique name for the ATM location.</small>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Unique ID (admin only)</label>
-                <input type="text" name="unique_id" class="form-control" value="<?= old('unique_id', $item['unique_id'] ?? '') ?>" placeholder="e.g., JPCB-ATM-001">
+                <input type="text" name="unique_id" class="form-control"
+                    value="<?= old('unique_id', $item['unique_id'] ?? '') ?>" placeholder="e.g., JPCB-ATM-001">
                 <small class="text-muted">Optional internal reference. Must be unique.</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Full Address</label>
+                <textarea name="address" class="form-control"
+                    rows="2"><?= old('address', $item['address'] ?? '') ?></textarea>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label class="form-label">Latitude</label>
+                    <input type="text" name="latitude" class="form-control"
+                        value="<?= old('latitude', $item['latitude'] ?? '') ?>" placeholder="e.g., 21.014210">
+                    <small class="text-muted">Decimal degrees (WGS84)</small>
+                </div>
+                <div class="col-md-6">
+                    <label class="form-label">Longitude</label>
+                    <input type="text" name="longitude" class="form-control"
+                        value="<?= old('longitude', $item['longitude'] ?? '') ?>" placeholder="e.g., 75.569012">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Location Type</label>
+                <select name="location_type" class="form-control">
+                    <option value="On Site" <?= (isset($item) && ($item['location_type'] ?? '') == 'On Site') ? 'selected' : '' ?>>On Site (inside branch)</option>
+                    <option value="Off Site" <?= (isset($item) && ($item['location_type'] ?? '') == 'Off Site') ? 'selected' : '' ?>>Off Site (standalone ATM)</option>
+                </select>
             </div>
             
             <div class="mb-3">
                 <label class="form-label">City *</label>
-                <input type="text" name="city" class="form-control" value="<?= old('city', $item['city'] ?? '') ?>" required placeholder="e.g., Jalgaon">
+                <input type="text" name="city" class="form-control" value="<?= old('city', $item['city'] ?? '') ?>"
+                    required placeholder="e.g., Jalgaon">
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Area (optional)</label>
-                <input type="text" name="area" class="form-control" value="<?= old('area', $item['area'] ?? '') ?>" placeholder="e.g., Station Road, Market Yard">
+                <input type="text" name="area" class="form-control" value="<?= old('area', $item['area'] ?? '') ?>"
+                    placeholder="e.g., Station Road, Market Yard">
                 <small class="text-muted d-block">Specific locality or landmark.</small>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">PIN Code</label>
-                <input type="text" name="pin" class="form-control" value="<?= old('pin', $item['pin'] ?? '') ?>" placeholder="e.g., 425001">
+                <input type="text" name="pin" class="form-control" value="<?= old('pin', $item['pin'] ?? '') ?>"
+                    placeholder="e.g., 425001">
                 <small class="text-muted d-block">Postal code for the location.</small>
             </div>
 
             <div class="mb-3">
                 <label class="form-label">Operating Hours</label>
-                <input type="text" name="hours" class="form-control" value="<?= old('hours', $item['hours'] ?? '24x7') ?>" placeholder="e.g., 24x7, 9 AM - 9 PM">
+                <input type="text" name="hours" class="form-control"
+                    value="<?= old('hours', $item['hours'] ?? '24x7') ?>" placeholder="e.g., 24x7, 9 AM - 9 PM">
                 <small class="text-muted d-block">Default is 24x7.</small>
             </div>
 
@@ -48,14 +83,16 @@
                 <div class="col-md-6">
                     <label class="form-label">ATM Status</label>
                     <select name="atm_status" class="form-control">
-                        <option value="Active" <?= (isset($item) && $item['atm_status'] == 'Active') ? 'selected' : '' ?>>Active</option>
+                        <option value="Active" <?= (isset($item) && $item['atm_status'] == 'Active') ? 'selected' : '' ?>>
+                            Active</option>
                         <option value="Maintenance" <?= (isset($item) && $item['atm_status'] == 'Maintenance') ? 'selected' : '' ?>>Maintenance</option>
                     </select>
                     <small class="text-muted d-block">Shows as "Active" or "Maintenance" on frontend.</small>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label">Sort Order</label>
-                    <input type="number" name="sort_order" class="form-control" value="<?= old('sort_order', $item['sort_order'] ?? 0) ?>" placeholder="0">
+                    <input type="number" name="sort_order" class="form-control"
+                        value="<?= old('sort_order', $item['sort_order'] ?? 0) ?>" placeholder="0">
                     <small class="text-muted d-block">Lower numbers appear first.</small>
                 </div>
             </div>

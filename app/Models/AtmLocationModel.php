@@ -8,6 +8,10 @@ class AtmLocationModel extends Model
 {
     protected $table = 'atm_locations';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['name', 'city', 'area', 'pin', 'hours', 'atm_status', 'sort_order', 'status',  'unique_id'];
+     protected $allowedFields = [
+        'unique_id', 'name', 'address', 'city', 'area', 'pin',
+        'latitude', 'longitude', 'hours', 'location_type',
+        'atm_status', 'sort_order', 'status'
+    ];
     protected $useTimestamps = true;
 }

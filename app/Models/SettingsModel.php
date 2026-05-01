@@ -18,6 +18,7 @@ class SettingsModel extends Model
     'block_card_link', 'lodge_complaint_link', 'digital_banking_button_text',
     'footer_address', 'copyright_text', 'rbi_guidelines_text', 
     'rbi_guidelines_link', 'bank_type_text', 'facebook_url', 
-    'twitter_url', 'linkedin_url', 'youtube_url'
+    'twitter_url', 'linkedin_url', 'youtube_url', 'phone_alternate',
+    'toll_free', 'helpline' , 'email_support' 
 ];
 }

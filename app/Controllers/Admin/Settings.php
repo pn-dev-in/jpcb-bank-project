@@ -35,6 +35,10 @@ class Settings extends BaseController
                 'rbi_guidelines_text' => 'RBI Guidelines',
                 'rbi_guidelines_link' => 'https://rbi.org.in',
                 'bank_type_text' => 'Multi-State Scheduled Co-operative Bank',
+                'phone_alternate' => $this->request->getPost('phone_alternate'),
+    'toll_free'       => $this->request->getPost('toll_free'),
+    'helpline'        => $this->request->getPost('helpline'),
+    'email_support'   => $this->request->getPost('email_support'),
             ]);
             $settings = $this->model->find(1);
         }
@@ -66,6 +70,10 @@ class Settings extends BaseController
             'twitter_url' => 'permit_empty|valid_url|max_length[255]',
             'linkedin_url' => 'permit_empty|valid_url|max_length[255]',
             'youtube_url' => 'permit_empty|valid_url|max_length[255]',
+            'phone_alternate' => 'permit_empty|max_length[50]',
+'toll_free'       => 'permit_empty|max_length[50]',
+'helpline'        => 'permit_empty|max_length[50]',
+'email_support'   => 'permit_empty|valid_email|max_length[150]',
         ];
 
         if (!$this->validate($rules)) {

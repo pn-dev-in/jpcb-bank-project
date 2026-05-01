@@ -12,12 +12,12 @@ class Pages extends BaseController
             'default' => 'about',
             'contentView' => 'pages/content/about',
             'pages' => [
-                'about'      => ['title' => 'About the Bank'],
-                'board'      => ['title' => 'Board of Directors'],
+                'about' => ['title' => 'About the Bank'],
+                'board' => ['title' => 'Board of Directors'],
                 'management' => ['title' => 'Management'],
-                'awards'     => ['title' => 'Awards & Recognition'],
-                'gallery'    => ['title' => 'Gallery'],
-                'branches'   => ['title' => 'Branches'],
+                'awards' => ['title' => 'Awards & Recognition'],
+                'gallery' => ['title' => 'Gallery'],
+                'branches' => ['title' => 'Branches'],
             ],
         ],
         'deposits' => [
@@ -25,12 +25,12 @@ class Pages extends BaseController
             'default' => 'overview',
             'contentView' => 'pages/content/deposits',
             'pages' => [
-                'overview'         => ['title' => 'Deposits'],
-                'products'         => ['title' => 'Deposit Products'],
-                'interest-rates'   => ['title' => 'Deposit Interest Rates'],
-                'savings-current'  => ['title' => 'Savings & Current Accounts'],
-                'dicgc'            => ['title' => 'DICGC Insurance'],
-                'deaf'             => ['title' => 'DEAF'],
+                'overview' => ['title' => 'Deposits'],
+                'products' => ['title' => 'Deposit Products'],
+                'interest-rates' => ['title' => 'Deposit Interest Rates'],
+                'savings-current' => ['title' => 'Savings & Current Accounts'],
+                'dicgc' => ['title' => 'DICGC Insurance'],
+                'deaf' => ['title' => 'DEAF'],
             ],
         ],
         'loans' => [
@@ -38,8 +38,8 @@ class Pages extends BaseController
             'default' => 'overview',
             'contentView' => 'pages/content/loans',
             'pages' => [
-                'overview'       => ['title' => 'Loans'],
-                'products'       => ['title' => 'Loan Products'],
+                'overview' => ['title' => 'Loans'],
+                'products' => ['title' => 'Loan Products'],
                 'interest-rates' => ['title' => 'Loan Interest Rates'],
                 'emi-calculator' => ['title' => 'EMI Calculator', 'script' => 'pages/scripts/emi_calculator'],
             ],
@@ -49,14 +49,14 @@ class Pages extends BaseController
             'default' => 'overview',
             'contentView' => 'pages/content/digital',
             'pages' => [
-                'overview'       => ['title' => 'Digital Banking'],
+                'overview' => ['title' => 'Digital Banking'],
                 'mobile-banking' => ['title' => 'Mobile Banking'],
-                'atm'            => ['title' => 'ATM Services'],
-                'block-card'     => ['title' => 'Block Card'],
-                'ifsc-micr'      => ['title' => 'IFSC / MICR Codes'],
-                'rtgs-neft'      => ['title' => 'RTGS / NEFT'],
-                'upi'            => ['title' => 'UPI Service'],
-                'digisaathi'     => ['title' => 'DigiSaathi'],
+                'atm' => ['title' => 'ATM Services'],
+                'block-card' => ['title' => 'Block Card'],
+                'ifsc-micr' => ['title' => 'IFSC / MICR Codes'],
+                'rtgs-neft' => ['title' => 'RTGS / NEFT'],
+                'upi' => ['title' => 'UPI Service'],
+                'digisaathi' => ['title' => 'DigiSaathi'],
             ],
         ],
         'services' => [
@@ -64,10 +64,10 @@ class Pages extends BaseController
             'default' => 'overview',
             'contentView' => 'pages/content/services',
             'pages' => [
-                'overview'     => ['title' => 'Services'],
-                'charges'      => ['title' => 'Service Charges'],
-                'lockers'      => ['title' => 'Lockers'],
-                'insurance'    => ['title' => 'Insurance'],
+                'overview' => ['title' => 'Services'],
+                'charges' => ['title' => 'Service Charges'],
+                'lockers' => ['title' => 'Lockers'],
+                'insurance' => ['title' => 'Insurance'],
                 'positive-pay' => ['title' => 'Positive Pay'],
             ],
         ],
@@ -85,11 +85,11 @@ class Pages extends BaseController
             'default' => 'downloads',
             'contentView' => 'pages/content/downloads',
             'pages' => [
-                'downloads'      => ['title' => 'Downloads & Forms'],
-                'forms'          => ['title' => 'Forms', 'defaultCategory' => 'Forms'],
-                'policies'       => ['title' => 'Policies', 'defaultCategory' => 'Policies'],
-                'reports'        => ['title' => 'Reports', 'defaultCategory' => 'Reports'],
-                'notices'        => ['title' => 'Notices', 'defaultCategory' => 'Notices'],
+                'downloads' => ['title' => 'Downloads & Forms'],
+                'forms' => ['title' => 'Forms', 'defaultCategory' => 'Forms'],
+                'policies' => ['title' => 'Policies', 'defaultCategory' => 'Policies'],
+                'reports' => ['title' => 'Reports', 'defaultCategory' => 'Reports'],
+                'notices' => ['title' => 'Notices', 'defaultCategory' => 'Notices'],
                 'secured-assets' => ['title' => 'Secured Assets', 'defaultCategory' => 'Secured Assets'],
             ],
         ],
@@ -98,12 +98,12 @@ class Pages extends BaseController
             'default' => 'overview',
             'contentView' => 'pages/content/rbi',
             'pages' => [
-                'overview'               => ['title' => 'RBI Awareness'],
-                'fair-practice'          => ['title' => 'Fair Practice Code'],
-                'ombudsman'              => ['title' => 'Banking Ombudsman'],
-                'booklet'                => ['title' => 'RBI Booklet'],
-                'integrated-ombudsman'   => ['title' => 'Integrated Ombudsman'],
-                'dos-and-donts'          => ['title' => 'RBI Dos and Donts'],
+                'overview' => ['title' => 'RBI Awareness'],
+                'fair-practice' => ['title' => 'Fair Practice Code'],
+                'ombudsman' => ['title' => 'Banking Ombudsman'],
+                'booklet' => ['title' => 'RBI Booklet'],
+                'integrated-ombudsman' => ['title' => 'Integrated Ombudsman'],
+                'dos-and-donts' => ['title' => 'RBI Dos and Donts'],
             ],
         ],
     ];
@@ -124,7 +124,7 @@ class Pages extends BaseController
             return $this->notFound();
         }
 
-        $pageKey    = $page ?? $sectionConfig['default'];
+        $pageKey = $page ?? $sectionConfig['default'];
         $pageConfig = $sectionConfig['pages'][$pageKey] ?? null;
 
         if ($pageConfig === null) {
@@ -133,7 +133,7 @@ class Pages extends BaseController
 
         $contentData = [
             'pageKey' => $pageKey,
-            'query'   => $this->request->getGet(),
+            'query' => $this->request->getGet(),
         ];
 
         if (isset($pageConfig['defaultCategory'])) {
@@ -166,13 +166,27 @@ class Pages extends BaseController
                 case 'gallery':
                     $categoryModel = new \App\Models\GalleryCategoryModel();
                     $itemModel = new \App\Models\GalleryItemModel();
+                    $imageModel = new \App\Models\GalleryImageModel();   // <-- add this
+
                     $categories = $categoryModel->where('status', 1)->orderBy('sort_order', 'asc')->findAll();
                     $contentData['galleryCategories'] = array_merge([['name' => 'All', 'slug' => 'all']], $categories);
-                    $contentData['galleryItems'] = $itemModel->select('gallery_items.*, gallery_categories.name as category_name, gallery_categories.slug as category_slug')
+
+                    $items = $itemModel->select('gallery_items.*, gallery_categories.name as category_name, gallery_categories.slug as category_slug')
                         ->join('gallery_categories', 'gallery_categories.id = gallery_items.category_id')
                         ->where('gallery_items.status', 1)
                         ->orderBy('gallery_items.sort_order', 'asc')
                         ->findAll();
+
+                    // Attach sub‑photos to each item
+                    foreach ($items as &$item) {
+                        $item['sub_images'] = $imageModel->where('gallery_item_id', $item['id'])
+                            ->where('status', 1)
+                            ->orderBy('sort_order', 'asc')
+                            ->findAll() ?? [];
+                    }
+
+                    $contentData['galleryItems'] = $items;
+                    break;
 
                     break;
             }
@@ -245,7 +259,7 @@ class Pages extends BaseController
                         // Force answer to string ALWAYS
                         if (is_array($faq['answer'])) {
                             $faq['answer'] = implode(', ', array_map(function ($v) {
-                                return is_array($v) ? json_encode($v) : (string)$v;
+                                return is_array($v) ? json_encode($v) : (string) $v;
                             }, $faq['answer']));
                         } else {
                             $faq['answer'] = (string) ($faq['answer'] ?? '');
@@ -297,7 +311,7 @@ class Pages extends BaseController
                         ->orderBy('sort_order', 'asc')
                         ->findAll();
                     break;
-                    // case 'emi-calculator' – no dynamic data needed
+                // case 'emi-calculator' – no dynamic data needed
             }
         }
 
@@ -375,7 +389,7 @@ class Pages extends BaseController
                     foreach ($contentData['mobileFaqs'] as &$faq) {
                         if (is_array($faq['answer'])) {
                             $faq['answer'] = implode(', ', array_map(function ($v) {
-                                return is_array($v) ? json_encode($v) : (string)$v;
+                                return is_array($v) ? json_encode($v) : (string) $v;
                             }, $faq['answer']));
                         } else {
                             $faq['answer'] = (string) ($faq['answer'] ?? '');
@@ -465,7 +479,7 @@ class Pages extends BaseController
                         ->orderBy('sort_order', 'asc')
                         ->findAll();
                     break;
-                    // For 'complaints' page key, we only need categories (the rest of the form is static/JS)
+                // For 'complaints' page key, we only need categories (the rest of the form is static/JS)
             }
             // For both sub‑pages, load categories (used in the complaint form)
             $contentData['complaintCategories'] = (new \App\Models\ComplaintCategoryModel())
@@ -536,7 +550,7 @@ class Pages extends BaseController
         }
 
         return $this->renderPage([
-            'title'       => $pageConfig['title'],
+            'title' => $pageConfig['title'],
             'breadcrumbs' => $this->buildSectionBreadcrumbs($section, $pageKey, $sectionConfig, $pageConfig),
             'contentView' => $sectionConfig['contentView'],
             'contentData' => $contentData,
@@ -554,7 +568,7 @@ class Pages extends BaseController
 
         $contentData = [
             'pageKey' => $page,
-            'query'   => $this->request->getGet(),
+            'query' => $this->request->getGet(),
         ];
 
         // Fetch data for each dynamic page
@@ -621,7 +635,7 @@ class Pages extends BaseController
         $contentData['sitemapSections'] = $contentData['sitemapSections'] ?? [];
 
         return $this->renderPage([
-            'title'       => $pageConfig['title'],
+            'title' => $pageConfig['title'],
             'breadcrumbs' => [['label' => $pageConfig['title']]],
             'contentView' => 'pages/content/utility',
             'contentData' => $contentData,
@@ -634,7 +648,7 @@ class Pages extends BaseController
         $this->response->setStatusCode(404);
 
         return view('pages/not_found', [
-            'title'       => 'Page Not Found',
+            'title' => 'Page Not Found',
             'description' => 'The requested page could not be found.',
         ]);
     }
@@ -645,7 +659,7 @@ class Pages extends BaseController
     private function renderPage(array $page): string
     {
         return view('pages/show', [
-            'title'       => $page['title'],
+            'title' => $page['title'],
             'description' => $page['description'] ?? ($page['title'] . ' | The Jalgaon Peoples Co-Op. Bank Ltd.'),
             'breadcrumbs' => $page['breadcrumbs'] ?? [],
             'contentView' => $page['contentView'],
@@ -671,7 +685,7 @@ class Pages extends BaseController
         return [
             [
                 'label' => $sectionConfig['sectionTitle'],
-                'href'  => $section,
+                'href' => $section,
             ],
             [
                 'label' => $pageConfig['title'],

@@ -91,6 +91,8 @@ $routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('branches/edit/(:num)', 'Admin\BranchController::edit/$1');
     $routes->post('branches/update/(:num)', 'Admin\BranchController::update/$1');
     $routes->post('branches/delete/(:num)', 'Admin\BranchController::delete/$1');
+    $routes->get('branches/import', 'Admin\BranchController::import');
+    $routes->post('branches/process-import', 'Admin\BranchController::processImport');
 
     $routes->get('roles', 'Admin\RoleController::index');
     $routes->get('roles/create', 'Admin\RoleController::create');

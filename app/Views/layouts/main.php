@@ -27,6 +27,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@400;700;900&family=Source+Sans+3:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
   <!-- Local Tailwind build -->
   <link rel="stylesheet" href="<?= base_url('assets/css/tailwind.css') ?>">
@@ -65,6 +66,7 @@
 
   <!-- Main JS -->
   <script src="<?= base_url('assets/js/main.js') ?>"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
   <?= $this->renderSection('scripts') ?>
 </body>
