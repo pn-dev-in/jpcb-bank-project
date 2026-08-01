@@ -1,135 +1,143 @@
-# 🏦 JPCB Bank Management System
+# 🏦 JPCB Bank Administration & Support System
 
-A Banking Management System built using **CodeIgniter 4**, **PHP**, and **MySQL**. During my **Software Development Internship**, I contributed to the development and enhancement of several backend modules, including authentication, content management, activity logging, and administrative functionality while working within an enterprise CodeIgniter 4 application.
+A secure **Bank Administration and Support Management System** built using **PHP**, **CodeIgniter 4**, and **MySQL** during my **Software Development Internship**. The project is an enterprise-grade web application that enables bank administrators to manage website content, users, complaints, internal operations, and communication with the software development team through a centralized administration portal.
 
 > **Disclaimer**
 >
 > This repository contains my internship work and contributions completed during my Software Development Internship.
 >
-> The original project is protected under a **Non-Disclosure Agreement (NDA)**. This repository is maintained **privately** for personal version control and portfolio reference. Any confidential information, production configurations, credentials, uploaded documents, and sensitive data have been removed.
+> The original project is protected under a **Non-Disclosure Agreement (NDA)**. This repository is maintained **privately** for personal reference and version control. Any confidential information, production configurations, credentials, customer information, uploaded documents, and sensitive business data have been removed.
 
 ---
 
 # 🚀 My Contributions
 
-During my Software Development Internship, I contributed to several core modules of the banking application, including authentication, administration, CMS, ticketing, and internal communication systems.
+During my internship, I worked on several major modules of the application, focusing primarily on authentication, administration, CMS, complaint management, and internal communication systems.
 
-### 🔐 Authentication & Authorization
+## 🔐 Admin Authentication & Security
 
-- Designed and implemented the complete Admin Authentication system
-- Developed secure login and session management
-- Protected administrative routes using authentication middleware
-
-### 👥 Role-Based Access Control (RBAC)
-
-- Implemented Role-Based Access Control (RBAC)
-- Designed and developed the Permission Matrix
-- Configured role-specific access for:
-  - Super Admin
-  - Admin
-  - CMS Manager
-  - Branch Manager
-  - Complaint Manager
-  - ATM Manager
-  - Other operational staff
-- Built separate dashboard experiences based on assigned user roles and permissions
-
-### 📰 Content Management System (CMS)
-
-- Developed the complete CMS administration panel
-- Integrated dynamic website content management
-- Enabled administrators to manage frontend website content directly from the admin dashboard
-- Implemented real-time reflection of CMS updates on the public banking website
-
-### 📊 Administrative Dashboard
-
-- Developed the complete Admin Dashboard
-- Implemented Activity Log functionality to track important administrative actions
-- Improved administrative workflows and dashboard usability
-
-### 🎫 Complaint Management System
-
-- Designed and implemented a complete complaint management workflow
-- Developed ticket creation and management features
-- Implemented complaint notifications
-- Enabled ticket assignment to responsible managers
-- Developed ticket status tracking and closure workflow
-
-### 💬 Internal Support & Communication Portal
-
-- Designed and implemented an internal communication platform between JPCB Bank and JBB Technologies
-- Developed dedicated support dashboards for both organizations
-- Integrated email communication into the support workflow
-- Built a ticket-based conversation system allowing administrators to communicate directly with the development team
-- Implemented real-time chat functionality for issue resolution and support discussions
-
-### ⚙ Additional Contributions
-
-- Backend module development using CodeIgniter 4
-- Database integration and optimization
-- Bug fixing and feature enhancements
-- Enterprise application maintenance
-- Collaborative development using Git
+- Designed and implemented the complete Admin Authentication System.
+- Developed secure login functionality with session management.
+- Protected administrative routes and restricted unauthorized access.
+- Improved authentication flow and backend security.
 
 ---
 
-# ✨ Application Features
+## 👥 Role-Based Access Control (RBAC)
 
-## 🔐 Authentication & Authorization
+Designed and implemented a complete Role-Based Access Control (RBAC) system.
 
-- Secure Login System
-- Session-based Authentication
-- Role-Based Access Control (RBAC)
-- Protected Administrative Routes
+Implemented role-specific dashboards and permissions for:
 
----
+- Super Admin
+- Administrator
+- CMS Manager
+- Branch Manager
+- Complaint Manager
+- ATM Manager
+- Other operational staff
 
-## 👤 Customer Management
-
-- Customer Registration
-- Customer Information Management
-- Customer Profile Management
-
----
-
-## 🏦 Branch Management
-
-- Branch Information Management
-- Branch Administration
-- Branch-wise Organization
+Built a Permission Matrix that controls access to different modules based on user roles.
 
 ---
 
-## 💳 ATM Management
+## 📊 Admin Dashboard
 
-- ATM Information Management
-- ATM Status Management
-- ATM Location Administration
+Designed and developed the complete administrative dashboard.
 
----
+Implemented:
 
-## 📄 Document Management
+- Dashboard statistics
+- Navigation modules
+- User management interface
+- Administrative controls
+- System overview
 
-- Secure File Uploads
-- Document Organization
-- File Validation
+Developed an Activity Log system that records important administrative actions performed by users.
 
 ---
 
 ## 📰 Content Management System (CMS)
 
-- Dynamic Website Content Management
-- Informational Page Administration
-- CMS Dashboard
+Developed the complete CMS administration panel.
+
+Implemented:
+
+- Dynamic website content management
+- Homepage content updates
+- Informational page management
+- Banner/content management
+
+Integrated the CMS with the public website so that updates made by administrators are reflected dynamically on the frontend without code changes.
 
 ---
 
-## 👨‍💼 Administrative Panel
+## 🎫 Complaint Management System
 
-- Dashboard Overview
-- Administrative Controls
+Designed and developed the complete Complaint Management workflow.
+
+Features include:
+
+- Complaint/Ticket creation
+- Complaint notifications
+- Ticket assignment
+- Status tracking
+- Ticket resolution
+- Ticket closure
+
+Administrators can assign complaints to responsible managers, monitor progress, and close tickets after successful resolution.
+
+---
+
+## 💬 Internal Support & Communication Portal
+
+One of my major internship contributions was building an internal communication platform between **JPCB Bank** and **JBB Technologies**.
+
+Implemented:
+
+- Dedicated support dashboard for JBB Technologies
+- Internal ticket-based communication system
+- Real-time conversation workflow
+- Email integration for issue updates
+- Bidirectional communication between Bank Administrators and the Development Team
+
+Whenever bank administrators encounter issues within the application, they can directly raise support requests from the admin panel. These requests are received by the JBB Technologies support dashboard, allowing developers and bank administrators to communicate, track progress, and resolve issues efficiently.
+
+---
+
+## ⚙ Backend Development
+
+Contributed to backend development across multiple modules.
+
+Responsibilities included:
+
+- Developing new backend functionality
+- Database integration
+- Feature enhancements
+- Bug fixing
+- Application maintenance
+- Improving existing workflows
+
+---
+
+# ✨ Application Features
+
+- Secure Admin Authentication
+- Role-Based Access Control (RBAC)
+- Permission Matrix
+- Multi-role Dashboard
+- CMS Management
+- Dynamic Frontend Content Management
+- Complaint Management System
+- Ticket Management
+- Activity Logs
+- Internal Support Portal
+- Real-time Communication
+- Email Notifications
 - User Management
-- System Monitoring
+- Branch Management
+- ATM Management
+- Database-driven Administration
 
 ---
 
@@ -148,8 +156,9 @@ During my Software Development Internship, I contributed to several core modules
 
 - HTML5
 - CSS3
-- JavaScript
 - Bootstrap
+- JavaScript
+- jQuery
 
 ## Development Tools
 
@@ -181,16 +190,17 @@ writable/
 composer.json
 composer.lock
 spark
+preload.php
 ```
 
 ---
 
-# 🚀 Getting Started
+# 🚀 Installation
 
 ## Clone Repository
 
 ```bash
-git clone https://github.com/your-username/JPCB-Bank-Management-System.git
+git clone https://github.com/pn-dev-in/JPCB-Bank-Management-System.git
 ```
 
 ---
@@ -211,7 +221,7 @@ Copy the environment template:
 cp env .env
 ```
 
-or on Windows:
+or on Windows
 
 ```bash
 copy env .env
@@ -229,7 +239,7 @@ Update your database credentials inside the `.env` file.
 
 ---
 
-## Run Development Server
+## Start Development Server
 
 ```bash
 php spark serve
@@ -245,13 +255,32 @@ http://localhost:8080
 
 # 🔒 Security Features
 
-- Authentication
-- Authorization
+- Secure Authentication
 - Session Management
-- Role-Based Access Control (RBAC)
-- Secure File Upload Handling
+- Role-Based Access Control
+- Permission Matrix
+- Activity Logging
 - Input Validation
-- MVC Architecture
+- Protected Administrative Routes
+- Secure File Upload Handling
+
+---
+
+# 📸 Screenshots
+
+Screenshots will be added soon.
+
+Suggested screenshots:
+
+- Admin Login
+- Dashboard
+- CMS Dashboard
+- Complaint Management
+- Activity Logs
+- User Management
+- Permission Matrix
+- Support Dashboard
+- Internal Chat Interface
 
 ---
 
@@ -264,31 +293,40 @@ This internship project provided practical experience in:
 - MVC Architecture
 - Authentication & Authorization
 - Role-Based Access Control (RBAC)
+- Permission Matrix Design
+- Enterprise Dashboard Development
 - CMS Development
+- Dynamic Content Management
+- Complaint & Ticket Management Systems
+- Internal Support Portal Development
+- Real-time Communication Workflow Design
+- Email Integration
 - Activity Logging
 - MySQL Database Integration
-- CRUD Operations
-- Bug Fixing & Application Maintenance
-- Git & GitHub Workflow
-- Working within an existing enterprise codebase
+- Debugging & Feature Enhancement
+- Git-based Collaborative Development
+- Working within a large enterprise codebase
 
 ---
 
-# 🚀 Future Enhancements
+# 🔮 Future Enhancements
 
 - REST API Integration
 - Dashboard Analytics
-- Email Notifications
-- Performance Optimization
-- UI/UX Improvements
 - Advanced Reporting
-- Activity Monitoring
+- Performance Optimization
+- Email Automation
+- Mobile Responsive Improvements
+- Audit Reports
+- Enhanced Notification System
 
 ---
 
-# 📄 License
+# 📄 Repository Notice
 
-This project is licensed under the MIT License.
+This repository is maintained for documentation and version control purposes only.
+
+The original enterprise application was developed during my internship and remains protected under a **Non-Disclosure Agreement (NDA)**. Sensitive business information, customer data, production configurations, and confidential resources have been removed.
 
 ---
 
@@ -298,15 +336,9 @@ This project is licensed under the MIT License.
 
 **Software Developer | Backend Developer | Full Stack Developer**
 
-- **GitHub:** https://github.com/pn-dev-in
-- **LinkedIn:** https://www.linkedin.com/in/pravesh-nandanwar/
+- GitHub: https://github.com/pn-dev-in
+- LinkedIn: https://www.linkedin.com/in/pravesh-nandanwar/
 
 ---
 
-## 📌 Note
-
-This repository showcases my internship contributions and serves as a reference for my backend development experience using **PHP**, **CodeIgniter 4**, and **MySQL**. The original enterprise project remains confidential under the terms of the Non-Disclosure Agreement (NDA).
-
----
-
-⭐ Thank you for visiting this repository.
+⭐ This repository showcases my internship contributions and the backend engineering experience I gained while working on an enterprise banking administration platform.
