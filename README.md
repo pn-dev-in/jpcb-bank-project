@@ -266,24 +266,6 @@ http://localhost:8080
 
 ---
 
-# 📸 Screenshots
-
-Screenshots will be added soon.
-
-Suggested screenshots:
-
-- Admin Login
-- Dashboard
-- CMS Dashboard
-- Complaint Management
-- Activity Logs
-- User Management
-- Permission Matrix
-- Support Dashboard
-- Internal Chat Interface
-
----
-
 # 📚 Learning Outcomes
 
 This internship project provided practical experience in:
