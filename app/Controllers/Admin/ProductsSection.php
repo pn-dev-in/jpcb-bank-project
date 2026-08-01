@@ -1,0 +1,43 @@
+<?php
+
+namespace App\Controllers\Admin;
+
+use App\Controllers\BaseController;
+use App\Models\ProductsSectionSettingsModel;
+
+class ProductsSection extends BaseController
+{
+    protected $settingsModel;
+
+    public function __construct()
+    {
+        $this->settingsModel = new ProductsSectionSettingsModel();
+    }
+
+    public function edit()
+    {
+        $settings = $this->settingsModel->find(1);
+        if (!$settings) {
+            $this->settingsModel->insert(['heading' => 'Our Products & Services', 'subheading' => 'Comprehensive banking solutions...']);
+            $settings = $this->settingsModel->find(1);
+        }
+        return view('admin/products_section/edit', ['settings' => $settings]);
+    }
+
+    public function update()
+    {
+        $rules = [
+            'heading'    => 'required|max_length[255]',
+            'subheading' => 'required',
+        ];
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
+        }
+        $this->settingsModel->update(1, [
+            'heading'    => $this->request->getPost('heading'),
+            'subheading' => $this->request->getPost('subheading'),
+        ]);
+        log_activity('Updated', 'products-section', 1);
+        return redirect()->to('/admin/products-section/edit')->with('message', 'Products section updated.');
+    }
+}

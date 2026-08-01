@@ -1,0 +1,59 @@
+<?= $this->extend('admin/layout/main') ?>
+<?= $this->section('content') ?>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0">Digital Transaction Limits</h3>
+    <a href="<?= base_url('admin/digital-transaction-limits/create') ?>" class="btn btn-primary btn-sm">+ Add New Limit</a>
+</div>
+
+<div class="card">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-sm table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Channel</th>
+                        <th>Description</th>
+                        <th>Min/Txn</th>
+                        <th>Max/Txn</th>
+                        <th>Max/Day</th>
+                        <th>Max/Month</th>
+                        <th>Order</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($items as $item): ?>
+                    <tr>
+                        <td><?= esc($item['channel']) ?></td>
+                        <td><?= esc($item['description']) ?></td>
+                        <td><?= esc($item['min_per_txn']) ?></td>
+                        <td><?= esc($item['max_per_txn']) ?></td>
+                        <td><?= esc($item['max_per_day']) ?></td>
+                        <td><?= esc($item['max_per_month']) ?></td>
+                        <td><?= $item['sort_order'] ?></td>
+                        <td>
+                            <span class="badge bg-<?= $item['status'] ? 'success' : 'secondary' ?>">
+                                <?= $item['status'] ? 'Active' : 'Inactive' ?>
+                            </span>
+                        </td>
+                        <td>
+                            <a href="<?= base_url('admin/digital-transaction-limits/edit/'.$item['id']) ?>" class="btn btn-sm btn-warning">Edit</a>
+                            <form action="<?= base_url('admin/digital-transaction-limits/delete/'.$item['id']) ?>" method="post" class="d-inline">
+                                <?= csrf_field() ?>
+                                <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Delete?')">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                    <?php if (empty($items)): ?>
+                    <tr><td colspan="9" class="text-center text-muted py-3">No limits found.</td></tr>
+                    <?php endif; ?>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<?= $this->endSection() ?>
